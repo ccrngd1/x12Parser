@@ -1,0 +1,257 @@
+			No input default to be single instance.  Non numeric such as + or >1 taken to mean unbounded	"List of valid values, case and character sensitive(ie 07 not the same as 7)"		"For the cases of : If segment A is present segment B/C D must also be present.  Example if the Loop has NM1 segment it must also have N3,  on the line for the NM1 segment input the value 2, as N2 is the second segment of the loop. Syntax is & between fields means that both segments must be in the loop, | between numbers means Or.  No parethesis for compound expresions is supported, hopefully un needed"		If field index exist and it should not a field level error is added which will contain the index and its value	"For the case where fields must be present if a previous field is set, ie NM1-08 and NM1-09 syntax same as imp guide X12 syntax"		
+Loop	Field	Name	Repeat	Qualifiers	Required	Required Group Segments	Required Fields	Unused Fields	Required Group Fields		
+1000A	Submitter Name										
+	NM1	Name		41	Y		"1,2,3,8,9"	"10,11,12"	"P0809,C1110,C1203"		
+	PER	EDIContact	2	IC	Y		"1,3,4"	9	"P0304,P0506,P0708"		
+											
+1000B	Receiver Name										
+	NM1	Name		40	Y		"1,2,3,8,9"	"4,5,6,7,10,11,12"	"P0809,C111,C1203"		
+											
+2000A	Billing Provider		+								
+	HL	Level		20	Y		"1,3,4"	2			
+	PRV	Specialty Info		BI	Y		"1,2,3"	"4,6"			
+	CUR	Currency		85	N		"1,2"	"3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21"	"C0807,C0907,L101112,C1110,C1210,L131415,C1413,C1513,L161718,C1716,C18,16,L192021,C2019,C2119"		
+2010AA	Billing Provider Name										
+	NM1	Name		85	Y		"1,2,3"	"6,10,11,12"	"P0809,C1110,C1203"		
+	N3	Address			Y		1				
+	N4	Location					1	"5,6"	"E0207,C0605,C0704"		
+	REF	TaxId		"EI,SY,"							
+	REF	UPINLicense	2	"0B,1G,"							
+	PER	ContactInfo	2	IC							
+2010AB	Pay-To Address										
+	NM1	Name		87	Y						
+	N3	Address									
+	N4	Location									
+2010AC	Pay-To-Plan										
+	NM1	Name		PE	Y						
+	N3	Address									
+	N4	Location									
+	REF	SecondaryId		"2U,FY,NF"							
+	REF	TaxID		EI							
+											
+2000B	Subscriber										
+	HL	Level		22	Y						
+	SBR	SubscriberInfo									
+	PAT	PationInfo									
+2010BA	Subscriber Name										
+	NM1	Name		IL	Y						
+	N3	Address									
+	N4	Location									
+	DMG	Demographic									
+	REF	SecondaryId		SY							
+	REF	PropertyCausualtyClaimNumber		Y4							
+	PER	PropertyCausualtySubscriberContact		IC							
+2010BB	Payer Name										
+	NM1	Name		PR	Y						
+	N3	Address									
+	N4	Location									
+	REF	SecondaryId	3	"2U,EI,FY,NF,"							
+	REF	BillingProviderSecondaryId	2	"G2,LU,"							
+2000C	Patient 										
+	HL	Level		23	Y						
+	PAT	Info									
+2010CA	Patient Name										
+	NM1	Name		QC	Y						
+	N3	Address									
+	N4	Location									
+	DMG	Demographic									
+	REF	PropertyCausualtyClaimNumber		Y4							
+	REF	PropertyCausualtyPatientId		"1W,SY,"							
+	PER	PropertyCausualtySubscriberContact		IC							
+2300	Claim Info		100								
+	CLM	Claim			Y						
+	DTP	Onset		431							
+	DTP	Initialtreatment		454							
+	DTP	LastSeen		304							
+	DTP	AcuteManifestation		453							
+	DTP	Accident		439							
+	DTP	LastMenstrual		484							
+	DTP	LastXRay		455							
+	DTP	HearingVisionPrescription		471							
+	DTP	DisabilityDates		"314,360,361"							
+	DTP	LastWored		297							
+	DTP	AuthorizedReturnWork		296							
+	DTP	Admission		435							
+	DTP	Discharge		96							
+	DTP	AssumedRelinquishedCare		"090,091,"							
+	DTP	PropertyCasualtyFirstContact		444							
+	DTP	RepricerReceived		50							
+	PWK	SupplementalInfomation	10								
+	CN1	Contact									
+	AMT	PatientAmountPaid									
+	REF	ServiceAuthorizationException		4N							
+	REF	MandatoryMedicareCrossover		F5							
+	REF	MammographCertificationNumber		EW							
+	REF	ReferalNumber		9F							
+	REF	PriorAuthorizaiton		G1							
+	REF	PayerClaimControlNumer		F8							
+	REF	CLIANumber		X4							
+	REF	RepricedClaimNumber		9A							
+	REF	AdjustedRepricedClaimNumber		9C							
+	REF	InvestigativeDeviceExemption		LX							
+	REF	ClaimIdForTransmissionIntermediaries		D9							
+	REF	MedicalRecordNumber		EA							
+	REF	DemonstrationProjectId		P4							
+	REF	CarePlanOversight		1J							
+	K3	File Info	10								
+	NTE	Note									
+	CR1	AmbulanceInfo									
+	CR2	SpinalManipulaiton									
+	CRC	AmbulanceCertification	3	7							
+	CRC	PationConditionVision	3	"E1,E2,E3"							
+	CRC	HomeboundIndicator		75							
+	CRC	EPSDTReferral		ZZ							
+	HI	HealthCareDiagnosisCode									
+	HI	AnesthesiaRelatedProcedure									
+	HI	ConditionInfomation	2								
+	HCP	ClaimPricingInfo									
+2310A	Refering Provider		2								
+	NM1	Name		"DN,P3"	Y						
+	REF	SecondaryId	3	"0B,1G,"							
+2310B	RenderingProvider										
+	NM1	Name		82	Y						
+	PRV	SpecialtyInfo		PE							
+	REF	SecondaryId	4	"0B,1G,G2,LU,"							
+2310C	ServiceFacility										
+	NM1	Name		77	Y						
+	N3	Address									
+	N4	Location									
+	REF	SecondaryId	3	"0B,G2,LU"							
+	PER	ContactInfo		IC							
+2310D	SupervisingProvider										
+	NM1	Name		DQ	Y						
+	REF	SecondaryId	4	"0B,1G,G2,LU,"							
+2310E	AmbulancePickUp										
+	NM1	Name		PW	Y						
+	N3	Address									
+	N3	Locaiton									
+2310F	AmbulanceDropOff										
+	NM1	Name		45	Y						
+	N3	Address									
+	N3	Locaiton									
+											
+2320	OtherSubscriberInfo		10								
+	SBR	Info			Y						
+	CAS	Adjustments	5								
+	AMT	COBPayerPaid									
+	AMT	COBTotalNonCovered									
+	AMT	RemainingPatientLiability									
+	OI	OtherCoverageInfo									
+	MOA	OutpatientAdjudicaiton									
+2330A	OtherSubscriberName										
+	NM1	Name		IL	Y						
+	N3	Address									
+	N4	Location									
+	REF	SecondaryId		SY							
+2330B	OtherPayer										
+	NM1	Name		PR	Y						
+	N3	Address									
+	N4	Location									
+	DTP	CheckRemittanceDate		573							
+	REF	SecondaryId	2	"2U,EI,FY,NF,"							
+	REF	AuthorizationNumber		G1							
+	REF	ReferalNumber		9F							
+	REF	AdjustmentIndicator		T4							
+	REF	ControlNumber		F8							
+2330C	OtherPayerReferringProvider		2								
+	NM1	Name		"DN,P3,"	Y						
+	REF	SecondaryId	3	"0B,1G,G2"							
+2330D	OtherPayerRenderingProvider										
+	NM1	Name		82	Y						
+	REF	SecondaryId	3	"0B,1G,G2,LU,"							
+2330E	OtherPayerServiceFacility										
+	NM1	Name		77	Y						
+	REF	SecondaryId	3	"0B,G2,LU"							
+2330F	OtherPayerSupervisingProvider										
+	NM1	Name		DQ	Y						
+	REF	SecondaryId	3	"0B,1G,G2,LU,"							
+2330G	OtherPayerBillingProvider										
+	NM1	Name		85	Y						
+	REF	SecondaryId	2	"G2,LU,"							
+											
+2400	ServiceLine		50								
+	LX	LineNumber			Y						
+	SV1	ProfessionalService									
+	SV5	MedicalEqupmentService									
+	PWK	LineSupplemental	10								
+	PWK	EquipmentCertificateIndicator		CT							
+	CR1	AmbulanceTransport									
+	CR3	MedicalEquipmentCertification									
+	CRC	AmbulanceCertification	3	7							
+	CRC	HospiceEmployeeIndicator		70							
+	CRC	EquipmentConditionIndicator		9							
+	DTP	ServiceDate		472							
+	DTP	Perscription		471							
+	DTP	CertificationRevision		607							
+	DTP	BeginTherapy		463							
+	DTP	LastCertificationDate		461							
+	DTP	LastSeen		304							
+	DTP	Test	2	"738,739,"							
+	DTP	Shipped		11							
+	DTP	LastXRay		455							
+	DTP	InitialTreatment		454							
+	QTY	AmbulancePatientcount		PT							
+	QTY	ObstetricAnesthesiaAdditionalUnits		FL							
+	MEA	TestResults	5								
+	CN1	Contact									
+	REF	RepricdLineItemNumber		9B							
+	REF	AdujstedRepricedLineNumber		9D							
+	REF	PriorAuthorization		G1							
+	REF	LineItemControlNumber		6R							
+	REF	MammographyCertificationNumber		EW							
+	REF	CLIANumber		X4							
+	REF	CLIAId		F4							
+	REF	ImmunizationBatch		BT							
+	REF	ReferralNumber	5	9F							
+	AMT	SalesTax									
+	AMT	PostageClaimed									
+	K3	FileInfo	10								
+	NTE	LineNote									
+	NTE	ThirdPartyNotes									
+	PS1	PurchasedServiceInfo									
+	HCP	LinePricing									
+											
+2410	DrugIdentification										
+	LIN	Indentification			Y						
+	CTP	Quantity									
+	REF	Perscription		"VY,XZ,"							
+2420A	RenderingProvider										
+	NM1	Name		82	Y						
+	PRV	Specialty		PE							
+	REF	SecondaryId	20	"0B,1G,G2,LU,"							
+2420B	PurchasedServiceProvider										
+	NM1	Name		QB	Y						
+	REF	SecondaryInfo	20	"OB,1G,G2"							
+2420C	ServiceFacility										
+	NM1	Name		77	Y						
+	N3	Address									
+	N4	Location									
+	REF	SecondaryId	3	"G2,LU,"							
+2420D	SupervisingProviderName										
+	NM1	Name		DQ	Y						
+	REF	SecondaryId	20	"OB,1G,G2,LU,"							
+2420E	OrderingProviderName										
+	NM1	Name		DK	Y						
+	N3	Address									
+	N4	Location									
+	REF	SecondaryId	20	"0B,1G,G2"							
+	PER	Contact		IC							
+2420F	ReferringProviderName		2								
+	NM1	Name		"DN,P3,"	Y						
+	REF	SecondaryId	20	"0B,1G,G2"							
+2420G	AmbulancePickUpLocation										
+	NM1	Name		PW	Y						
+	N3	Address									
+	N4	Location									
+2420H	AmbulanceDropOffLocaiton										
+	NM1	Name		45	Y						
+	N3	Address									
+	N4	Location									
+2430	LineAdjudication		15								
+	SVD	Info			Y						
+	CAS	LineAdjustment	5								
+	DTP	CheckRemittanceDate		573							
+	AMT	RemainingPatientLiability									
+2440	FormIdentificationCode		+								
+	LQ	Code			Y						
+	FRM	SupportingDocumentation	99								

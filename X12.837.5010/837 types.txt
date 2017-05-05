@@ -1,0 +1,54 @@
+Type	Qualified Index	Fields																							
+IEA		NumberFunctionalGroups	ControlNumber																						
+ST	0	Code	ControlNumber	Reference																					
+SE		NumberOfSegments	ControlNumber																						
+GS	7	FunctionCode	ApplicationSenderCode	ApplicationReceiverCode	Date	Time	GroupNumber	ResponsableAgencyCode	ReleaseVersion																
+GE		NumberOfTransactions	GroupNumber																						
+BHT		StructureCode	TSPurposeCode	RefernceIdent	Date	Time	TransactionTypeCode																		
+HL	2	Id	ParentId	LevelCode	ChildCode																				
+SBR		PayerResponseSeqNo	IndividualrelatCode	ReferenceIdent	Name	InsuranceTypeCode	BenefitsCoordCode	YesNoCondResponseCode	EmploymentStatusCode	ClaimFileIndCode															
+PAT		IndividualRelatCode	PatientLocationCode	EmploymentStatusCode	StudentStatusCode	DateTimeFormatQualifier	DeathDate	UnitOfWeight	PatientWeight	Pregnant															
+NM1	0	EntityIdCode	EntityTypeQualifier	LastName	FirstName	MiddleName	NamePrefix	NameSuffix	IdCodeQualifier	IdCode	EntityRelationshipCode	EntityIdentifierCode		LastName2											
+N3		AddressLine1	AddressLine2																						
+N4		City	State	PostalCode	CountryCode	LocationQualifier	LocationId	CountrySubCode																	
+DMG		DateTimeFormat	DateOfBirth	Gender	MaritalStatus	Race	CitizenStatus	CountryCode	BasisOfVerificationCode	Quantity	CodeListQualifier	IndustryCode													
+REF	0	IdQualifier	Id	Description	ReferenceIdentifier																				
+PER		ContactFunctionCode	Name	CommunicationNumberQualifier	CommunicationNumber	CommunicationNumberQualifier2	CommunicationNumber2	CommunicationNumberQualifier3	CommunicationNumber3	ContactInquiryReference															
+CLM		ClaimSubmitterId	MonentaryAmount	ClaimFilintIndicatorCode	NonInstitutionalCllaimTypeCode	CLM05:HealthCareLocation	SignatureOnFileYesNo	ProviderAcceptAssignmentCode	AuthorizedYesNo	ReleaseOfnfomaitonCode	PatientSignatureSourceCode	CLM11:RelatedCausesInfo	SpecialProgramCode	YesNo1	LevelOfServiceCode	YesNo2	ProviderAgreementCode	ClaimStatusCode	YesNo3	ClaimSubmissionReasonCode	DelayReasonCode				
+DTP	0	Qualifier	FormatQualifier	TimePeriod																					
+PRV		Code	ReferenceIdQualifier	ReferenceIdentification	StateCode	SpecialtyInfo	OrganizationCode																		
+CUR	0	IdCode	CurrencyCode																						
+PWK	0	ReportType	ReportTransmissionCode	ReportCopiesNeeded	EntityIdCode	IdCodeQualifier	IdCode	Descripiton	ActionsIndicated	RequestCategoryCode															
+CN1	0	TypeCode	MonetaryAmount	Percent	ReferenceIdentifier	TermsDiscountPercent	VersionId																		
+AMT	0	QualifierCode	MonetaryAmount	CreditDebitFlag																					
+K3		FixedFormatInfomation																							
+NTE		ReferenceCode	Description																						
+CR1		UnitOfMeasurement	Weight	TransportCode	TransportReason	DistanceUnit	Distance	AddressLine1	AddressLine2	Description	Description2														
+CR2		Count	Quantity	LevelCode1	LevelCode2	Unit	Quantity2	Quantity3	NatureOfCoditionCode	YesNo	Description1	Description2	YesNo2												
+CRC	0	CodeCategory	YesNo	ConditionIndicator1	ConditionIndicator2	ConditionIndicator3	ConditionIndicator4	ConditionIndicator5																	
+HI		HIXX:CodeInfomation1	HIXX:CodeInfomation2	HIXX:CodeInfomation3	HIXX:CodeInfomation4	HIXX:CodeInfomation5	HIXX:CodeInfomation6	HIXX:CodeInfomation7	HIXX:CodeInfomation8	HIXX:CodeInfomation9	HIXX:CodeInfomation10	HIXX:CodeInfomation11	HIXX:CodeInfomation12												
+HCP		Methodology	Amount	SavingAmount	ReferenceIdentifier	Rate	ReferenceIdentifier2	Amount2	ProductServiceId	ProductServiceIdQualifier	ProductServiceId2	UnitOfMeasurementCode	quantity	RejectReasonCode	PolicyComplianceCode	ExceptionCode									
+CAS		AdjustmentGroupCode1	ReasonCode1	Amount1	Quantity1	AdjustmentGroupCode2	ReasonCode2	Amount2	Quantity2	AdjustmentGroupCode3	ReasonCode3	Amount3	Quantity3	AdjustmentGroupCode4	ReasonCode4	Amount4	Quantity4	AdjustmentGroupCode5	ReasonCode5	Amount5	Quantity5	AdjustmentGroupCode6	ReasonCode6	Amount6	Quantity6
+OI		IdicatorCode	ReasonCode	YesNo	SignatureSourceCode	ProviderAgreementCode	ReleaseOfInfomationCode																		
+MOA		Percent	Amount1	ReferenceId1	ReferenceId2	ReferenceId3	ReferenceId4	ReferenceId5	Amount2	Amount3															
+LX	0	AssignedNumber																							
+SV1		SV101:MedicalProcedureId	Amount	UnitOfMeasure	Quantity	FacilityCodeValue	ServiceTypeCode	SV107:DiagnosisCode	Amount2	YesNo	MutiProcedureCode	YesNo2	YesNo3	ReviewCode	NationalLocalReviewCode	CopayStatusCode	ProfessionalShortageAreaCode	ReferenceId	PostalCode	Amount3	LevelOfCareCode	ProviderAgreementCode			
+SV5		SV501MedicalProcedureId	Unit	Quantity	Amount1	Amount2	FrequencyCode	PrognosisCode																	
+CR3		TypeCode	Unit	Quantity	InsulidDependentCode	Description																			
+QTY	0	Qualifier	Quantity	CompositeUnit	Message																				
+MEA		ReferenceCode	Qualifier	Value																					
+PS1		ReferenceId	Amount	StateCode																					
+LIN		AssignedId	ProductServiceQualifier	ProductServiceId																					
+CTP		ClassOfTradeCode	PriceIdCode	UnitPrice	Quantity	CompositeUnitOfMeasure																			
+SVD	0	IDCode	Amount	SVD03:MedicalProcedureId	ProductServiceID	Quantity	AssignedNumber																		
+LQ	0	QualifierCode	IndustryCode																						
+FRM		AssignedId	YesNo	ReferenceId	Date	PercentFormat																			
+																									
+																									
+CLM05		FacilityCode	FacilityCodeQualifier	ClaimFrequenceTypeCode																					
+CLM11		RelatedCauseCode1	RelatedCauseCode2	RelatedCauseCode3	StateCode	CountryCode																			
+Hixx		QualifierCode	IndustryCode1	FormatQualifier	DateTimePeriod	MonetaryAmount	Quantity	VersionIdentifier	IndustryCode2	YesNo															
+SV101		QualifierCode	ProductServiceId	Modifier1	Modifier2	Modifier3	Modifier4	ProductServiceId2																	
+SV107		CodePointer1	CodePointer2	CodePointer3	CodePointer4	Amount																			
+SV501		ProductServiceIdQualifier	ProductServiced	ProcedureModifier1	ProcedureModifier2	ProcedureModifier3	ProcedureModifier4	Description	ProductServiceId2																
+SVD03		ProductServiceIdQualifier	ProductServiced	ProcedureModifier1	ProcedureModifier2	ProcedureModifier3	ProcedureModifier4	Description	ProductServiceId2																
