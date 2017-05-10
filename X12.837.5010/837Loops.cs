@@ -32,7 +32,19 @@ namespace LawsonCS.Model.EDI.X12
 
     public class Loop1000A : LoopsList
     {
+        public NM1 SubmitterName;
+        public PER SubmitterContact;
+
         public Loop1000A() : base(null, 1, "Submitter Name")
+        {
+            SubmitterName.DefinedSeg = new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "41") },
+                SegmentUsageType.Required, 1, typeof(NM1));
+
+            SubmitterContact.DefinedSeg = new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "IC") },
+                SegmentUsageType.Required, 2, typeof(PER));
+        }
+
+        public override void DefineSegments()
         {
         }
 

@@ -12,6 +12,7 @@ namespace LawsonCS.Model.EDI.X12
         [ProtoBuf.ProtoMember(1)]
         public int LoopRepeat;
     }
+
     public class SegmentDefinition
     {
         public string SegmentName;
@@ -20,11 +21,10 @@ namespace LawsonCS.Model.EDI.X12
         public SegmentUsageType Usage;
         public int RepeatCount;
         private List<Func<List<string>, bool>> _addlQualifierLogic = new List<Func<List<string>, bool>>();
-        private List<RawSegment> RawSegments = new List<RawSegment>();
-        private Type SegmentType;
+        private baseStdSegment SegmentType;
         private Delimiters Delimiter;
 
-        public SegmentDefinition(List<SegmentQualifiers> quals, SegmentUsageType use, int reps, Type segT)
+        public SegmentDefinition(List<SegmentQualifiers> quals, SegmentUsageType use, int reps, baseStdSegment segT)
         {
             if (quals != null)
                 Qualifiers = quals;
@@ -32,7 +32,7 @@ namespace LawsonCS.Model.EDI.X12
             Usage = use;
             RepeatCount = reps;
             SegmentType = segT;
-            SegmentName = segT.Name;
+            SegmentName = segT.GetType().Name;
         }
 
         public baseStdSegment CreateInstance(string value, Delimiters delims, LoopsList parentLoop)
@@ -195,6 +195,7 @@ namespace LawsonCS.Model.EDI.X12
         public LoopsList Parent;
         public List<LoopsList> SubLoops = new List<LoopsList>();
         public List<SegmentDefinition> SegmentDefinitions = new List<SegmentDefinition>();
+        public List<baseStdSegment> Segments = new List<baseStdSegment>();
 
         public LoopsList(LoopsList parent, int repeats, string name)
         {
@@ -210,6 +211,8 @@ namespace LawsonCS.Model.EDI.X12
         }
 
         public abstract void DefineSegmentDefinition();
+
+        public virtual void DefineSegments();
     }
 
     public class baseLoop
