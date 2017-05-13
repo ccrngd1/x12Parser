@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using LawsonCS.Model.EDI.X12.v1;
 
-namespace LawsonCS.Model.EDI.X12
+namespace LawsonCS.Model.EDI.X12.v1.Base
 {
     [ProtoBuf.ProtoContract]
     public class LoopList<T> : List<T>
@@ -21,10 +22,10 @@ namespace LawsonCS.Model.EDI.X12
         public SegmentUsageType Usage;
         public int RepeatCount;
         private List<Func<List<string>, bool>> _addlQualifierLogic = new List<Func<List<string>, bool>>();
-        private baseStdSegment SegmentType;
+        private Type SegmentType;
         private Delimiters Delimiter;
 
-        public SegmentDefinition(List<SegmentQualifiers> quals, SegmentUsageType use, int reps, baseStdSegment segT)
+        public SegmentDefinition(List<SegmentQualifiers> quals, SegmentUsageType use, int reps, Type segT)
         {
             if (quals != null)
                 Qualifiers = quals;
@@ -40,7 +41,7 @@ namespace LawsonCS.Model.EDI.X12
             var sg = (baseStdSegment)Activator.CreateInstance(SegmentType);
 
             sg.Prep(value, parentLoop, delims, this);
-            RawSegments.Add(sg.rawSegment);
+            //RawSegments.Add(sg.rawSegment);
             return sg;
         }
 
@@ -212,7 +213,7 @@ namespace LawsonCS.Model.EDI.X12
 
         public abstract void DefineSegmentDefinition();
 
-        public virtual void DefineSegments();
+        //public virtual void DefineSegments();
     }
 
     public class baseLoop

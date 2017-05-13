@@ -64,10 +64,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="837Loops.cs" />
-    <Compile Include="BaseTypes.cs" />
-    <Compile Include="Constants.cs" />
-    <Compile Include="Segments.cs" />
+    <Compile Include="277\5010\v1\Loops.cs" />
+    <Compile Include="277\5010\v2\277Definition.cs" />
+    <Compile Include="277\5010\v2\277Loops.cs" />
+    <Compile Include="837\5010\Prof\v1\837Loops.cs" />
+    <Compile Include="837\5010\Prof\v2\837Definition.cs" />
+    <Compile Include="837\5010\Prof\v2\Loops.cs" />
+    <Compile Include="Base\v1\BaseTypesV1.cs" />
+    <Compile Include="Base\Constants.cs" />
+    <Compile Include="Base\v1\SegmentsV1.cs" />
+    <Compile Include="Base\v2\SegmentsV2.cs" />
+    <Compile Include="277\5010\v1\277Definition.cs" />
+    <Compile Include="Base\v2\BaseTypesV2.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -77,6 +85,9 @@
       <Project>{7d9fc354-f286-4d45-b3eb-55a6e571001e}</Project>
       <Name>X12.Data</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="837\5010\Inst\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

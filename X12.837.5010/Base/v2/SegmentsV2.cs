@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using LawsonCS.Model.EDI.X12.v2.Base;
 
-namespace LawsonCS.Model.EDI.X12
+namespace LawsonCS.Model.EDI.X12.v2
 {
     [ProtoBuf.ProtoContract]
     public class IEA : baseStdSegment
@@ -1384,6 +1387,7 @@ namespace LawsonCS.Model.EDI.X12
             return "";
         }
     }
+
     public class FRM : baseStdSegment
     {
         public string AssignedId;
@@ -1394,11 +1398,7 @@ namespace LawsonCS.Model.EDI.X12
 
         public FRM()
         {
-        }
-
-        public FRM(string value, Delimiters delims, LoopsList parent)
-        {
-        }
+        } 
 
         public override void Populate()
         {
