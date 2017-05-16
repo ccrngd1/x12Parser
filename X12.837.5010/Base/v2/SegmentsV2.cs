@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LawsonCS.Model.EDI.X12.v2.Base;
+using System.IO;
 
 namespace LawsonCS.Model.EDI.X12.v2
 {
@@ -67,59 +68,87 @@ namespace LawsonCS.Model.EDI.X12.v2
     [ProtoBuf.ProtoContract]
     public class ISA : baseStdSegment
     {
-        public string autherInfoQualifier;
-        [ProtoBuf.ProtoMember(1)]
-        public string autherInformation;
-        [ProtoBuf.ProtoMember(2)]
-        public string securityInfoQual;
-        [ProtoBuf.ProtoMember(3)]
-        public string securityInformation;
-        [ProtoBuf.ProtoMember(4)]
-        public string interchangeIdQual;
-        [ProtoBuf.ProtoMember(5)]
-        public string interchangeSenderId;
-        [ProtoBuf.ProtoMember(6)]
-        public string interchangeIdQual2;
-        [ProtoBuf.ProtoMember(7)]
-        public string interchangeReceiverId;
-        [ProtoBuf.ProtoMember(8)]
-        public string interchangeDate;
-        [ProtoBuf.ProtoMember(9)]
-        public string interchangeTime;
-        [ProtoBuf.ProtoMember(10)]
-        public string repetitionSeparator;
-        [ProtoBuf.ProtoMember(11)]
-        public string interCtrlVersionNumber;
-        [ProtoBuf.ProtoMember(12)]
-        public string interCtrlNumber;
-        [ProtoBuf.ProtoMember(13)]
-        public string ackRequestion;
-        [ProtoBuf.ProtoMember(14)]
-        public string usageIndicator;
-        [ProtoBuf.ProtoMember(15)]
-        public string componentElemSepara;
+        public string AuthInformationQualifier { get; set; }
+        public string AuthorizationInformation { get; set; }
+        public string SecurityInformationQualifier { get; set; }
+        public string SecurityInformation { get; set; }
+        public string InterchangeIDQualifier { get; set; }
+        public string InterchangeSenderID { get; set; }
+        public string InterchangeIDQualifier_2 { get; set; }
+        public string InterchangeReceiverID { get; set; }
+        public string InterchangeDate { get; set; }
+        public string InterchangeTime { get; set; }
+        public string RepetitionSeparator { get; set; }
+        public string InterchangeControlVersion { get; set; }
+        public string InterchangeControlNo { get; set; }
+        public string AcknowledgmentRequested { get; set; }
+        public string UsageIndicator { get; set; }
+        public string LineSeperator { get; set; }
+        public string ComponentElementSeparator { get; set; }
+        public char ElementSeperator { get; private set; }
 
         public ISA()
         {
         }
-
-
-        public override void Populate()
+        public void FromStream(Stream s)
         {
-            //autherInfoQualifier = ParsedValue.Substring(4, 2);
-            //autherInformation = ParsedValue.Substring(7, 10);
-            //securityInfoQual = ParsedValue.Substring(18, 2);
-            //securityInformation = ParsedValue.Substring(21, 10);
-            //interchangeIdQual = ParsedValue.Substring(32, 2);
-            //interchangeSenderId = ParsedValue.Substring(35, 15);
-            //interchangeIdQual2 = ParsedValue.Substring(51, 2);
-            //interchangeReceiverId = ParsedValue.Substring(54, 15);
-            //interchangeDate = ParsedValue.Substring(70, 6);
-            //interchangeTime = ParsedValue.Substring(77, 4);
-            //interCtrlVersionNumber = ParsedValue.Substring(84, 5);
-            //interCtrlNumber = ParsedValue.Substring(90, 9);
-            //ackRequestion = ParsedValue.Substring(100, 1);
-            //usageIndicator = ParsedValue.Substring(102, 1);
+            var original = s.Position;
+            if (s.Length - s.Position < 106)
+                return;// throw new Exception("Invalid ISA");
+            byte[] valueBuffer = new byte[107];
+            s.Read(valueBuffer, 0, 107);
+
+            if (valueBuffer[0] == (byte)'I' &&
+                valueBuffer[1] == (byte)'S' &&
+                valueBuffer[2] == (byte)'A')
+            {
+                ElementSeperator = (char)valueBuffer[3];
+                LineSeperator = Encoding.ASCII.GetString(valueBuffer, 105, 1);//Issue, spec says its character length of 1, but some files have \r\n some files do not have fixed isa correct
+                
+                //so many invalid files, really sucks
+                if (char.IsLetterOrDigit(LineSeperator[0]) || valueBuffer[103] != ElementSeperator || valueBuffer[106] != 'G')
+                {
+                    s.Position = original + 4;
+                    var bigBuffer = new byte[1024];
+                    s.Read(bigBuffer, 0, 1024);
+
+                    var field = Encoding.ASCII.GetString(bigBuffer);
+
+                    var indexE = field.IndexOf("GS" + ElementSeperator);
+                    if (indexE == -1)
+                    {
+                        ComponentElementSeparator = "~";
+                        return;
+                    }
+                    var indexS = field.LastIndexOf(ElementSeperator, indexE - 1);
+                    ComponentElementSeparator = field[indexS + 1].ToString();
+                    LineSeperator = field[indexS + 2].ToString();
+                    s.Position = original + indexE + 5;
+                }
+                else
+                {
+                    AuthInformationQualifier = Encoding.ASCII.GetString(valueBuffer, 4, 2);
+                    AuthorizationInformation = Encoding.ASCII.GetString(valueBuffer, 7, 10);
+                    SecurityInformationQualifier = Encoding.ASCII.GetString(valueBuffer, 18, 2);
+                    SecurityInformation = Encoding.ASCII.GetString(valueBuffer, 21, 10);
+                    InterchangeIDQualifier = Encoding.ASCII.GetString(valueBuffer, 32, 2);
+                    InterchangeSenderID = Encoding.ASCII.GetString(valueBuffer, 35, 15);
+                    InterchangeIDQualifier_2 = Encoding.ASCII.GetString(valueBuffer, 51, 2);
+                    InterchangeReceiverID = Encoding.ASCII.GetString(valueBuffer, 54, 15);
+                    InterchangeDate = Encoding.ASCII.GetString(valueBuffer, 70, 6);
+                    InterchangeTime = Encoding.ASCII.GetString(valueBuffer, 77, 4);
+                    RepetitionSeparator = Encoding.ASCII.GetString(valueBuffer, 82, 1);
+                    InterchangeControlVersion = Encoding.ASCII.GetString(valueBuffer, 84, 5);
+                    InterchangeControlNo = Encoding.ASCII.GetString(valueBuffer, 90, 9);
+                    AcknowledgmentRequested = Encoding.ASCII.GetString(valueBuffer, 100, 1);
+                    UsageIndicator = Encoding.ASCII.GetString(valueBuffer, 102, 1);
+                    ComponentElementSeparator = Encoding.ASCII.GetString(valueBuffer, 104, 1);
+                    LineSeperator = Encoding.ASCII.GetString(valueBuffer, 105, 1);//Issue, spec says its character length of 1, but some files have \r\n
+                }
+                s.Position--;
+            }
+            else
+                throw new ArgumentException("Invalid ISA");
         }
 
         public override bool Validate()

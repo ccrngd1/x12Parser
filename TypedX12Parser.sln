@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "X12ParserUnitTest", "UnitTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model.EDI.X12", "X12.837.5010\Model.EDI.X12.csproj", "{A6F8DFBE-F6C1-4BA8-AC9A-AD586B920D6C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business.EDI.X12", "Business.EDI.X12\Business.EDI.X12.csproj", "{96706DF3-346A-4A78-ABE8-D56C888D688C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{A6F8DFBE-F6C1-4BA8-AC9A-AD586B920D6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6F8DFBE-F6C1-4BA8-AC9A-AD586B920D6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6F8DFBE-F6C1-4BA8-AC9A-AD586B920D6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96706DF3-346A-4A78-ABE8-D56C888D688C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96706DF3-346A-4A78-ABE8-D56C888D688C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96706DF3-346A-4A78-ABE8-D56C888D688C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96706DF3-346A-4A78-ABE8-D56C888D688C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

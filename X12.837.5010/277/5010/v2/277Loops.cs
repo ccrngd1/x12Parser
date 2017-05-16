@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LawsonCS.Model.EDI.X12.v2.Base;
+﻿using LawsonCS.Model.EDI.X12.v2.Base;
 using LawsonCS.Model.EDI.X12.v2;
 
 namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
@@ -14,13 +9,25 @@ namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
 
         public LoopList<Loop2100A> loop2100a = new LoopList<Loop2100A>(1);
 
-        public Loop2000A() { }
+        public Loop2000A() {
+            InformationSourceLevel = new baseSegmentCollection<HL>();
+            InformationSourceLevel.SegmentDef = new SegmentDefinition(SegmentUsageType.Required, 1, typeof(HL));            
+        }
     }
 
     public class Loop2100A : LoopEntity
     {
         public baseSegmentCollection<NM1> PayerName;
         public baseSegmentCollection<PER> PayerContactInformation;
+
+        public Loop2100A()
+        {
+            PayerName = new baseSegmentCollection<NM1>();
+            PayerContactInformation = new baseSegmentCollection<PER>();
+
+            PayerName.SegmentDef = new SegmentDefinition(SegmentUsageType.Required, 1, typeof(NM1));
+            PayerContactInformation.SegmentDef = new SegmentDefinition(SegmentUsageType.Required, 1,typeof(PER));
+        }
     }
 
     public class Loop2000B : LoopEntity
