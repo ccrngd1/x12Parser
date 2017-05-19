@@ -2,12 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using LawsonCS.Model.EDI.X12.v2.Base;
 using System.IO;
 
 namespace LawsonCS.Model.EDI.X12.v2
 {
+    public class IEACollection : baseSegmentCollection
+    {
+        public IEACollection() : base(typeof(IEA))
+        {
+        }
+
+        public IEA this[int index]
+        {
+            get { return Segments[index] as IEA; }
+            set { Segments[index] = value; }
+        }
+    }
     [ProtoBuf.ProtoContract]
     public class IEA : baseStdSegment
     {
@@ -31,6 +42,19 @@ namespace LawsonCS.Model.EDI.X12.v2
         }
     }
 
+    public class GSCollection : baseSegmentCollection
+    {
+        public GSCollection() : base(typeof(GS))
+        {
+            
+        }
+
+        public GS this[int index]
+        {
+            get { return Segments[index] as GS;}
+            set { Segments[index] = value; }
+        }
+    }
     [ProtoBuf.ProtoContract]
     public class GS : baseStdSegment
     {
@@ -65,6 +89,20 @@ namespace LawsonCS.Model.EDI.X12.v2
             return "";
         }
     }
+
+    public class ISACollection : baseSegmentCollection
+    {
+        public ISACollection() : base(typeof(ISA))
+        {
+            
+        }
+
+        public ISA this[int index ]
+        {
+            get { return Segments[index] as ISA; }
+            set { Segments[index] = value;}
+        }
+    }
     [ProtoBuf.ProtoContract]
     public class ISA : baseStdSegment
     {
@@ -89,7 +127,8 @@ namespace LawsonCS.Model.EDI.X12.v2
 
         public ISA()
         {
-        }
+        } 
+
         public void FromStream(Stream s)
         {
             var original = s.Position;
@@ -160,6 +199,25 @@ namespace LawsonCS.Model.EDI.X12.v2
         {
             return "";
         }
+
+        public override void Populate()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class GECollection : baseSegmentCollection
+    {
+        public GECollection() : base(typeof(GE))
+        {
+
+        }
+
+        public GE this[int index]
+        {
+            get { return Segments[index] as GE; }
+            set { Segments[index] = value; }
+        }
     }
     [ProtoBuf.ProtoContract]
     public class GE : baseStdSegment
@@ -183,6 +241,20 @@ namespace LawsonCS.Model.EDI.X12.v2
         public override string ToString()
         {
             return "";
+        }
+    }
+
+    public class STCollection : baseSegmentCollection
+    {
+        public STCollection() : base(typeof(ST))
+        {
+
+        }
+
+        public ST this[int index]
+        {
+            get { return Segments[index] as ST; }
+            set { Segments[index] = value; }
         }
     }
     [ProtoBuf.ProtoContract]
@@ -209,6 +281,20 @@ namespace LawsonCS.Model.EDI.X12.v2
         public override string ToString()
         {
             return "";
+        }
+    }
+
+    public class BHTCollection : baseSegmentCollection
+    {
+        public BHTCollection() : base(typeof(BHT))
+        {
+
+        }
+
+        public BHT this[int index]
+        {
+            get { return Segments[index] as BHT; }
+            set { Segments[index] = value; }
         }
     }
     [ProtoBuf.ProtoContract]
@@ -250,6 +336,59 @@ namespace LawsonCS.Model.EDI.X12.v2
         public override string ToString()
         {
             return "";
+        }
+    }
+
+
+    public class SECollection : baseSegmentCollection
+    {
+        public SECollection() : base(typeof(SE))
+        {
+
+        }
+
+        public SE this[int index]
+        {
+            get { return Segments[index] as SE; }
+            set { Segments[index] = value; }
+        }
+    }
+    [ProtoBuf.ProtoContract]
+    public class SE : baseStdSegment
+    {
+        [ProtoBuf.ProtoMember(1)]
+        public string numberIncludedSegments;
+        [ProtoBuf.ProtoMember(2)]
+        public string TSControlNumber;
+
+        public SE() { }
+
+        public override void Populate()
+        {
+        }
+
+        public override string ToString()
+        {
+            return "";
+        }
+
+        public override bool Validate()
+        {
+            return true;
+        }
+    }
+
+    public class HLCollection : baseSegmentCollection
+    {
+        public HLCollection() : base(typeof(HL))
+        {
+
+        }
+
+        public HL this[int index]
+        {
+            get { return Segments[index] as HL; }
+            set { Segments[index] = value; }
         }
     }
     [ProtoBuf.ProtoContract]
@@ -297,6 +436,20 @@ namespace LawsonCS.Model.EDI.X12.v2
             return "";
         }
     }
+
+    public class NM1Collection : baseSegmentCollection
+    {
+        public NM1Collection() : base(typeof(NM1))
+        {
+
+        }
+
+        public NM1 this[int index]
+        {
+            get { return Segments[index] as NM1; }
+            set { Segments[index] = value; }
+        }
+    }
     [ProtoBuf.ProtoContract]
     public class NM1 : baseStdSegment
     {
@@ -339,6 +492,7 @@ namespace LawsonCS.Model.EDI.X12.v2
             return "";
         }
     }
+
     [ProtoBuf.ProtoContract]
     public class DMG : baseStdSegment
     {
@@ -519,30 +673,6 @@ namespace LawsonCS.Model.EDI.X12.v2
         public override string ToString()
         {
             return "";
-        }
-    }
-    [ProtoBuf.ProtoContract]
-    public class SE : baseStdSegment
-    {
-        [ProtoBuf.ProtoMember(1)]
-        public string numberIncludedSegments;
-        [ProtoBuf.ProtoMember(2)]
-        public string TSControlNumber;
-
-        public SE() { }
-
-        public override void Populate()
-        {
-        }
-
-        public override string ToString()
-        {
-            return "";
-        }
-
-        public override bool Validate()
-        {
-            return true;
         }
     }
 

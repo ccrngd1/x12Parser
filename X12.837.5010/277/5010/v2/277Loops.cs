@@ -1,105 +1,274 @@
-﻿using LawsonCS.Model.EDI.X12.v2.Base;
+﻿using System.Collections;
+using System.Collections.Generic;
+using LawsonCS.Model.EDI.X12.v2.Base;
 using LawsonCS.Model.EDI.X12.v2;
 
 namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
 {
-    public class Loop2000A : LoopEntity
+    public class Loop2000ACollection : LoopList, IList<Loop2000A>
     {
-        public baseSegmentCollection<HL> InformationSourceLevel;
-
-        public LoopList<Loop2100A> loop2100a = new LoopList<Loop2100A>(1);
-
-        public Loop2000A() {
-            InformationSourceLevel = new baseSegmentCollection<HL>();
-            InformationSourceLevel.SegmentDef = new SegmentDefinition(SegmentUsageType.Required, 1, typeof(HL));            
+        public Loop2000ACollection()
+        {
         }
+        
+        public override bool Validate()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void SetUpDefinition()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        #region IList
+        public IEnumerator<Loop2000A> GetEnumerator()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public void Add(Loop2000A item)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Clear()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool Contains(Loop2000A item)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void CopyTo(Loop2000A[] array, int arrayIndex)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool Remove(Loop2000A item)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public int Count { get; }
+        public bool IsReadOnly { get; }
+        public int IndexOf(Loop2000A item)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Insert(int index, Loop2000A item)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void RemoveAt(int index)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Loop2000A this[int index]
+        {
+            get { return LoopEntities[index] as Loop2000A; }
+            set { LoopEntities[index] = value; }
+        }
+        #endregion
     }
 
-    public class Loop2100A : LoopEntity
+    public class Loop2000A : LoopEntity
     {
-        public baseSegmentCollection<NM1> PayerName;
-        public baseSegmentCollection<PER> PayerContactInformation;
+        public baseSegmentCollection InformationSourceLevel = new baseSegmentCollection(typeof(HL));
+
+        public Loop2100A loop2100a = new Loop2100A();
+    }
+
+    public class Loop2100A : LoopList
+    {
+        public baseSegmentCollection PayerName;
+        public baseSegmentCollection PayerContactInformation;
 
         public Loop2100A()
         {
-            PayerName = new baseSegmentCollection<NM1>();
-            PayerContactInformation = new baseSegmentCollection<PER>();
+        }
 
-            PayerName.SegmentDef = new SegmentDefinition(SegmentUsageType.Required, 1, typeof(NM1));
-            PayerContactInformation.SegmentDef = new SegmentDefinition(SegmentUsageType.Required, 1,typeof(PER));
+        public override bool Validate()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void SetUpDefinition()
+        {
+            throw new System.NotImplementedException();
         }
     }
 
-    public class Loop2000B : LoopEntity
+    public class Loop2000B : LoopList
     {
-        public baseSegmentCollection<HL> InformationReceiverLeverl;
-        public LoopList<Loop2100B> loop2100b = new LoopList<Loop2100B>(1);
-        public LoopList<Loop2200B> loop2200b = new LoopList<Loop2200B>(1);
+        public baseSegmentCollection InformationReceiverLeverl;
+        public Loop2100B loop2100b = new Loop2100B();
+        public Loop2200B loop2200b = new Loop2200B();
+        public override bool Validate()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void SetUpDefinition()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
-    public class Loop2100B : LoopEntity
+    public class Loop2100B : LoopList
     {
-        public baseSegmentCollection<NM1> InformationReceiverName;
+        public baseSegmentCollection InformationReceiverName;
+        public override bool Validate()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void SetUpDefinition()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
-    public class Loop2200B : LoopEntity
+    public class Loop2200B : LoopList
     {
-        public baseSegmentCollection<TRN> InformationReceiverTraceIdentifier;
-        public baseSegmentCollection<STC> InformationReceriverStatusInformation;
+        public baseSegmentCollection InformationReceiverTraceIdentifier;
+        public baseSegmentCollection InformationReceriverStatusInformation;
+        public override bool Validate()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void SetUpDefinition()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
-    public class Loop2000C : LoopEntity
+    public class Loop2000C : LoopList
     {
-        public baseSegmentCollection<HL> ServiceProviderLevel;
-        public LoopList<Loop2100C> loop2100c = new LoopList<Loop2100C>(1);
-        public LoopList<Loop2200C> loop2200c = new LoopList<Loop2200C>(1);
+        public baseSegmentCollection ServiceProviderLevel;
+        public Loop2100C loop2100c = new Loop2100C();
+        public Loop2200C loop2200c = new Loop2200C();
+        public override bool Validate()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void SetUpDefinition()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
-    public class Loop2100C : LoopEntity
+    public class Loop2100C : LoopList
     {
-        public baseSegmentCollection<NM1> ProviderName;
+        public baseSegmentCollection ProviderName;
+        public override bool Validate()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void SetUpDefinition()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
-    public class Loop2200C : LoopEntity
+    public class Loop2200C : LoopList
     {
-        public baseSegmentCollection<TRN> ProviderOfServiceTraceIdentifier;
-        public baseSegmentCollection<STC> ProviderStatusInformation;
+        public baseSegmentCollection ProviderOfServiceTraceIdentifier;
+        public baseSegmentCollection ProviderStatusInformation;
+        public override bool Validate()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void SetUpDefinition()
+        {
+            throw new System.NotImplementedException();
+        }
     } 
     
-    public class Loop2000DE : LoopEntity
+    public class Loop2000DE : LoopList
     {
-        public baseSegmentCollection<HL> SubDepLevel;
+        public baseSegmentCollection SubDepLevel;
 
-        public LoopList<Loop2100DE> loop2100 = new LoopList<Loop2100DE>(999);
+        public Loop2100DE loop2100 = new Loop2100DE();
 
-        public LoopList<Loop2200DE> loop2200 = new LoopList<Loop2200DE>(999);
+        public Loop2200DE loop2200 = new Loop2200DE();
+        public override bool Validate()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void SetUpDefinition()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
-    public class Loop2100DE : LoopEntity
+    public class Loop2100DE : LoopList
     {
-        public baseSegmentCollection<NM1> SubDepName;
+        public baseSegmentCollection SubDepName;
+        public override bool Validate()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void SetUpDefinition()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
-    public class Loop2200DE : LoopEntity
+    public class Loop2200DE : LoopList
     {
-        baseSegmentCollection<TRN> ClaimStatusTrackingNumber;
-        baseSegmentCollection<STC> ClaimLevelStatusInformation;
-        baseSegmentCollection<REF> PayerClaimControlNumber;
-        baseSegmentCollection<REF> InstitutionalBillTypeIdentification;
-        baseSegmentCollection<REF> PatientControlNumber;
-        baseSegmentCollection<REF> PharmacyPrescriptionNumber;
-        baseSegmentCollection<REF> VoucherIdentifier;
-        baseSegmentCollection<REF> ClaimIdentificationNumberForClearinghousesAnd;
-        baseSegmentCollection<DTP> ClaimServiceDate;
-        LoopList<Loop2220DE> Loop2220 = new LoopList<Loop2220DE>(999);
+        baseSegmentCollection ClaimStatusTrackingNumber;
+        baseSegmentCollection ClaimLevelStatusInformation;
+        baseSegmentCollection PayerClaimControlNumber;
+        baseSegmentCollection InstitutionalBillTypeIdentification;
+        baseSegmentCollection PatientControlNumber;
+        baseSegmentCollection PharmacyPrescriptionNumber;
+        baseSegmentCollection VoucherIdentifier;
+        baseSegmentCollection ClaimIdentificationNumberForClearinghousesAnd;
+        baseSegmentCollection ClaimServiceDate;
+        Loop2220DE Loop2220 = new Loop2220DE();
+        public override bool Validate()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void SetUpDefinition()
+        {
+            throw new System.NotImplementedException();
+        }
     }
     
-    public class Loop2220DE : LoopEntity
+    public class Loop2220DE : LoopList
     {
-        public baseSegmentCollection<SVC> ServiceLineInformation;
-        public baseSegmentCollection<STC> ServiceLineStatusInformation;
-        public baseSegmentCollection<REF> ServiceLineItemIdentification;
-        public baseSegmentCollection<DTP> ServiceLineDate;
+        public baseSegmentCollection ServiceLineInformation;
+        public baseSegmentCollection ServiceLineStatusInformation;
+        public baseSegmentCollection ServiceLineItemIdentification;
+        public baseSegmentCollection ServiceLineDate;
+        public override bool Validate()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void SetUpDefinition()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
 }

@@ -33,7 +33,7 @@ namespace LawsonCS.Model.EDI.X12.v1.Base
             Usage = use;
             RepeatCount = reps;
             SegmentType = segT;
-            SegmentName = segT.GetType().Name;
+            SegmentName = segT.Name;
         }
 
         public baseStdSegment CreateInstance(string value, Delimiters delims, LoopsList parentLoop)

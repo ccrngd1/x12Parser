@@ -1,32 +1,34 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace LawsonCS.Model.EDI.X12.v2.Base
 {
+
     public class x12Doc
     {
+
         public const string firstDelim = "*";
         public const string secondDelim = "#";
 
         [ProtoBuf.ProtoMember(1)]
-        public ST transactionSetHeader;
+        public STCollection transactionSetHeader;
         [ProtoBuf.ProtoMember(2)]
-        public BHT beginHierarchicalTransaction;
+        public BHTCollection beginHierarchicalTransaction;
 
         [ProtoBuf.ProtoMember(3)]
-        public GE functionalGroupTrailer;
+        public GECollection functionalGroupTrailer;
         [ProtoBuf.ProtoMember(4)]
-        public ISA interchagneControlHeader;
+        public ISACollection interchagneControlHeader;
         [ProtoBuf.ProtoMember(5)]
-        public GS functionGroupHeader;
+        public GSCollection functionGroupHeader;
         [ProtoBuf.ProtoMember(6)]
-        public IEA interchangeControlTrailer;
+        public IEACollection interchangeControlTrailer;
 
         [ProtoBuf.ProtoMember(12)]
-        public SE transactionSetTrailer;
+        public SECollection transactionSetTrailer;
 
         public x12Doc()
         {
@@ -34,96 +36,55 @@ namespace LawsonCS.Model.EDI.X12.v2.Base
     }
 
     [ProtoBuf.ProtoContract]
-    public class LoopList<T> : List<T> where T: LoopEntity
+    public abstract class LoopList
     {
-        public int LoopRepeatCapacity;
-        public LoopDefinition LoopDef;
-
         public x12Doc OwningX12Doc;
 
-        private LoopList() { }
+        protected List<LoopEntity> LoopEntities;
 
-        public LoopList(int capacity)
+        public LoopDefinition Definition;
+
+        public LoopList()
         {
-            LoopRepeatCapacity = capacity;
+            LoopEntities = new List<LoopEntity>();
         }
 
-        public virtual bool Validate() { throw new NotImplementedException(); } 
+        public abstract bool Validate();
+
+        public abstract void SetUpDefinition();
+        
     }
 
-    public class LoopEntity
+    public abstract class LoopEntity
     {
         public string LoopName;
 
-        public LoopList<LoopEntity> OwningList;
-
-        public virtual bool Validate() { throw new NotImplementedException(); }
-    }    
-
-    public class LoopDefinition { }
-
-    public class SegmentDefinition
-    {
-        public List<SegmentQualifiers> Qualifiers = new List<SegmentQualifiers>();
-        public SegmentUsageType Usage;
-        public int RepeatCount;
-        private List<Func<List<string>, bool>> _addlQualifierLogic = new List<Func<List<string>, bool>>();
-        private Type SegmentType;
-
-        public SegmentDefinition(SegmentUsageType use, int reps, Type segT)
-        {
-            Usage = use;
-            RepeatCount = reps;
-            SegmentType = segT;
-        }
-
-        public void AddQualifierLogic(Func<List<string>, bool> qualLogic)
-        {
-            _addlQualifierLogic.Add(qualLogic);
-        }
+        public LoopList SubLoopsList;
+        public List<baseSegmentCollection> Segments;
         
-        public bool IsQualified(List<string> segmentValues)
-        {
-            if (segmentValues[0] != SegmentType.Name) return false;
-
-            foreach (var segQualVals in Qualifiers)
-            {
-                if (!segQualVals.QualifierValues.Contains(segmentValues[segQualVals.FieldId]))
-                    return false;
-            }
-
-            if (_addlQualifierLogic == null || !_addlQualifierLogic.Any()) return true;
-
-            return _addlQualifierLogic.All(func => func(segmentValues));
-        }
-    }
-    public class SegmentQualifiers
-    {
-        public List<string> QualifierValues = new List<string>();
-        public int FieldId;
-
-        public SegmentQualifiers(int fieldId, params string[] parameters)
-        {
-            FieldId = fieldId;
-            QualifierValues = parameters.ToList();
-        }
+        public virtual bool Validate() { throw new NotImplementedException(); }
     }
 
-    public class baseSegmentCollection<T> where T:baseStdSegment
+    public class baseSegmentCollection
     {
         public string SegmentName;
-        public List<T> Instance = new List<T>();
+        public List<baseStdSegment> Segments;
+        public SegmentDefinition Definition;
+        public Type BaseType;
 
-        public SegmentDefinition SegmentDef;
+        public LoopEntity OwningLoop;
+
+        public baseSegmentCollection(Type baseType)
+        {
+            BaseType = baseType;
+        }
     }
 
     public abstract class baseStdSegment
     {
         public string _rawValue = null;
         public baseFieldValues _fieldValues;
-
-        public baseSegmentCollection<baseStdSegment> OwningCollection;
-
+        
         public baseStdSegment() { }
 
         public baseStdSegment(string value)
@@ -151,7 +112,7 @@ namespace LawsonCS.Model.EDI.X12.v2.Base
 
             for (int i = offset; i < offset + length; i++)
             {
-                if (buffer[i] == d)
+                if (buffer[i] == elementSep)
                 {
                     if (sb.Length == 0)
                         this.Add(null);
