@@ -7,18 +7,6 @@ using System.IO;
 
 namespace LawsonCS.Model.EDI.X12.v2
 {
-    public class IEACollection : baseSegmentCollection
-    {
-        public IEACollection() : base(typeof(IEA))
-        {
-        }
-
-        public IEA this[int index]
-        {
-            get { return Segments[index] as IEA; }
-            set { Segments[index] = value; }
-        }
-    }
     [ProtoBuf.ProtoContract]
     public class IEA : baseStdSegment
     {
@@ -42,19 +30,6 @@ namespace LawsonCS.Model.EDI.X12.v2
         }
     }
 
-    public class GSCollection : baseSegmentCollection
-    {
-        public GSCollection() : base(typeof(GS))
-        {
-            
-        }
-
-        public GS this[int index]
-        {
-            get { return Segments[index] as GS;}
-            set { Segments[index] = value; }
-        }
-    }
     [ProtoBuf.ProtoContract]
     public class GS : baseStdSegment
     {
@@ -90,19 +65,6 @@ namespace LawsonCS.Model.EDI.X12.v2
         }
     }
 
-    public class ISACollection : baseSegmentCollection
-    {
-        public ISACollection() : base(typeof(ISA))
-        {
-            
-        }
-
-        public ISA this[int index ]
-        {
-            get { return Segments[index] as ISA; }
-            set { Segments[index] = value;}
-        }
-    }
     [ProtoBuf.ProtoContract]
     public class ISA : baseStdSegment
     {
@@ -206,19 +168,6 @@ namespace LawsonCS.Model.EDI.X12.v2
         }
     }
 
-    public class GECollection : baseSegmentCollection
-    {
-        public GECollection() : base(typeof(GE))
-        {
-
-        }
-
-        public GE this[int index]
-        {
-            get { return Segments[index] as GE; }
-            set { Segments[index] = value; }
-        }
-    }
     [ProtoBuf.ProtoContract]
     public class GE : baseStdSegment
     {
@@ -244,19 +193,6 @@ namespace LawsonCS.Model.EDI.X12.v2
         }
     }
 
-    public class STCollection : baseSegmentCollection
-    {
-        public STCollection() : base(typeof(ST))
-        {
-
-        }
-
-        public ST this[int index]
-        {
-            get { return Segments[index] as ST; }
-            set { Segments[index] = value; }
-        }
-    }
     [ProtoBuf.ProtoContract]
     public class ST : baseStdSegment
     {
@@ -284,19 +220,6 @@ namespace LawsonCS.Model.EDI.X12.v2
         }
     }
 
-    public class BHTCollection : baseSegmentCollection
-    {
-        public BHTCollection() : base(typeof(BHT))
-        {
-
-        }
-
-        public BHT this[int index]
-        {
-            get { return Segments[index] as BHT; }
-            set { Segments[index] = value; }
-        }
-    }
     [ProtoBuf.ProtoContract]
     public class BHT : baseStdSegment
     {
@@ -338,21 +261,7 @@ namespace LawsonCS.Model.EDI.X12.v2
             return "";
         }
     }
-
-
-    public class SECollection : baseSegmentCollection
-    {
-        public SECollection() : base(typeof(SE))
-        {
-
-        }
-
-        public SE this[int index]
-        {
-            get { return Segments[index] as SE; }
-            set { Segments[index] = value; }
-        }
-    }
+    
     [ProtoBuf.ProtoContract]
     public class SE : baseStdSegment
     {
@@ -376,32 +285,19 @@ namespace LawsonCS.Model.EDI.X12.v2
         {
             return true;
         }
-    }
+    } 
 
-    public class HLCollection : baseSegmentCollection
-    {
-        public HLCollection() : base(typeof(HL))
-        {
-
-        }
-
-        public HL this[int index]
-        {
-            get { return Segments[index] as HL; }
-            set { Segments[index] = value; }
-        }
-    }
     [ProtoBuf.ProtoContract]
     public class HL : baseStdSegment
     {
         [ProtoBuf.ProtoMember(1)]
-        public string id;
+        public string HierarchIdNumber;
         [ProtoBuf.ProtoMember(2)]
-        public string parentId;
+        public string HierarchParentId;
         [ProtoBuf.ProtoMember(3)]
-        public string levelCode;
+        public string HierarchLevelCode;
         [ProtoBuf.ProtoMember(4)]
-        public string childCode;
+        public string HierarchChildCode;
 
         public HL()
         {
@@ -413,13 +309,13 @@ namespace LawsonCS.Model.EDI.X12.v2
 
         public HL(List<string> splitX12Line)
         {
-            childCode = splitX12Line[4];
+            HierarchChildCode = splitX12Line[4];
 
-            id = splitX12Line[1];
+            HierarchIdNumber = splitX12Line[1];
 
-            levelCode = splitX12Line[3];
+            HierarchChildCode = splitX12Line[3];
 
-            parentId = splitX12Line[2];
+            HierarchParentId = splitX12Line[2];
         }
 
         public override void Populate()
@@ -437,19 +333,6 @@ namespace LawsonCS.Model.EDI.X12.v2
         }
     }
 
-    public class NM1Collection : baseSegmentCollection
-    {
-        public NM1Collection() : base(typeof(NM1))
-        {
-
-        }
-
-        public NM1 this[int index]
-        {
-            get { return Segments[index] as NM1; }
-            set { Segments[index] = value; }
-        }
-    }
     [ProtoBuf.ProtoContract]
     public class NM1 : baseStdSegment
     {
@@ -535,6 +418,7 @@ namespace LawsonCS.Model.EDI.X12.v2
             return "";
         }
     }
+
     [ProtoBuf.ProtoContract]
     public class TRN : baseStdSegment
     {

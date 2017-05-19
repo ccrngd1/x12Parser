@@ -55,6 +55,77 @@ namespace LawsonCS.Model.EDI.X12.v2.Base
         
     }
 
+    public abstract class ILoopList<T> : LoopList, IList<T> where T : LoopEntity
+    {
+        public IEnumerator<T> GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public void Add(T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Clear()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Contains(T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Remove(T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Count { get; }
+        public bool IsReadOnly { get; }
+        public int IndexOf(T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Insert(int index, T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveAt(int index)
+        {
+            throw new NotImplementedException();
+        }
+
+        public T this[int index]
+        {
+            get { return base.LoopEntities[index] as T; }
+            set { LoopEntities[index] = value; }
+        }
+
+        public override bool Validate()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void SetUpDefinition()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public abstract class LoopEntity
     {
         public string LoopName;
@@ -67,10 +138,10 @@ namespace LawsonCS.Model.EDI.X12.v2.Base
 
     public class baseSegmentCollection
     {
-        public string SegmentName;
-        public List<baseStdSegment> Segments;
+        protected string SegmentName;
+        protected List<baseStdSegment> Segments;
         public SegmentDefinition Definition;
-        public Type BaseType;
+        protected Type BaseType;
 
         public LoopEntity OwningLoop;
 

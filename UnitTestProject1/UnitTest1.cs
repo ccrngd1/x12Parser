@@ -33,6 +33,33 @@ namespace UnitTestProject1
         {
             LawsonCS.Model.EDI.X12.Format277.v5010.v2.X12_277_5010 doc = new X12_277_5010();
         }
+
+        [TestMethod]
+        public void Check277HLLevel()
+        {
+
+            X12_277_5010 doc = new X12_277_5010();
+
+            Loop2000ACollection tempLoopCollection = doc.InformationSourceLevelLoop;
+
+            LoopList tempCastedLoopCollection = tempLoopCollection;
+            ILoopList<Loop2000A> temp = tempLoopCollection;
+
+            Loop2000A tempLoop = doc.InformationSourceLevelLoop[0];
+            LoopEntity tempCastedLoopEntity = tempLoop;
+
+            HLCollection tempSegmentCollection = doc.InformationSourceLevelLoop[0].InformationSourceLevel;
+            baseSegmentCollection tempCastedSegmentCollection = tempSegmentCollection;
+
+            HL tempHLSegment = tempSegmentCollection[0];
+            baseStdSegment tempCastedBaseSegment = tempHLSegment;
+
+            Console.WriteLine(tempHLSegment.HierarchChildCode);
+            Console.WriteLine(tempHLSegment.HierarchIdNumber);
+            Console.WriteLine(tempHLSegment.HierarchLevelCode);
+            Console.WriteLine(tempHLSegment.HierarchParentId);
+
+        }
     }
 }
 

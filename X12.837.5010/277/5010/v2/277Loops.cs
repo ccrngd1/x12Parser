@@ -5,7 +5,7 @@ using LawsonCS.Model.EDI.X12.v2;
 
 namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
 {
-    public class Loop2000ACollection : LoopList, IList<Loop2000A>
+    public class Loop2000ACollection : ILoopList<Loop2000A>
     {
         public Loop2000ACollection()
         {
@@ -19,84 +19,43 @@ namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
         public override void SetUpDefinition()
         {
             throw new System.NotImplementedException();
-        }
-
-        #region IList
-        public IEnumerator<Loop2000A> GetEnumerator()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        public void Add(Loop2000A item)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void Clear()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public bool Contains(Loop2000A item)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void CopyTo(Loop2000A[] array, int arrayIndex)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public bool Remove(Loop2000A item)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public int Count { get; }
-        public bool IsReadOnly { get; }
-        public int IndexOf(Loop2000A item)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void Insert(int index, Loop2000A item)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void RemoveAt(int index)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Loop2000A this[int index]
-        {
-            get { return LoopEntities[index] as Loop2000A; }
-            set { LoopEntities[index] = value; }
-        }
-        #endregion
+        } 
     }
 
     public class Loop2000A : LoopEntity
     {
-        public baseSegmentCollection InformationSourceLevel = new baseSegmentCollection(typeof(HL));
+        public HLCollection InformationSourceLevel = new HLCollection();
 
-        public Loop2100A loop2100a = new Loop2100A();
+        public Loop2100A loop2100a = new Loop2100A(); 
     }
 
-    public class Loop2100A : LoopList
+    public class Loop2100ACollection : LoopList
     {
-        public baseSegmentCollection PayerName;
-        public baseSegmentCollection PayerContactInformation;
+        public Loop2100ACollection() { }
+
+        public override bool Validate()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void SetUpDefinition()
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+
+    public class Loop2100A : LoopEntity
+    {
+        public NM1Collection InformationSourceName; 
 
         public Loop2100A()
         {
         }
+    }
+
+    public class Loop2200ACollection : LoopList
+    {
+        public Loop2200ACollection() { }
 
         public override bool Validate()
         {
@@ -109,11 +68,18 @@ namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
         }
     }
 
-    public class Loop2000B : LoopList
+    public class Loop2200A : LoopEntity
     {
-        public baseSegmentCollection InformationReceiverLeverl;
-        public Loop2100B loop2100b = new Loop2100B();
-        public Loop2200B loop2200b = new Loop2200B();
+        public TRNCollection TransmissionReceiptControlIdentifier;
+        public DTPCollection InformationSourceReceiptDate;
+        public DTPCollection InformationSourceProcessDate;
+    }
+
+
+    public class Loop2000BCollection : LoopList
+    {
+        public Loop2000BCollection() { }
+
         public override bool Validate()
         {
             throw new System.NotImplementedException();
@@ -125,9 +91,19 @@ namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
         }
     }
 
-    public class Loop2100B : LoopList
+    public class Loop2000B : LoopEntity
     {
-        public baseSegmentCollection InformationReceiverName;
+        public HLCollection InformationReceiverLevel;
+
+        public Loop2100BCollection InformationReceiverNameLoop = new Loop2100BCollection();
+        public Loop2200BCollection InformationReiverApplicationTraceIdentifierLoop = new Loop2200BCollection();
+    }
+
+
+    public class Loop2100BCollection : LoopList
+    {
+        public Loop2100BCollection() { }
+
         public override bool Validate()
         {
             throw new System.NotImplementedException();
@@ -139,10 +115,16 @@ namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
         }
     }
 
-    public class Loop2200B : LoopList
+    public class Loop2100B : LoopEntity
     {
-        public baseSegmentCollection InformationReceiverTraceIdentifier;
-        public baseSegmentCollection InformationReceriverStatusInformation;
+        public NM1Collection InformationReceiverName;
+    }
+
+
+    public class Loop2200BCollection : LoopList
+    {
+        public Loop2200BCollection() { }
+
         public override bool Validate()
         {
             throw new System.NotImplementedException();
@@ -154,11 +136,20 @@ namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
         }
     }
 
-    public class Loop2000C : LoopList
+    public class Loop2200B : LoopEntity
     {
-        public baseSegmentCollection ServiceProviderLevel;
-        public Loop2100C loop2100c = new Loop2100C();
-        public Loop2200C loop2200c = new Loop2200C();
+        public TRNCollection InformationReceiverApplicationTraceIdentifier;
+        public STCCollection InformationReceiverStatusInformation;
+        public QTYCollection TotalAcceptedQuantity;
+        public QTYCollection TotalRejectedQuantity;
+        public AMTCollection TotalAcceptedAmount;
+        public AMTCollection TotlaRejectedAmount;
+    }
+
+    public class Loop2000CCollection : LoopList
+    {
+        public Loop2000CCollection() { }
+
         public override bool Validate()
         {
             throw new System.NotImplementedException();
@@ -170,9 +161,17 @@ namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
         }
     }
 
-    public class Loop2100C : LoopList
+    public class Loop2000C : LoopEntity
     {
-        public baseSegmentCollection ProviderName;
+        public HLCollection BillingProviderOfServiceLevel;
+        public Loop2100CCollection loop2100c = new Loop2100CCollection();
+        public Loop2200CCollection loop2200c = new Loop2200CCollection();
+
+    }
+    public class Loop2100CCollection : LoopList
+    {
+        public Loop2100CCollection() { }
+
         public override bool Validate()
         {
             throw new System.NotImplementedException();
@@ -184,10 +183,15 @@ namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
         }
     }
 
-    public class Loop2200C : LoopList
+    public class Loop2100C : LoopEntity
     {
-        public baseSegmentCollection ProviderOfServiceTraceIdentifier;
-        public baseSegmentCollection ProviderStatusInformation;
+        public NM1Collection BillingProviderName; 
+    }
+
+    public class Loop2200CCollection : LoopList
+    {
+        public Loop2200CCollection() { }
+
         public override bool Validate()
         {
             throw new System.NotImplementedException();
@@ -197,15 +201,22 @@ namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
         {
             throw new System.NotImplementedException();
         }
-    } 
-    
-    public class Loop2000DE : LoopList
+    }
+    public class Loop2200C : LoopEntity
     {
-        public baseSegmentCollection SubDepLevel;
+        public TRNCollection ProviderOfServiceInformationTraceIdentifier;
+        public STCCollection BillingProviderStatusInformation;
+        public REFCollection ProviderSecondaryIdentifier;
+        public QTYCollection TotalAcceptedQuantity;
+        public QTYCollection TotalRejectedQuantity;
+        public AMTCollection TotalAcceptedAmount;
+        public AMTCollection TotlaRejectedAmount;
+    }
 
-        public Loop2100DE loop2100 = new Loop2100DE();
+    public class Loop2000DECollection : LoopList
+    {
+        public Loop2000DECollection() { }
 
-        public Loop2200DE loop2200 = new Loop2200DE();
         public override bool Validate()
         {
             throw new System.NotImplementedException();
@@ -217,9 +228,19 @@ namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
         }
     }
 
-    public class Loop2100DE : LoopList
+    public class Loop2000DE : LoopEntity
     {
-        public baseSegmentCollection SubDepName;
+        public HLCollection SubDepLevel;
+
+        public Loop2100DECollection loop2100DE = new Loop2100DECollection();
+
+        public Loop2200DECollection loop2200DE = new Loop2200DECollection(); 
+    }
+
+    public class Loop2100DECollection : LoopList
+    {
+        public Loop2100DECollection() { }
+
         public override bool Validate()
         {
             throw new System.NotImplementedException();
@@ -231,18 +252,15 @@ namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
         }
     }
 
-    public class Loop2200DE : LoopList
+    public class Loop2100DE : LoopEntity
     {
-        baseSegmentCollection ClaimStatusTrackingNumber;
-        baseSegmentCollection ClaimLevelStatusInformation;
-        baseSegmentCollection PayerClaimControlNumber;
-        baseSegmentCollection InstitutionalBillTypeIdentification;
-        baseSegmentCollection PatientControlNumber;
-        baseSegmentCollection PharmacyPrescriptionNumber;
-        baseSegmentCollection VoucherIdentifier;
-        baseSegmentCollection ClaimIdentificationNumberForClearinghousesAnd;
-        baseSegmentCollection ClaimServiceDate;
-        Loop2220DE Loop2220 = new Loop2220DE();
+        public NM1Collection SubDepName;
+    }
+
+    public class Loop2200DECollection : LoopList
+    {
+        public Loop2200DECollection() { }
+
         public override bool Validate()
         {
             throw new System.NotImplementedException();
@@ -253,13 +271,26 @@ namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
             throw new System.NotImplementedException();
         }
     }
-    
-    public class Loop2220DE : LoopList
+
+    public class Loop2200DE : LoopEntity
     {
-        public baseSegmentCollection ServiceLineInformation;
-        public baseSegmentCollection ServiceLineStatusInformation;
-        public baseSegmentCollection ServiceLineItemIdentification;
-        public baseSegmentCollection ServiceLineDate;
+        TRNCollection ClaimStatusTrackingNumber;
+        STCCollection ClaimLevelStatusInformation;
+        REFCollection PayerClaimControlNumber;
+        REFCollection InstitutionalBillTypeIdentification;
+        REFCollection PatientControlNumber;
+        REFCollection PharmacyPrescriptionNumber;
+        REFCollection VoucherIdentifier;
+        REFCollection ClaimIdentificationNumberForClearinghousesAnd;
+        DTPCollection ClaimServiceDate;
+
+        Loop2220DECollection Loop2220 = new Loop2220DECollection();
+    }
+
+    public class Loop2220DECollection : LoopList
+    {
+        public Loop2220DECollection() { }
+
         public override bool Validate()
         {
             throw new System.NotImplementedException();
@@ -269,6 +300,14 @@ namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
         {
             throw new System.NotImplementedException();
         }
+    }
+
+    public class Loop2220DE : LoopEntity
+    {
+        public SVCCollection ServiceLineInformation;
+        public STCCollection ServiceLineStatusInformation;
+        public REFCollection ServiceLineItemIdentification;
+        public DTPCollection ServiceLineDate; 
     }
 
 }
