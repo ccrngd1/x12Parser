@@ -6,45 +6,69 @@ using System.Text;
 
 namespace LawsonCS.Model.EDI.X12.v2.Base
 {
-
-    public class x12Doc
+    /// <summary>
+    /// This is the struct that will hold the characters that delimit particular sections of a x12 line
+    /// </summary>
+    public struct Delimiters
     {
+        public char Segment { get; set; }
+        public char Element { get; set; }
+        public char SubElement { get; set; }
+        public char Repetition { get; set; }
+        public string Line { get; set; }
+    }
 
-        public const string firstDelim = "*";
-        public const string secondDelim = "#";
+    /// <summary>
+    /// All versions of an X12 document will inheirt this base
+    /// It sets up the header segments that are globally required
+    /// It also houses the Delimiters that will be referenced during parsing of line segments and building
+    /// </summary>
+    public class X12Doc
+    {
+        private const string firstDelim = "*";
+        private const string secondDelim = "#";
+
+        public Delimiters DocDelimiters = new Delimiters();
 
         [ProtoBuf.ProtoMember(1)]
-        public STCollection transactionSetHeader;
+        public StCollection TransactionSetHeader;
         [ProtoBuf.ProtoMember(2)]
-        public BHTCollection beginHierarchicalTransaction;
+        public BhtCollection BeginHierarchicalTransaction;
 
         [ProtoBuf.ProtoMember(3)]
-        public GECollection functionalGroupTrailer;
+        public GeCollection FunctionalGroupTrailer;
         [ProtoBuf.ProtoMember(4)]
-        public ISACollection interchagneControlHeader;
+        public IsaCollection InterchagneControlHeader;
         [ProtoBuf.ProtoMember(5)]
-        public GSCollection functionGroupHeader;
+        public GsCollection FunctionGroupHeader;
         [ProtoBuf.ProtoMember(6)]
-        public IEACollection interchangeControlTrailer;
+        public IeaCollection InterchangeControlTrailer;
 
         [ProtoBuf.ProtoMember(12)]
-        public SECollection transactionSetTrailer;
+        public SeCollection TransactionSetTrailer;
 
-        public x12Doc()
+        public X12Doc()
         {
         }
     }
 
+    /// <summary>
+    /// This class wraps the collection of loops, of the same type
+    /// Intent is that Individual Loops would inherit from this to create a Loop####XXCollection class
+    /// IE Loop2000ACollection
+    /// The LoopEntities would then be of type Loop2000A, but it will up to the implementing class to cast this back
+    /// This could ahve been made somewhat simpler if this was LoopCollection &lt; T &gt; but that would eliminate the ability to treat all loops as single type "/>
+    /// </summary>
     [ProtoBuf.ProtoContract]
-    public abstract class LoopList
+    public abstract class LoopCollection
     {
-        public x12Doc OwningX12Doc;
+        public X12Doc OwningX12Doc;
 
         protected List<LoopEntity> LoopEntities;
 
         public LoopDefinition Definition;
 
-        public LoopList()
+        public LoopCollection()
         {
             LoopEntities = new List<LoopEntity>();
         }
@@ -55,7 +79,15 @@ namespace LawsonCS.Model.EDI.X12.v2.Base
         
     }
 
-    public abstract class ILoopList<T> : LoopList, IList<T> where T : LoopEntity
+    /// <summary>
+    /// Since LoopCollection had to be completely generic, this class allows for typing it dynamically
+    /// While still retaining the ability to group all loops as a single generic type of LoopCollection
+    /// Intent is that Individual Loops would inherit from this to create a Loop####XXCollection class
+    /// IE Loop2000ACollection
+    /// The LoopEntities would then be of type Loop2000A, but it will up to the implementing class to cast this back 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public abstract class LoopCollection<T> : LoopCollection, IList<T> where T : LoopEntity
     {
         public IEnumerator<T> GetEnumerator()
         {
@@ -126,17 +158,28 @@ namespace LawsonCS.Model.EDI.X12.v2.Base
         }
     }
 
+    /// <summary>
+    /// The single Loop object that a LoopCollection/LoopCollection is comprised of
+    /// There is very little additional data stored here, and is meant only for the Definition/Parsing overload to come later
+    /// </summary>
     public abstract class LoopEntity
     {
         public string LoopName;
 
-        public LoopList SubLoopsList;
-        public List<baseSegmentCollection> Segments;
+        //public LoopCollection SubLoopsList;
+        public List<LoopCollection> SubLoopLists;
+
+        public List<SegmentCollection> Segments;
         
         public virtual bool Validate() { throw new NotImplementedException(); }
     }
 
-    public class baseSegmentCollection
+    /// <summary>
+    /// A single segment can be repeated, so that single segment needs to be wrapped in a List construct
+    /// This will contain our repeats of a single segment
+    /// Nmae/Type are elevated to allow for creation and addition of the right type directly into the Segments List
+    /// </summary>
+    public class SegmentCollection
     {
         protected string SegmentName;
         protected List<baseStdSegment> Segments;
@@ -145,12 +188,18 @@ namespace LawsonCS.Model.EDI.X12.v2.Base
 
         public LoopEntity OwningLoop;
 
-        public baseSegmentCollection(Type baseType)
+        public SegmentCollection(Type baseType)
         {
             BaseType = baseType;
         }
     }
 
+    /// <summary>
+    /// this is the segment at its lowest, typed level
+    /// it is fed by the baseFieldValues that represent the actual line of text from an X12 document
+    /// when instantiating and populating a segment programatically, this baseFieldValue will not be essential
+    /// but may be overriden to store data back into the array to allow for building
+    /// </summary>
     public abstract class baseStdSegment
     {
         public string _rawValue = null;
@@ -168,6 +217,10 @@ namespace LawsonCS.Model.EDI.X12.v2.Base
         public abstract bool Validate();
     }
 
+    /// <summary>
+    /// this is the line of text from an x12 document
+    /// this is the lowest version of the x12 that exists in this framework
+    /// </summary>
     public class baseFieldValues : List<string>
     {
         public string _rawValue;

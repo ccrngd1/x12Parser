@@ -15,10 +15,10 @@ namespace UnitTestProject1
         [TestMethod]
         public void TestMethod1()
         {
-            baseSegmentCollection testNM1 = new baseSegmentCollection(typeof(NM1));
-            baseSegmentCollection testPER = new baseSegmentCollection(typeof(PER));
+            SegmentCollection testNM1 = new SegmentCollection(typeof(NM1));
+            SegmentCollection testPER = new SegmentCollection(typeof(PER));
 
-            List<baseSegmentCollection> testColl =new List<baseSegmentCollection>();
+            List<SegmentCollection> testColl =new List<SegmentCollection>();
 
             //testColl.Add(testNM1);
 
@@ -42,14 +42,14 @@ namespace UnitTestProject1
 
             Loop2000ACollection tempLoopCollection = doc.InformationSourceLevelLoop;
 
-            LoopList tempCastedLoopCollection = tempLoopCollection;
-            ILoopList<Loop2000A> temp = tempLoopCollection;
+            LoopCollection tempCastedLoopCollection = tempLoopCollection;
+            LoopCollection<Loop2000A> temp = tempLoopCollection;
 
             Loop2000A tempLoop = doc.InformationSourceLevelLoop[0];
             LoopEntity tempCastedLoopEntity = tempLoop;
 
-            HLCollection tempSegmentCollection = doc.InformationSourceLevelLoop[0].InformationSourceLevel;
-            baseSegmentCollection tempCastedSegmentCollection = tempSegmentCollection;
+            HlCollection tempSegmentCollection = doc.InformationSourceLevelLoop[0].InformationSourceLevel;
+            SegmentCollection tempCastedSegmentCollection = tempSegmentCollection;
 
             HL tempHLSegment = tempSegmentCollection[0];
             baseStdSegment tempCastedBaseSegment = tempHLSegment;

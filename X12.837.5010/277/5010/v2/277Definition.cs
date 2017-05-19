@@ -3,7 +3,7 @@ using LawsonCS.Model.EDI.X12.v2;
 
 namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
 {
-    public class X12_277_5010:x12Doc
+    public class X12_277_5010:X12Doc
     {
         public Loop2000ACollection InformationSourceLevelLoop = new Loop2000ACollection();
         public Loop2000B loop2000b = new Loop2000B();
@@ -13,34 +13,34 @@ namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
 
         public X12_277_5010()
         {
-            var isaDef = new SegmentDefinition(SegmentUsageType.Required, 1, typeof(ISA), interchagneControlHeader);
+            var isaDef = new SegmentDefinition(SegmentUsageType.Required, 1, typeof(ISA), InterchagneControlHeader);
             isaDef.Qualifiers.Add(new SegmentQualifiers(1, new[] { "00", "03" }));
 
-            var stDef = new SegmentDefinition(SegmentUsageType.Required, 1, typeof(ST), transactionSetHeader);
+            var stDef = new SegmentDefinition(SegmentUsageType.Required, 1, typeof(ST), TransactionSetHeader);
             stDef.Qualifiers.Add(new SegmentQualifiers(1, new[] { "277" }));
 
-            var ieaDef = new SegmentDefinition(SegmentUsageType.Required, 1, typeof(IEA), interchangeControlTrailer);
+            var ieaDef = new SegmentDefinition(SegmentUsageType.Required, 1, typeof(IEA), InterchangeControlTrailer);
 
-            var gsDef = new SegmentDefinition(SegmentUsageType.Required, 1, typeof(GS), functionGroupHeader);
+            var gsDef = new SegmentDefinition(SegmentUsageType.Required, 1, typeof(GS), FunctionGroupHeader);
             gsDef.Qualifiers.Add(new SegmentQualifiers(1, new[] { "X" }));
 
-            var geDef = new SegmentDefinition(SegmentUsageType.Required, 1, typeof(GE), functionalGroupTrailer);
+            var geDef = new SegmentDefinition(SegmentUsageType.Required, 1, typeof(GE), FunctionalGroupTrailer);
 
-            var bhtDef = new SegmentDefinition(SegmentUsageType.Required, 1, typeof(BHT), beginHierarchicalTransaction);
+            var bhtDef = new SegmentDefinition(SegmentUsageType.Required, 1, typeof(BHT), BeginHierarchicalTransaction);
 
-            var seDef = new SegmentDefinition(SegmentUsageType.Required, 1, typeof(SE), transactionSetTrailer);
+            var seDef = new SegmentDefinition(SegmentUsageType.Required, 1, typeof(SE), TransactionSetTrailer);
 
-            interchagneControlHeader.Definition = isaDef;
-            transactionSetHeader.Definition = stDef;
-            interchangeControlTrailer.Definition = ieaDef;
-            functionGroupHeader.Definition = gsDef;
-            functionalGroupTrailer.Definition = geDef;
-            beginHierarchicalTransaction.Definition = bhtDef;
-            transactionSetTrailer.Definition = seDef;
+            InterchagneControlHeader.Definition = isaDef;
+            TransactionSetHeader.Definition = stDef;
+            InterchangeControlTrailer.Definition = ieaDef;
+            FunctionGroupHeader.Definition = gsDef;
+            FunctionalGroupTrailer.Definition = geDef;
+            BeginHierarchicalTransaction.Definition = bhtDef;
+            TransactionSetTrailer.Definition = seDef;
 
             InformationSourceLevelLoop.Definition = new LoopDefinition(999,null);
 
-            HLCollection t = this.InformationSourceLevelLoop[0].InformationSourceLevel;
+            HlCollection t = this.InformationSourceLevelLoop[0].InformationSourceLevel;
 
             HL tt = this.InformationSourceLevelLoop[0].InformationSourceLevel[0];
 

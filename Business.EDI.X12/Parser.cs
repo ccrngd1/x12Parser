@@ -7,7 +7,7 @@ namespace LawsonCS.Business.EDI.X12.v2
     {
         public Parser() { }
 
-        public void ParseFile(ref x12Doc doc, string fullFilePath)
+        public void ParseFile(ref X12Doc doc, string fullFilePath)
         {
             var sStream = new SegmentStream(File.OpenRead(fullFilePath));
 

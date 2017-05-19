@@ -56,14 +56,14 @@ namespace LawsonCS.Model.EDI.X12.v2.Base
         public int RepeatCount;
         private List<Func<List<string>, bool>> _addlQualifierLogic = new List<Func<List<string>, bool>>();
         private Type SegmentType;
-        private baseSegmentCollection OwningCollection;
+        private SegmentCollection _owningCollection;
 
-        public SegmentDefinition(SegmentUsageType use, int reps, Type segT, baseSegmentCollection owningCollection)
+        public SegmentDefinition(SegmentUsageType use, int reps, Type segT, SegmentCollection owningCollection)
         {
             Usage = use;
             RepeatCount = reps;
             SegmentType = segT;
-            OwningCollection = owningCollection;
+            _owningCollection = owningCollection;
         }
 
         public void AddQualifierLogic(Func<List<string>, bool> qualLogic)
