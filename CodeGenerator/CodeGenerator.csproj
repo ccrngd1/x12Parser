@@ -43,7 +43,7 @@
     <Compile Include="X837_V1_Generation.cs" />
     <Compile Include="SegmentGeneration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="X837_V2_Generation.cs" />
+    <Compile Include="V2_Generation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -34,18 +34,20 @@ namespace Model.EDI.X12.v2.Base
     {
         public int RepeatCount;
 
-        public string ParentLoopName;
+        public LoopCollection ParentLoopCollection;
+        public LoopEntity ParentLoop;
+
+        public LoopCollection OwningLoopCollection;
 
         public List<LoopDefinition> SubLoops;
         public List<SegmentDefinition> LoopSegments;
 
-        public LoopDefinition(int repCount, string parentLoop)
+        public LoopDefinition(int repCount)
         {
             SubLoops = new List<LoopDefinition>();
             LoopSegments = new List<SegmentDefinition>();
 
-            RepeatCount = repCount;
-            ParentLoopName = parentLoop;
+            RepeatCount = repCount; 
         }
     }
 
@@ -57,6 +59,8 @@ namespace Model.EDI.X12.v2.Base
         private List<Func<List<string>, bool>> _addlQualifierLogic = new List<Func<List<string>, bool>>();
         private Type SegmentType;
         private SegmentCollection _owningCollection;
+        public Dictionary<int, bool> FieldRequirements = new Dictionary<int, bool>();
+        public List<string> SyntaxRuleList = new List<string>();
 
         public SegmentDefinition(SegmentUsageType use, int reps, Type segT, SegmentCollection owningCollection)
         {

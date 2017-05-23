@@ -8,7 +8,7 @@ namespace UnitTestProject1
     public class CodeGenerationTesting
     {
         [TestMethod]
-        public void TestMethod1()
+        public void GenerateSegmentsV2()
         {
             V2_Generation_SegmentCollection segCollectionGenny = new V2_Generation_SegmentCollection();
 
@@ -22,5 +22,15 @@ namespace UnitTestProject1
                 fs.Write(s);
             }
         }
+
+        [TestMethod]
+        public void GenerateRawLoopsV2( )
+        {
+            var gen = new X12_V2_Generation();
+
+            X12_V2_Generation.CreateLoops(@"C:\Users\nick.lawson\Google Drive\Documents\projects\x12Parser\X12.837.5010\837 Loops.txt",
+                @"C:\Users\nick.lawson\Google Drive\Documents\projects\x12Parser\CodeGenerator\RAWGeneratedFiles\",
+                "Model.EDI.X12.Format837.v5010.Prof.v2");
+        } 
     }
 }

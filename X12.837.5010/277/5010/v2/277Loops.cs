@@ -7,6 +7,10 @@ namespace Model.EDI.X12.Format277.v5010.v2
     {
         public Loop2000ACollection()
         {
+            Definition = new LoopDefinition(999);
+            Definition.ParentLoop = null;
+            Definition.ParentLoopCollection = null;
+            //Definition.SubLoops
         }
         
         public override bool Validate()

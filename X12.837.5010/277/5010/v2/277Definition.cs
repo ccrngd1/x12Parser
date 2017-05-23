@@ -38,7 +38,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             BeginHierarchicalTransaction.Definition = bhtDef;
             TransactionSetTrailer.Definition = seDef;
 
-            InformationSourceLevelLoop.Definition = new LoopDefinition(999,null);
+            InformationSourceLevelLoop.Definition = new LoopDefinition(999);
 
             HlCollection t = this.InformationSourceLevelLoop[0].InformationSourceLevel;
 

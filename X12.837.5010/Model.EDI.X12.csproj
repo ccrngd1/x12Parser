@@ -69,7 +69,7 @@
     <Compile Include="277\5010\v2\277Loops.cs" />
     <Compile Include="837\5010\Prof\v1\837Loops.cs" />
     <Compile Include="837\5010\Prof\v2\837Definition.cs" />
-    <Compile Include="837\5010\Prof\v2\Loops.cs" />
+    <Compile Include="837\5010\Prof\v2\837Loops.cs" />
     <Compile Include="Base\v1\BaseTypesV1.cs" />
     <Compile Include="Base\Constants.cs" />
     <Compile Include="Base\v1\SegmentsV1.cs" />

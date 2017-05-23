@@ -73,6 +73,19 @@ namespace Model.EDI.X12.v2.Base
             LoopEntities = new List<LoopEntity>();
         }
 
+        public LoopCollection(LoopCollection owningLoopCollection, LoopCollection parentLoopCollection,
+            LoopEntity parentLoopEntity, int reps):this()
+        {
+            Definition = new LoopDefinition(reps)
+            {
+                ParentLoop = parentLoopEntity,
+                ParentLoopCollection = parentLoopCollection,
+                OwningLoopCollection = owningLoopCollection,
+                SubLoops = null,
+                LoopSegments = null
+            };
+        }
+
         public abstract bool Validate();
 
         public abstract void SetUpDefinition();
