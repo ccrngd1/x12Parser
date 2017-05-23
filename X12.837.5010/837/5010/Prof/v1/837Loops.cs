@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using LawsonCS.Model.EDI.X12.v1;
-using LawsonCS.Model.EDI.X12.v1.Base;
+using Model.EDI.X12.v1;
+using Model.EDI.X12.v1.Base;
 
-namespace LawsonCS.Model.EDI.X12.Format837.v5010.Prof.v1
+namespace Model.EDI.X12.Format837.v5010.Prof.v1
 {
 
     public class X12_837P_5010NL : X12DocumentBase

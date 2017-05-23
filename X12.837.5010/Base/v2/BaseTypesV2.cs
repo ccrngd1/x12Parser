@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LawsonCS.Model.EDI.X12.v2.Base
+namespace Model.EDI.X12.v2.Base
 {
     /// <summary>
     /// This is the struct that will hold the characters that delimit particular sections of a x12 line

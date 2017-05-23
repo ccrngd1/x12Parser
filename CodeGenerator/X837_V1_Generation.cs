@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 
-namespace LawsonCS.Model.EDI.X12.UnitTest.CodeGeneration
+namespace Model.EDI.X12.UnitTest.CodeGeneration
 {
     class LoopsCSVHolder
     {

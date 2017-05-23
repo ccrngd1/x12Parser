@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LawsonCS.Model.EDI.X12.v1;
-using LawsonCS.Model.EDI.X12.v1.Base;
+using Model.EDI.X12.v1;
+using Model.EDI.X12.v1.Base;
 
-namespace LawsonCS.Model.EDI.X12.Format277.v5010.v1
+namespace Model.EDI.X12.Format277.v5010.v1
 {
     [ProtoBuf.ProtoContract]
     public class X12_277_5010

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using LawsonCS.Model.EDI.X12.v2.Base;
+using Model.EDI.X12.v2.Base;
 using System.IO;
 
-namespace LawsonCS.Model.EDI.X12.v2
+namespace Model.EDI.X12.v2
 {
     [ProtoBuf.ProtoContract]
     public class IEA : baseStdSegment

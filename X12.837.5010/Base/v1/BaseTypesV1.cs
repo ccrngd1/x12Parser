@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using LawsonCS.Model.EDI.X12.v1;
+using Model.EDI.X12.v1;
 
-namespace LawsonCS.Model.EDI.X12.v1.Base
+namespace Model.EDI.X12.v1.Base
 {
     [ProtoBuf.ProtoContract]
     public class LoopList<T> : List<T>

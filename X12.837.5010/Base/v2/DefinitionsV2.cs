@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LawsonCS.Model.EDI.X12.v2.Base
+namespace Model.EDI.X12.v2.Base
 {
     public class X12DocDefinition
     {

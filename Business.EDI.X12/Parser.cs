@@ -1,7 +1,7 @@
 ﻿using System.IO;
-using LawsonCS.Model.EDI.X12.v2.Base;
+using Model.EDI.X12.v2.Base;
 
-namespace LawsonCS.Business.EDI.X12.v2
+namespace Business.EDI.X12.v2
 {
     public class Parser
     {

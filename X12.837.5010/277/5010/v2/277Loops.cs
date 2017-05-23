@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using LawsonCS.Model.EDI.X12.v2.Base;
-using LawsonCS.Model.EDI.X12.v2;
+﻿using Model.EDI.X12.v2.Base;
+using Model.EDI.X12.v2;
 
-namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
+namespace Model.EDI.X12.Format277.v5010.v2
 {
     public class Loop2000ACollection : LoopCollection<Loop2000A>
     {
@@ -26,10 +24,10 @@ namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
     {
         public HlCollection InformationSourceLevel = new HlCollection();
 
-        public Loop2100A loop2100a = new Loop2100A(); 
+        public Loop2100ACollection loop2100a = new Loop2100ACollection(); 
     }
 
-    public class Loop2100ACollection : LoopCollection
+    public class Loop2100ACollection : LoopCollection<Loop2100A>
     {
         public Loop2100ACollection() { }
 
@@ -53,7 +51,7 @@ namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
         }
     }
 
-    public class Loop2200ACollection : LoopCollection
+    public class Loop2200ACollection : LoopCollection<Loop2200A>
     {
         public Loop2200ACollection() { }
 
@@ -76,7 +74,7 @@ namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
     }
 
 
-    public class Loop2000BCollection : LoopCollection
+    public class Loop2000BCollection : LoopCollection<Loop2000B>
     {
         public Loop2000BCollection() { }
 
@@ -100,7 +98,7 @@ namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
     }
 
 
-    public class Loop2100BCollection : LoopCollection
+    public class Loop2100BCollection : LoopCollection<Loop2100B>
     {
         public Loop2100BCollection() { }
 
@@ -121,7 +119,7 @@ namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
     }
 
 
-    public class Loop2200BCollection : LoopCollection
+    public class Loop2200BCollection : LoopCollection<Loop2200B>
     {
         public Loop2200BCollection() { }
 
@@ -146,7 +144,7 @@ namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
         public AmtCollection TotlaRejectedAmount;
     }
 
-    public class Loop2000CCollection : LoopCollection
+    public class Loop2000CCollection : LoopCollection<Loop2000C>
     {
         public Loop2000CCollection() { }
 
@@ -168,7 +166,7 @@ namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
         public Loop2200CCollection loop2200c = new Loop2200CCollection();
 
     }
-    public class Loop2100CCollection : LoopCollection
+    public class Loop2100CCollection : LoopCollection<Loop2100C>
     {
         public Loop2100CCollection() { }
 
@@ -188,7 +186,7 @@ namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
         public Nm1Collection BillingProviderName; 
     }
 
-    public class Loop2200CCollection : LoopCollection
+    public class Loop2200CCollection : LoopCollection<Loop2200C>
     {
         public Loop2200CCollection() { }
 
@@ -213,7 +211,7 @@ namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
         public AmtCollection TotlaRejectedAmount;
     }
 
-    public class Loop2000DECollection : LoopCollection
+    public class Loop2000DECollection : LoopCollection<Loop2000DE>
     {
         public Loop2000DECollection() { }
 
@@ -237,7 +235,7 @@ namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
         public Loop2200DECollection loop2200DE = new Loop2200DECollection(); 
     }
 
-    public class Loop2100DECollection : LoopCollection
+    public class Loop2100DECollection : LoopCollection<Loop2100DE>
     {
         public Loop2100DECollection() { }
 
@@ -257,7 +255,7 @@ namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
         public Nm1Collection SubDepName;
     }
 
-    public class Loop2200DECollection : LoopCollection
+    public class Loop2200DECollection : LoopCollection<Loop2200DE>
     {
         public Loop2200DECollection() { }
 
@@ -287,7 +285,7 @@ namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
         Loop2220DECollection Loop2220 = new Loop2220DECollection();
     }
 
-    public class Loop2220DECollection : LoopCollection
+    public class Loop2220DECollection : LoopCollection<Loop2220DE>
     {
         public Loop2220DECollection() { }
 

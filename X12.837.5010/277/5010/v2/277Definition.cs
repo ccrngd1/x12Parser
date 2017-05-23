@@ -1,15 +1,15 @@
-﻿using LawsonCS.Model.EDI.X12.v2.Base;
-using LawsonCS.Model.EDI.X12.v2;
+﻿using Model.EDI.X12.v2.Base;
+using Model.EDI.X12.v2;
 
-namespace LawsonCS.Model.EDI.X12.Format277.v5010.v2
+namespace Model.EDI.X12.Format277.v5010.v2
 {
     public class X12_277_5010:X12Doc
     {
         public Loop2000ACollection InformationSourceLevelLoop = new Loop2000ACollection();
-        public Loop2000B loop2000b = new Loop2000B();
-        public Loop2000C loop2000c = new Loop2000C();
-        public Loop2000DE loop2000d = new Loop2000DE();
-        public Loop2000DE loop2000e = new Loop2000DE();
+        public Loop2000BCollection InformationReiverDetail = new Loop2000BCollection();
+        public Loop2000CCollection ServiceProviderDetail = new Loop2000CCollection();
+        public Loop2000DECollection SubscriberDetail = new Loop2000DECollection();
+        public Loop2000DECollection DependentDetail = new Loop2000DECollection();
 
         public X12_277_5010()
         {

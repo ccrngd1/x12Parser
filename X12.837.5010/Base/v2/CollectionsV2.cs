@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LawsonCS.Model.EDI.X12.v2.Base;
+using Model.EDI.X12.v2.Base;
 
-namespace LawsonCS.Model.EDI.X12.v2
+namespace Model.EDI.X12.v2
 {
     public class IeaCollection : SegmentCollection { public IeaCollection() : base(typeof(IEA)) { } public IEA this[int index] { get { return Segments[index] as IEA; } set { Segments[index] = value; } } }
     public class GsCollection : SegmentCollection { public GsCollection() : base(typeof(GS)) { } public GS this[int index] { get { return Segments[index] as GS; } set { Segments[index] = value; } } }
