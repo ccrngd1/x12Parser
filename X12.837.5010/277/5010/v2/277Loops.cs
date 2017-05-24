@@ -3,7 +3,7 @@ using Model.EDI.X12.v2;
 
 namespace Model.EDI.X12.Format277.v5010.v2
 {
-    public class Loop2000ACollection : LoopCollection<Loop2000A>
+    public partial class Loop2000ACollection : LoopCollection<Loop2000A>
     {
         public Loop2000ACollection()
         {
@@ -24,14 +24,14 @@ namespace Model.EDI.X12.Format277.v5010.v2
         } 
     }
 
-    public class Loop2000A : LoopEntity
+    public partial class Loop2000A : LoopEntity
     {
         public HlCollection InformationSourceLevel = new HlCollection();
 
         public Loop2100ACollection loop2100a = new Loop2100ACollection(); 
     }
 
-    public class Loop2100ACollection : LoopCollection<Loop2100A>
+    public partial class Loop2100ACollection : LoopCollection<Loop2100A>
     {
         public Loop2100ACollection() { }
 
@@ -46,7 +46,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
         }
     }
 
-    public class Loop2100A : LoopEntity
+    public partial class Loop2100A : LoopEntity
     {
         public Nm1Collection InformationSourceName; 
 
@@ -55,7 +55,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
         }
     }
 
-    public class Loop2200ACollection : LoopCollection<Loop2200A>
+    public partial class Loop2200ACollection : LoopCollection<Loop2200A>
     {
         public Loop2200ACollection() { }
 
@@ -70,7 +70,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
         }
     }
 
-    public class Loop2200A : LoopEntity
+    public partial class Loop2200A : LoopEntity
     {
         public TrnCollection TransmissionReceiptControlIdentifier;
         public DtpCollection InformationSourceReceiptDate;
@@ -78,7 +78,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
     }
 
 
-    public class Loop2000BCollection : LoopCollection<Loop2000B>
+    public partial class Loop2000BCollection : LoopCollection<Loop2000B>
     {
         public Loop2000BCollection() { }
 
@@ -93,7 +93,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
         }
     }
 
-    public class Loop2000B : LoopEntity
+    public partial class Loop2000B : LoopEntity
     {
         public HlCollection InformationReceiverLevel;
 
@@ -102,7 +102,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
     }
 
 
-    public class Loop2100BCollection : LoopCollection<Loop2100B>
+    public partial class Loop2100BCollection : LoopCollection<Loop2100B>
     {
         public Loop2100BCollection() { }
 
@@ -117,13 +117,13 @@ namespace Model.EDI.X12.Format277.v5010.v2
         }
     }
 
-    public class Loop2100B : LoopEntity
+    public partial class Loop2100B : LoopEntity
     {
         public Nm1Collection InformationReceiverName;
     }
 
 
-    public class Loop2200BCollection : LoopCollection<Loop2200B>
+    public partial class Loop2200BCollection : LoopCollection<Loop2200B>
     {
         public Loop2200BCollection() { }
 
@@ -138,7 +138,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
         }
     }
 
-    public class Loop2200B : LoopEntity
+    public partial class Loop2200B : LoopEntity
     {
         public TrnCollection InformationReceiverApplicationTraceIdentifier;
         public StcCollection InformationReceiverStatusInformation;
@@ -148,7 +148,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
         public AmtCollection TotlaRejectedAmount;
     }
 
-    public class Loop2000CCollection : LoopCollection<Loop2000C>
+    public partial class Loop2000CCollection : LoopCollection<Loop2000C>
     {
         public Loop2000CCollection() { }
 
@@ -163,14 +163,14 @@ namespace Model.EDI.X12.Format277.v5010.v2
         }
     }
 
-    public class Loop2000C : LoopEntity
+    public partial class Loop2000C : LoopEntity
     {
         public HlCollection BillingProviderOfServiceLevel;
         public Loop2100CCollection loop2100c = new Loop2100CCollection();
         public Loop2200CCollection loop2200c = new Loop2200CCollection();
 
     }
-    public class Loop2100CCollection : LoopCollection<Loop2100C>
+    public partial class Loop2100CCollection : LoopCollection<Loop2100C>
     {
         public Loop2100CCollection() { }
 
@@ -185,12 +185,12 @@ namespace Model.EDI.X12.Format277.v5010.v2
         }
     }
 
-    public class Loop2100C : LoopEntity
+    public partial class Loop2100C : LoopEntity
     {
         public Nm1Collection BillingProviderName; 
     }
 
-    public class Loop2200CCollection : LoopCollection<Loop2200C>
+    public partial class Loop2200CCollection : LoopCollection<Loop2200C>
     {
         public Loop2200CCollection() { }
 
@@ -204,7 +204,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             throw new System.NotImplementedException();
         }
     }
-    public class Loop2200C : LoopEntity
+    public partial class Loop2200C : LoopEntity
     {
         public TrnCollection ProviderOfServiceInformationTraceIdentifier;
         public StcCollection BillingProviderStatusInformation;
@@ -215,7 +215,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
         public AmtCollection TotlaRejectedAmount;
     }
 
-    public class Loop2000DECollection : LoopCollection<Loop2000DE>
+    public partial class Loop2000DECollection : LoopCollection<Loop2000DE>
     {
         public Loop2000DECollection() { }
 
@@ -230,7 +230,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
         }
     }
 
-    public class Loop2000DE : LoopEntity
+    public partial class Loop2000DE : LoopEntity
     {
         public HlCollection SubDepLevel;
 
@@ -239,7 +239,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
         public Loop2200DECollection loop2200DE = new Loop2200DECollection(); 
     }
 
-    public class Loop2100DECollection : LoopCollection<Loop2100DE>
+    public partial class Loop2100DECollection : LoopCollection<Loop2100DE>
     {
         public Loop2100DECollection() { }
 
@@ -254,12 +254,12 @@ namespace Model.EDI.X12.Format277.v5010.v2
         }
     }
 
-    public class Loop2100DE : LoopEntity
+    public partial class Loop2100DE : LoopEntity
     {
         public Nm1Collection SubDepName;
     }
 
-    public class Loop2200DECollection : LoopCollection<Loop2200DE>
+    public partial class Loop2200DECollection : LoopCollection<Loop2200DE>
     {
         public Loop2200DECollection() { }
 
@@ -274,7 +274,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
         }
     }
 
-    public class Loop2200DE : LoopEntity
+    public partial class Loop2200DE : LoopEntity
     {
         TrnCollection ClaimStatusTrackingNumber;
         StcCollection ClaimLevelStatusInformation;
@@ -289,7 +289,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
         Loop2220DECollection Loop2220 = new Loop2220DECollection();
     }
 
-    public class Loop2220DECollection : LoopCollection<Loop2220DE>
+    public partial class Loop2220DECollection : LoopCollection<Loop2220DE>
     {
         public Loop2220DECollection() { }
 
@@ -304,7 +304,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
         }
     }
 
-    public class Loop2220DE : LoopEntity
+    public partial class Loop2220DE : LoopEntity
     {
         public SvcCollection ServiceLineInformation;
         public StcCollection ServiceLineStatusInformation;

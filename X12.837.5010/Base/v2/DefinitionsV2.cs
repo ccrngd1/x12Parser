@@ -59,7 +59,8 @@ namespace Model.EDI.X12.v2.Base
         private List<Func<List<string>, bool>> _addlQualifierLogic = new List<Func<List<string>, bool>>();
         private Type SegmentType;
         private SegmentCollection _owningCollection;
-        public Dictionary<int, bool> FieldRequirements = new Dictionary<int, bool>();
+        public List<int> RequiredFields = new List<int>();
+        public List<int> UnusedFields = new List<int>();
         public List<string> SyntaxRuleList = new List<string>();
 
         public SegmentDefinition(SegmentUsageType use, int reps, Type segT, SegmentCollection owningCollection)

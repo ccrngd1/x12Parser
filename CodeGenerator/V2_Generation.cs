@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CodeGenerator
 {
-    class LoopsCSVHolder
+    public class LoopsCSVHolder
     {
         public string LoopName;
         public string FieldName;
@@ -14,7 +14,6 @@ namespace CodeGenerator
         public string Repeat;
         public string Qualifiers;
         public string Required;
-        public string RequiredGroupSegs;
         public string RequiredFields;
         public string UnusedFields;
         public string RequiredGroupFields;
@@ -22,14 +21,8 @@ namespace CodeGenerator
 
     public class X12_V2_Generation
     {
-        public static void CreateLoops(string sourceFile, string destinationFolder, string namespaces)
+        public static List<LoopsCSVHolder> ReadMetaData(string sourceFile)
         {
-            string header =
-                string.Format("using Model.EDI.X12.v2.Base;\r\nusing Model.EDI.X12.v2;\r\nnamespace {0} \r\n{{\r\n", namespaces);
-
-            var footer = "}\r\n";
-
-
             //read in the definition file
             List<LoopsCSVHolder> csvLines = new List<LoopsCSVHolder>();
 
@@ -49,7 +42,7 @@ namespace CodeGenerator
 
                         var t = new LoopsCSVHolder();
 
-                        if(!string.IsNullOrWhiteSpace(columns[0]))
+                        if (!string.IsNullOrWhiteSpace(columns[0]))
                             t.LoopName = columns[0].Trim().Replace(" ", "");
 
                         if (!string.IsNullOrWhiteSpace(columns[1]))
@@ -67,21 +60,24 @@ namespace CodeGenerator
                             t.Required = columns[5]?.Trim().Replace(" ", "");
 
                         if (!string.IsNullOrWhiteSpace(columns[6]))
-                            t.RequiredGroupSegs = columns[6]?.Trim().Replace(" ", "");
+                            t.RequiredFields = columns[6]?.Trim().Replace(" ", "");
 
                         if (!string.IsNullOrWhiteSpace(columns[7]))
-                            t.RequiredFields = columns[7]?.Trim().Replace(" ", "");
+                            t.UnusedFields = columns[7]?.Trim().Replace(" ", "");
 
                         if (!string.IsNullOrWhiteSpace(columns[8]))
-                            t.UnusedFields = columns[8]?.Trim().Replace(" ", "");
+                            t.RequiredGroupFields = columns[8]?.Trim().Replace(" ", "");
 
-                        if (!string.IsNullOrWhiteSpace(columns[9]))
-                            t.RequiredGroupFields = columns[9]?.Trim().Replace(" ", "");
-                         
                         csvLines.Add(t);
                     }
                 }
             }
+            return csvLines;
+        }
+
+        public static void CreateLoops(string sourceFile, string destinationFolder, string namespaces)
+        {
+            var csvLines = ReadMetaData(sourceFile);
 
             //start writing the loop def file, which contains all the loops with their segments
             //does not do subloops
@@ -120,6 +116,60 @@ namespace CodeGenerator
                     }
 
                     writer.WriteLine("}"); //LoopEntity
+                }
+            }
+        }
+
+        public static void CreateDefinitions(string sourceFile, string destinationFolder, string namespaces)
+        {
+            var csvLines = ReadMetaData(sourceFile);
+
+            using (var writer = new System.IO.StreamWriter(System.IO.Path.Combine(destinationFolder, namespaces + ".RAWDefinitions.cs")))
+            {
+                for (int i = 0; i < csvLines.Count; i++)
+                {
+                    if (string.IsNullOrWhiteSpace(csvLines[i].LoopName)) continue;
+
+                    writer.WriteLine("public partial class Loop{0} : LoopEntity{{", csvLines[i].LoopName);
+
+                    writer.WriteLine("public void SetUpDefinition(){{");
+                    while (true)
+                    {
+                        if (i + 1 < csvLines.Count()
+                            && string.IsNullOrWhiteSpace(csvLines[i + 1].LoopName)
+                            && !string.IsNullOrWhiteSpace(csvLines[i + 1].FieldName))
+                        {
+                            i++;
+                            csvLines[i].FieldName = csvLines[i].FieldName[0] + csvLines[i].FieldName.ToLower().Substring(1);
+                            
+                            string usage = "SegmentUsageType.";
+                            if (csvLines[i].Required.ToLower() == "y")
+                                usage += "Required";
+                            else
+                                usage += "Optional";
+
+                            writer.WriteLine("var {0}Def = new SegmentDefinition(", csvLines[i].FieldName);
+                            writer.WriteLine("{0}, ", usage);
+                            writer.WriteLine("{0}, ", csvLines[i].Repeat);
+                            writer.WriteLine("{typeof(0}), ", csvLines[i].FieldName);
+                            writer.WriteLine("{0}", csvLines[i].Name);
+                            writer.WriteLine(");");
+
+                            writer.WriteLine("{0}Def.Qualifiers.Add(new SegmentQualifiers(1, \"{1}\".Split(',').ToList()); ", csvLines[i].FieldName, csvLines[i].Qualifiers);
+                            
+                            writer.WriteLine("{0}Def.RequiredFields.AddRange(new []{{ {1} }}.ToList());", csvLines[i].FieldName, csvLines[i].RequiredFields);
+                            writer.WriteLine("{0}Def.UnusedFields.AddRange(new []{{ {1} }}.ToList());", csvLines[i].FieldName, csvLines[i].UnusedFields);
+
+                            writer.WriteLine("{0}Def.SyntaxRuleList.AddRange(\"{1}\".Split(',').ToList());", csvLines[i].FieldName, csvLines[i].RequiredGroupFields);
+
+                            writer.WriteLine("{0}.Definition = {1}Def;", csvLines[i].Name, csvLines[i].FieldName);
+                        }
+                        else
+                        { 
+                            writer.WriteLine("}}"); //SetupDefinition
+                            break;
+                        }
+                    }
                 }
             }
         }
