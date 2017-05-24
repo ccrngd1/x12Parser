@@ -33,11 +33,10 @@ namespace Model.EDI.X12.v2.Base
     public class LoopDefinition
     {
         public int RepeatCount;
+        public string LoopName;
+        public string LoopDescription;
 
-        public LoopCollection ParentLoopCollection;
-        public LoopEntity ParentLoop;
-
-        public LoopCollection OwningLoopCollection;
+        public LoopCollection ParentLoopCollection;  
 
         public List<LoopDefinition> SubLoops;
         public List<SegmentDefinition> LoopSegments;
@@ -58,24 +57,18 @@ namespace Model.EDI.X12.v2.Base
         public int RepeatCount;
         private List<Func<List<string>, bool>> _addlQualifierLogic = new List<Func<List<string>, bool>>();
         private Type SegmentType;
-        private SegmentCollection _owningCollection;
+        //private SegmentCollection _owningCollection; //might not need to know the owning collection since that is at a LoopEntity level
         public List<int> RequiredFields = new List<int>();
         public List<int> UnusedFields = new List<int>();
         public List<string> SyntaxRuleList = new List<string>();
 
-        public SegmentDefinition(SegmentUsageType use, int reps, Type segT, SegmentCollection owningCollection)
+        public SegmentDefinition(SegmentUsageType use, int reps, Type segT)
         {
             Usage = use;
             RepeatCount = reps;
             SegmentType = segT;
-            _owningCollection = owningCollection;
         }
-
-        public void AddQualifierLogic(Func<List<string>, bool> qualLogic)
-        {
-            _addlQualifierLogic.Add(qualLogic);
-        }
-
+        
         public bool IsQualified(List<string> segmentValues)
         {
             if (segmentValues[0] != SegmentType.Name) return false;

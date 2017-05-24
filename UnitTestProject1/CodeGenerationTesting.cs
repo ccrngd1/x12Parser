@@ -24,13 +24,26 @@ namespace UnitTestProject1
         }
 
         [TestMethod]
-        public void GenerateRawLoopsV2( )
-        {
-            var gen = new X12_V2_Generation();
-
+        public void GenerateRawLoopsV2_837( )
+        { 
             X12_V2_Generation.CreateLoops(@"C:\Users\nick.lawson\Google Drive\Documents\projects\x12Parser\X12.837.5010\837 Loops.txt",
                 @"C:\Users\nick.lawson\Google Drive\Documents\projects\x12Parser\CodeGenerator\RAWGeneratedFiles\",
                 "Model.EDI.X12.Format837.v5010.Prof.v2");
-        } 
+        }
+
+        [TestMethod]
+        public void GenerateRawDefinitionsV2_277()
+        {
+            X12_V2_Generation.CreateDefinitions(@"C:\Users\nick.lawson\Google Drive\Documents\projects\x12Parser\X12.837.5010\277 Loops.txt",
+                @"C:\Users\nick.lawson\Google Drive\Documents\projects\x12Parser\CodeGenerator\RAWGeneratedFiles\",
+                "Model.EDI.X12.Format277.v5010.v2");
+        }
+        [TestMethod]
+        public void GenerateRawDefinitionSingleV2_277()
+        {
+            X12_V2_Generation.CreateSingleDefintion(@"C:\Users\nick.lawson\Google Drive\Documents\projects\x12Parser\X12.837.5010\277 Loops.txt",
+                @"C:\Users\nick.lawson\Google Drive\Documents\projects\x12Parser\CodeGenerator\RAWGeneratedFiles\",
+                "Model.EDI.X12.Format277.v5010.v2");
+        }
     }
 }

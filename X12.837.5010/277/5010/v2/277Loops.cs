@@ -5,42 +5,38 @@ namespace Model.EDI.X12.Format277.v5010.v2
 {
     public partial class Loop2000ACollection : LoopCollection<Loop2000A>
     {
-        public Loop2000ACollection()
-        {
-            Definition = new LoopDefinition(999);
-            Definition.ParentLoop = null;
-            Definition.ParentLoopCollection = null;
-            //Definition.SubLoops
-        }
-        
+        public Loop2000ACollection(string loopName, string loopNameDescription) : base(loopName, loopNameDescription) { }
+
         public override bool Validate()
         {
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition()
+        public override void SetUpDefinition(LoopCollection parentLoopCollection)
         {
-            throw new System.NotImplementedException();
+            this.Definition.ParentLoopCollection = parentLoopCollection;
+            
+            this.Definition.SubLoops.Add(new LoopDefinition(999));
         } 
     }
 
     public partial class Loop2000A : LoopEntity
     {
         public HlCollection InformationSourceLevel = new HlCollection();
-
-        public Loop2100ACollection loop2100a = new Loop2100ACollection(); 
+        
+        public Loop2100ACollection PayerName = new Loop2100ACollection("Loop2100A", "PayerName"); 
     }
 
     public partial class Loop2100ACollection : LoopCollection<Loop2100A>
     {
-        public Loop2100ACollection() { }
+        public Loop2100ACollection(string loopName, string loopNameDescription) : base(loopName, loopNameDescription) { }
 
         public override bool Validate()
         {
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition()
+        public override void SetUpDefinition(LoopCollection parentLoopCollection)
         {
             throw new System.NotImplementedException();
         }
@@ -57,14 +53,15 @@ namespace Model.EDI.X12.Format277.v5010.v2
 
     public partial class Loop2200ACollection : LoopCollection<Loop2200A>
     {
-        public Loop2200ACollection() { }
+        public Loop2200ACollection(string loopName, string loopNameDescription) : base(loopName, loopNameDescription) { }
+        
 
         public override bool Validate()
         {
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition()
+        public override void SetUpDefinition(LoopCollection parentLoopCollection)
         {
             throw new System.NotImplementedException();
         }
@@ -80,14 +77,16 @@ namespace Model.EDI.X12.Format277.v5010.v2
 
     public partial class Loop2000BCollection : LoopCollection<Loop2000B>
     {
-        public Loop2000BCollection() { }
+        public Loop2000BCollection(string loopName, string loopNameDescription) : base(loopName, loopNameDescription) { }
+        
+
 
         public override bool Validate()
         {
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition()
+        public override void SetUpDefinition(LoopCollection parentLoopCollection)
         {
             throw new System.NotImplementedException();
         }
@@ -97,21 +96,21 @@ namespace Model.EDI.X12.Format277.v5010.v2
     {
         public HlCollection InformationReceiverLevel;
 
-        public Loop2100BCollection InformationReceiverNameLoop = new Loop2100BCollection();
-        public Loop2200BCollection InformationReiverApplicationTraceIdentifierLoop = new Loop2200BCollection();
+        public Loop2100BCollection InformationReceiverNameLoop = new Loop2100BCollection("Loop2100B", "InformationReceiverNameLoop");
+        public Loop2200BCollection InformationReiverApplicationTraceIdentifierLoop = new Loop2200BCollection("Loop2200B", "InformationReiverApplicationTraceIdentifierLoop");
     }
 
 
     public partial class Loop2100BCollection : LoopCollection<Loop2100B>
     {
-        public Loop2100BCollection() { }
+        public Loop2100BCollection(string loopName, string loopNameDescription) : base(loopName, loopNameDescription) { }
 
         public override bool Validate()
         {
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition()
+        public override void SetUpDefinition(LoopCollection parentLoopCollection)
         {
             throw new System.NotImplementedException();
         }
@@ -125,14 +124,14 @@ namespace Model.EDI.X12.Format277.v5010.v2
 
     public partial class Loop2200BCollection : LoopCollection<Loop2200B>
     {
-        public Loop2200BCollection() { }
+        public Loop2200BCollection(string loopName, string loopNameDescription) : base(loopName, loopNameDescription) { }
 
         public override bool Validate()
         {
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition()
+        public override void SetUpDefinition(LoopCollection parentLoopCollection)
         {
             throw new System.NotImplementedException();
         }
@@ -150,14 +149,14 @@ namespace Model.EDI.X12.Format277.v5010.v2
 
     public partial class Loop2000CCollection : LoopCollection<Loop2000C>
     {
-        public Loop2000CCollection() { }
+        public Loop2000CCollection(string loopName, string loopNameDescription) : base(loopName, loopNameDescription) { }
 
         public override bool Validate()
         {
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition()
+        public override void SetUpDefinition(LoopCollection parentLoopCollection)
         {
             throw new System.NotImplementedException();
         }
@@ -166,20 +165,20 @@ namespace Model.EDI.X12.Format277.v5010.v2
     public partial class Loop2000C : LoopEntity
     {
         public HlCollection BillingProviderOfServiceLevel;
-        public Loop2100CCollection loop2100c = new Loop2100CCollection();
-        public Loop2200CCollection loop2200c = new Loop2200CCollection();
+        public Loop2100CCollection ProviderName = new Loop2100CCollection("Loop2100C", "ProviderName");
+        public Loop2200CCollection ProviderOfServiceTraceIdentifier = new Loop2200CCollection("Loop2200C", "ProviderOfServiceTraceIdentifier");
 
     }
     public partial class Loop2100CCollection : LoopCollection<Loop2100C>
     {
-        public Loop2100CCollection() { }
+        public Loop2100CCollection(string loopName, string loopNameDescription) : base(loopName, loopNameDescription) { }
 
         public override bool Validate()
         {
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition()
+        public override void SetUpDefinition(LoopCollection parentLoopCollection)
         {
             throw new System.NotImplementedException();
         }
@@ -192,14 +191,14 @@ namespace Model.EDI.X12.Format277.v5010.v2
 
     public partial class Loop2200CCollection : LoopCollection<Loop2200C>
     {
-        public Loop2200CCollection() { }
+        public Loop2200CCollection(string loopName, string loopNameDescription) : base(loopName, loopNameDescription) { }
 
         public override bool Validate()
         {
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition()
+        public override void SetUpDefinition(LoopCollection parentLoopCollection)
         {
             throw new System.NotImplementedException();
         }
@@ -217,14 +216,14 @@ namespace Model.EDI.X12.Format277.v5010.v2
 
     public partial class Loop2000DECollection : LoopCollection<Loop2000DE>
     {
-        public Loop2000DECollection() { }
+        public Loop2000DECollection(string loopName, string loopNameDescription) : base(loopName, loopNameDescription) { }
 
         public override bool Validate()
         {
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition()
+        public override void SetUpDefinition(LoopCollection parentLoopCollection)
         {
             throw new System.NotImplementedException();
         }
@@ -234,21 +233,21 @@ namespace Model.EDI.X12.Format277.v5010.v2
     {
         public HlCollection SubDepLevel;
 
-        public Loop2100DECollection loop2100DE = new Loop2100DECollection();
+        public Loop2100DECollection SubDepName = new Loop2100DECollection("Loop2200DE","SubDepName");
 
-        public Loop2200DECollection loop2200DE = new Loop2200DECollection(); 
+        public Loop2200DECollection ClaimStatusTrackingNumber = new Loop2200DECollection("Loop2200DE","ClaimsStatusTrackingNumber"); 
     }
 
     public partial class Loop2100DECollection : LoopCollection<Loop2100DE>
     {
-        public Loop2100DECollection() { }
+        public Loop2100DECollection(string loopName, string loopNameDescription) : base(loopName, loopNameDescription) { }
 
         public override bool Validate()
         {
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition()
+        public override void SetUpDefinition(LoopCollection parentLoopCollection)
         {
             throw new System.NotImplementedException();
         }
@@ -261,14 +260,14 @@ namespace Model.EDI.X12.Format277.v5010.v2
 
     public partial class Loop2200DECollection : LoopCollection<Loop2200DE>
     {
-        public Loop2200DECollection() { }
+        public Loop2200DECollection(string loopName, string loopNameDescription) : base(loopName, loopNameDescription) { }
 
         public override bool Validate()
         {
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition()
+        public override void SetUpDefinition(LoopCollection parentLoopCollection)
         {
             throw new System.NotImplementedException();
         }
@@ -286,19 +285,19 @@ namespace Model.EDI.X12.Format277.v5010.v2
         RefCollection ClaimIdentificationNumberForClearinghousesAnd;
         DtpCollection ClaimServiceDate;
 
-        Loop2220DECollection Loop2220 = new Loop2220DECollection();
+        Loop2220DECollection ServiceLineInformation = new Loop2220DECollection("Loop2220DE", "ServiceLineInformation");
     }
 
     public partial class Loop2220DECollection : LoopCollection<Loop2220DE>
     {
-        public Loop2220DECollection() { }
+        public Loop2220DECollection(string loopName, string loopNameDescription) : base(loopName, loopNameDescription) { }
 
         public override bool Validate()
         {
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition()
+        public override void SetUpDefinition(LoopCollection parentLoopCollection)
         {
             throw new System.NotImplementedException();
         }

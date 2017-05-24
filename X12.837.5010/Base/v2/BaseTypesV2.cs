@@ -68,27 +68,31 @@ namespace Model.EDI.X12.v2.Base
 
         public LoopDefinition Definition;
 
-        public LoopCollection()
+        public string LoopName;
+        public string LoopNameDescription;
+
+        public LoopCollection(string loopName, string loopNameDescription)
         {
-            LoopEntities = new List<LoopEntity>();
+            LoopEntities = new List<LoopEntity>(); 
         }
 
-        public LoopCollection(LoopCollection owningLoopCollection, LoopCollection parentLoopCollection,
-            LoopEntity parentLoopEntity, int reps):this()
-        {
-            Definition = new LoopDefinition(reps)
-            {
-                ParentLoop = parentLoopEntity,
-                ParentLoopCollection = parentLoopCollection,
-                OwningLoopCollection = owningLoopCollection,
-                SubLoops = null,
-                LoopSegments = null
-            };
-        }
+        //going new direction with definitions
+        //public LoopCollection(LoopCollection owningLoopCollection, LoopCollection parentLoopCollection,
+        //    LoopEntity parentLoopEntity, int reps):this()
+        //{
+        //    Definition = new LoopDefinition(reps)
+        //    {
+        //        ParentLoop = parentLoopEntity,
+        //        ParentLoopCollection = parentLoopCollection,
+        //        OwningLoopCollection = owningLoopCollection,
+        //        SubLoops = null,
+        //        LoopSegments = null
+        //    };
+        //}
 
         public abstract bool Validate();
 
-        public abstract void SetUpDefinition();
+        public abstract void SetUpDefinition(LoopCollection parentLoopCollection);
         
     }
 
@@ -104,54 +108,56 @@ namespace Model.EDI.X12.v2.Base
     {
         public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
+            throw new InvalidCastException();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            return LoopEntities.GetEnumerator();
         }
 
         public void Add(T item)
         {
-            throw new NotImplementedException();
+            item.LoopEntityDef = Definition;
+            LoopEntities.Add(item);
         }
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            LoopEntities.Clear();
         }
 
         public bool Contains(T item)
         {
-            throw new NotImplementedException();
+            return LoopEntities.Any(c => c.LoopName == item.LoopName);
         }
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            LoopEntities.CopyTo(array, arrayIndex);
         }
 
         public bool Remove(T item)
         {
-            throw new NotImplementedException();
+            return LoopEntities.Remove(item);
         }
 
         public int Count { get; }
         public bool IsReadOnly { get; }
         public int IndexOf(T item)
         {
-            throw new NotImplementedException();
+            return LoopEntities.IndexOf(item);
         }
 
         public void Insert(int index, T item)
         {
-            throw new NotImplementedException();
+            item.LoopEntityDef = Definition;
+            LoopEntities.Insert(index, item);
         }
 
         public void RemoveAt(int index)
         {
-            throw new NotImplementedException();
+            LoopEntities.RemoveAt(index);
         }
 
         public T this[int index]
@@ -165,9 +171,13 @@ namespace Model.EDI.X12.v2.Base
             throw new NotImplementedException();
         }
 
-        public override void SetUpDefinition()
+        public override void SetUpDefinition(LoopCollection parentLoopCollection)
         {
             throw new NotImplementedException();
+        }
+
+        public LoopCollection(string loopName, string loopNameDescription) : base(loopName, loopNameDescription)
+        {
         }
     }
 
@@ -176,13 +186,13 @@ namespace Model.EDI.X12.v2.Base
     /// There is very little additional data stored here, and is meant only for the Definition/Parsing overload to come later
     /// </summary>
     public abstract class LoopEntity
-    {
+    { 
         public string LoopName;
 
         //public LoopCollection SubLoopsList;
         public List<LoopCollection> SubLoopLists;
 
-        public List<SegmentCollection> Segments;
+        public LoopDefinition LoopEntityDef;
         
         public virtual bool Validate() { throw new NotImplementedException(); }
     }
