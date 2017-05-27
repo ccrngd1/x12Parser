@@ -268,6 +268,20 @@ namespace CodeGenerator
                                 csvLines[i].FieldName.ToUpper(), usage, csvLines[i].Repeat, currentLoop,
                                 csvLines[i].Name);
 
+                            if (!string.IsNullOrWhiteSpace(csvLines[i].Qualifiers))
+                            {
+                                csvLines[i].Qualifiers = csvLines[i].Qualifiers.Replace("\"", " ");
+                                sbSegments.AppendFormat("{0}_{1}_{2}.Qualifiers.Add(new SegmentQualifiers(1, \"{3}\".Split(',')));\r\n",
+                                    csvLines[i].FieldName.ToUpper(), csvLines[i].Name, currentLoop, csvLines[i].Qualifiers);
+                            }
+
+                            if (!string.IsNullOrWhiteSpace(csvLines[i].RequiredGroupFields))
+                            {
+                                csvLines[i].RequiredGroupFields = csvLines[i].RequiredGroupFields.Replace("\"", " ");
+                                sbSegments.AppendFormat("{0}_{1}_{2}.SyntaxRuleList.AddRange(\"{3}\".Split(','));\r\n",
+                                csvLines[i].FieldName.ToUpper(), csvLines[i].Name, currentLoop, csvLines[i].RequiredGroupFields);
+                            }
+
                             sbSegments.AppendFormat("{0}.LoopSegments.Add({1}_{2}_{0}); \r\n", currentLoop,
                                 csvLines[i].FieldName.ToUpper(), csvLines[i].Name);
                         }

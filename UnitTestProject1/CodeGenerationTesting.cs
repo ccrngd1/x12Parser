@@ -41,8 +41,8 @@ namespace UnitTestProject1
         [TestMethod]
         public void GenerateRawDefinitionSingleV2_277()
         {
-            X12_V2_Generation.CreateSingleDefintion(@"C:\Users\nick.lawson\Google Drive\Documents\projects\x12Parser\X12.837.5010\277 Loops.txt",
-                @"C:\Users\nick.lawson\Google Drive\Documents\projects\x12Parser\CodeGenerator\RAWGeneratedFiles\",
+            X12_V2_Generation.CreateSingleDefintion(@"C:\Users\ccrng\Google Drive\Documents\projects\x12Parser\X12.837.5010\277 Loops.txt",
+                @"C:\Users\ccrng\Google Drive\Documents\projects\x12Parser\CodeGenerator\RAWGeneratedFiles\",
                 "Model.EDI.X12.Format277.v5010.v2");
         }
     }
