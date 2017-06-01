@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
+using Business.EDI.X12.v2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Model.EDI.X12.Format277.v5010.v2;
+using Model.EDI.X12.v2.Base;
 
 namespace UnitTestProject1
 {
@@ -14,11 +17,21 @@ namespace UnitTestProject1
         [TestMethod]
         public void TestSetupDefinitionsSingleMethod()
         {
-            X12_277_5010 test = new X12_277_5010();
+            var test = new X12_277_5010();
 
-            //test.SetUpWholeDefinition();
+            test.SetUpWholeDefinition();
 
             Assert.IsNotNull(test.DocumentDefinition);
+        }
+
+        [TestMethod]
+        public void Test277Parser()
+        {
+            var test = new X12_277_5010();
+
+            test.SetUpWholeDefinition();
+
+            var parsedTest = test.ParseFile( @"C:\test files\x12\277\test277");
         }
     }
 }

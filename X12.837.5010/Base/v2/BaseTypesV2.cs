@@ -30,6 +30,8 @@ namespace Model.EDI.X12.v2.Base
 
         public Delimiters DocDelimiters = new Delimiters();
 
+        public X12DocDefinition DocumentDefinition;
+
         [ProtoBuf.ProtoMember(1)]
         public StCollection TransactionSetHeader;
         [ProtoBuf.ProtoMember(2)]
@@ -50,6 +52,8 @@ namespace Model.EDI.X12.v2.Base
         public X12Doc()
         {
         }
+
+        public virtual void SetUpWholeDefinition() { }
     }
 
     /// <summary>

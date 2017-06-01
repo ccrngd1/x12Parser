@@ -68,6 +68,7 @@
     <Compile Include="277\5010\v2\277Definition.cs" />
     <Compile Include="277\5010\v2\277Loops.cs" />
     <Compile Include="277\5010\v2\277Partial.cs" />
+    <Compile Include="837\5010\Inst\v2\837ILoops.cs" />
     <Compile Include="837\5010\Prof\v1\837Loops.cs" />
     <Compile Include="837\5010\Prof\v2\837Definition.cs" />
     <Compile Include="837\5010\Prof\v2\837Loops.cs" />
@@ -89,9 +90,7 @@
       <Name>X12.Data</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="837\5010\Inst\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

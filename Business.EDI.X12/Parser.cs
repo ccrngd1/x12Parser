@@ -3,12 +3,11 @@ using Model.EDI.X12.v2.Base;
 
 namespace Business.EDI.X12.v2
 {
-    public class Parser
-    {
-        public Parser() { }
-
-        public void ParseFile(ref X12Doc doc, string fullFilePath)
+    public static class Parser
+    { 
+        public static X12Doc ParseFile(this X12Doc doc, string fullFilePath)
         {
+            var retDoc = doc;
             var sStream = new SegmentStream(File.OpenRead(fullFilePath));
 
             var lineContent = sStream.ReadNextLine();
@@ -20,6 +19,8 @@ namespace Business.EDI.X12.v2
 
                 lineContent = sStream.ReadNextLine();
             }
-        }
+
+            return retDoc;
+        } 
     }
 }
