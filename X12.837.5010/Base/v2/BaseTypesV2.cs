@@ -30,24 +30,24 @@ namespace Model.EDI.X12.v2.Base
 
         public Delimiters DocDelimiters = new Delimiters();
 
-        public X12DocDefinition DocumentDefinition;
+        public X12DocDefinition DocumentDefinition = new X12DocDefinition();
 
         [ProtoBuf.ProtoMember(1)]
-        public StCollection TransactionSetHeader;
+        public StCollection TransactionSetHeader= new StCollection();
         [ProtoBuf.ProtoMember(2)]
-        public BhtCollection BeginHierarchicalTransaction;
+        public BhtCollection BeginHierarchicalTransaction= new  BhtCollection();
 
         [ProtoBuf.ProtoMember(3)]
-        public GeCollection FunctionalGroupTrailer;
+        public GeCollection FunctionalGroupTrailer=new GeCollection();
         [ProtoBuf.ProtoMember(4)]
-        public IsaCollection InterchagneControlHeader;
+        public IsaCollection InterchagneControlHeader=new IsaCollection();
         [ProtoBuf.ProtoMember(5)]
-        public GsCollection FunctionGroupHeader;
+        public GsCollection FunctionGroupHeader=new GsCollection();
         [ProtoBuf.ProtoMember(6)]
-        public IeaCollection InterchangeControlTrailer;
+        public IeaCollection InterchangeControlTrailer=new IeaCollection();
 
         [ProtoBuf.ProtoMember(12)]
-        public SeCollection TransactionSetTrailer;
+        public SeCollection TransactionSetTrailer = new SeCollection();
 
         public X12Doc()
         {
