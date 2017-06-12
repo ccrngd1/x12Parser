@@ -26,6 +26,7 @@ namespace Business.EDI.X12.v2
 
             while (lineContent != null)
             {
+                //is a head segment
                 if (headerSplit.Contains(lineContent[0]))
                 {
                     if (!newHeaderSection)
@@ -35,11 +36,13 @@ namespace Business.EDI.X12.v2
                     }
                     else
                     {
+                        //nothing to do, we have a few header segments
+                        //this just means we are reading through all of them
                         Console.WriteLine("oops header");
                     }
                 }
-
-                if (trailerSplit.Contains(lineContent[0]))
+                //is a trailer segment
+                else if (trailerSplit.Contains(lineContent[0]))
                 {
                     if (newHeaderSection)
                         newHeaderSection = false;
@@ -48,12 +51,18 @@ namespace Business.EDI.X12.v2
                         Console.WriteLine("oops trailer");
                     }
                 }
+                else //has to be in the doc def
+                {
+                    if (newHeaderSection)
+                        newHeaderSection = false;
+                }
 
+                tempBuildingDoc.DocumentDefinition.IsQualified(lineContent);
 
                 lineContent = sStream.ReadNextLine();
             }
 
-            return retDoc;
+            return retDocs;
         } 
     }
 }

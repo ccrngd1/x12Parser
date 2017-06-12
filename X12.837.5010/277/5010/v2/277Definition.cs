@@ -80,6 +80,8 @@ namespace Model.EDI.X12.Format277.v5010.v2
 
         public void SetUpWholeDefinition()
         {
+            DocumentDefinition = new X12DocDefinition();
+
             #region segment defs
             var isaDef = new SegmentDefinition(SegmentUsageType.Required, 1, typeof(ISA));
             isaDef.Qualifiers.Add(new SegmentQualifiers(1, new[] { "00", "03" }));
@@ -93,7 +95,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             var ieaDef = new SegmentDefinition(SegmentUsageType.Required, 1, typeof(IEA));
 
             var gsDef = new SegmentDefinition(SegmentUsageType.Required, 1, typeof(GS));
-            gsDef.Qualifiers.Add(new SegmentQualifiers(1, new[] { "X" }));
+            gsDef.Qualifiers.Add(new SegmentQualifiers(1, new[] { "HN" }));
 
             var geDef = new SegmentDefinition(SegmentUsageType.Required, 1, typeof(GE));
 
@@ -118,7 +120,6 @@ namespace Model.EDI.X12.Format277.v5010.v2
             DocumentDefinition.segments.Add(seDef);
             #endregion
 
-            DocumentDefinition = new X12DocDefinition();
             //MainLoops
             var Loop2000ADefinition = new LoopDefinition(999);
             Loop2000ADefinition.LoopName = "2000A";

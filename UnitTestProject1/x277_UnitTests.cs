@@ -31,7 +31,7 @@ namespace UnitTestProject1
 
             test.SetUpWholeDefinition();
 
-            var parsedTest = test.ParseFile( @"C:\test files\x12\277\test277");
+            var parsedTest = test.ParseFile(@"\\r90lmgla\c$\test files\x12\277\test277");
         }
     }
 }

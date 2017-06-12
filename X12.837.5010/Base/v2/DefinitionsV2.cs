@@ -6,15 +6,45 @@ using System.Threading.Tasks;
 
 namespace Model.EDI.X12.v2.Base
 {
+    public struct SegmentErrorDetails
+    {
+        public string SegmentValue;
+        public List<SegmentDefinition> MatchingDefinitions; 
+
+        public SegmentErrorDetails(string segValue, List<SegmentDefinition> segDefMatches)
+        {
+            SegmentValue = segValue;
+            MatchingDefinitions = new List<SegmentDefinition>(segDefMatches);
+        }
+    }
     public class X12DocDefinition
     {
         public List<LoopDefinition> loops;
         public List<SegmentDefinition> segments;
 
+        public List<SegmentErrorDetails> erroredSegments;
+
         public X12DocDefinition()
         {
             loops = new List<LoopDefinition>();
             segments = new List<SegmentDefinition>();
+            erroredSegments = new List<SegmentErrorDetails>();
+        }
+
+        public void IsQualified(List<string> lineSegmentFields)
+        {
+            List<SegmentDefinition> segMatches = segments.Where(c => c.IsQualified(lineSegmentFields)).ToList();
+
+            segMatches.AddRange(loops.SelectMany(c => c.IsQualified(lineSegmentFields)).ToList());
+
+            if (segMatches.Count() == 1)
+            {
+
+            }
+            else
+            {
+                erroredSegments.Add(new SegmentErrorDetails(string.Join(((char)(255)).ToString(),lineSegmentFields), segMatches));
+            }
         }
     }
 
@@ -47,6 +77,14 @@ namespace Model.EDI.X12.v2.Base
             LoopSegments = new List<SegmentDefinition>();
 
             RepeatCount = repCount; 
+        }
+
+        public List<SegmentDefinition> IsQualified(List<string> lineSegmentsFields)
+        {
+            List<SegmentDefinition> segmentMatches = LoopSegments.Where(c => c.IsQualified(lineSegmentsFields)).ToList();
+            segmentMatches.AddRange(SubLoops.SelectMany(d => d.IsQualified(lineSegmentsFields)).ToList());
+
+            return segmentMatches;
         }
     }
 
@@ -84,7 +122,7 @@ namespace Model.EDI.X12.v2.Base
             return _addlQualifierLogic.All(func => func(segmentValues));
         }
 
-        public baseStdSegment CreateInstance(string value, LoopEntity parentLoop)
+        public baseStdSegment CreateInstance(List<string> value, LoopEntity parentLoop)
         {
             var sg = (baseStdSegment)Activator.CreateInstance(SegmentType);
             return sg;
