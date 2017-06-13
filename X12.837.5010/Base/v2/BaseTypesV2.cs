@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Model.EDI.X12.v1.Base;
 
 namespace Model.EDI.X12.v2.Base
 {
@@ -28,9 +29,7 @@ namespace Model.EDI.X12.v2.Base
         private const string firstDelim = "*";
         private const string secondDelim = "#";
 
-        public Delimiters DocDelimiters = new Delimiters();
-
-        public X12DocDefinition DocumentDefinition = new X12DocDefinition();
+        public Delimiters DocDelimiters = new Delimiters(); 
 
         [ProtoBuf.ProtoMember(1)]
         public StCollection TransactionSetHeader= new StCollection();
@@ -70,9 +69,7 @@ namespace Model.EDI.X12.v2.Base
 
         public LoopCollection ParentLoopCollection;
 
-        protected List<LoopEntity> LoopEntities;
-
-        public LoopDefinition Definition;
+        protected List<LoopEntity> LoopEntities; 
 
         public string LoopName;
         public string LoopNameDescription;
@@ -81,24 +78,10 @@ namespace Model.EDI.X12.v2.Base
         {
             LoopEntities = new List<LoopEntity>(); 
         }
-
-        //going new direction with definitions
-        //public LoopCollection(LoopCollection owningLoopCollection, LoopCollection parentLoopCollection,
-        //    LoopEntity parentLoopEntity, int reps):this()
-        //{
-        //    Definition = new LoopDefinition(reps)
-        //    {
-        //        ParentLoop = parentLoopEntity,
-        //        ParentLoopCollection = parentLoopCollection,
-        //        OwningLoopCollection = owningLoopCollection,
-        //        SubLoops = null,
-        //        LoopSegments = null
-        //    };
-        //}
-
+         
         public abstract bool Validate();
 
-        public abstract void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef);
+        public abstract void SetUpDefinition(LoopCollection parentLoopCollection);
         
     }
 
@@ -123,8 +106,7 @@ namespace Model.EDI.X12.v2.Base
         }
 
         public void Add(T item)
-        {
-            item.LoopEntityDef = Definition;
+        { 
             LoopEntities.Add(item);
         }
 
@@ -156,8 +138,7 @@ namespace Model.EDI.X12.v2.Base
         }
 
         public void Insert(int index, T item)
-        {
-            item.LoopEntityDef = Definition;
+        { 
             LoopEntities.Insert(index, item);
         }
 
@@ -177,7 +158,7 @@ namespace Model.EDI.X12.v2.Base
             throw new NotImplementedException();
         }
 
-        public override void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef)
+        public override void SetUpDefinition(LoopCollection parentLoopCollection)
         {
             throw new NotImplementedException();
         }
@@ -196,9 +177,7 @@ namespace Model.EDI.X12.v2.Base
         public string LoopName;
 
         //public LoopCollection SubLoopsList;
-        public List<LoopCollection> SubLoopLists;
-
-        public LoopDefinition LoopEntityDef;
+        public List<LoopCollection> SubLoopLists; 
         
         public virtual bool Validate() { throw new NotImplementedException(); }
     }
@@ -211,8 +190,7 @@ namespace Model.EDI.X12.v2.Base
     public class SegmentCollection
     {
         protected string SegmentName;
-        protected List<baseStdSegment> Segments;
-        public SegmentDefinition Definition;
+        protected List<baseStdSegment> Segments; 
         protected Type BaseType;
 
         public LoopEntity OwningLoop;

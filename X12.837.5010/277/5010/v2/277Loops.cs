@@ -12,13 +12,9 @@ namespace Model.EDI.X12.Format277.v5010.v2
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef)
+        public override void SetUpDefinition(LoopCollection parentLoopCollection)
         {
-            ParentLoopCollection = parentLoopCollection;
-
-            Definition = selfDef;
-
-            Definition.SubLoops.Add(new LoopDefinition(999));
+            ParentLoopCollection = parentLoopCollection; 
         }  
     }
 
@@ -38,7 +34,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef)
+        public override void SetUpDefinition(LoopCollection parentLoopCollection)
         {
             throw new System.NotImplementedException();
         }
@@ -65,7 +61,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef)
+        public override void SetUpDefinition(LoopCollection parentLoopCollection)
         {
             throw new System.NotImplementedException();
         }
@@ -89,7 +85,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef)
+        public override void SetUpDefinition(LoopCollection parentLoopCollection)
         {
             throw new System.NotImplementedException();
         }
@@ -110,7 +106,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef)
+        public override void SetUpDefinition(LoopCollection parentLoopCollection)
         {
             throw new System.NotImplementedException();
         }
@@ -135,7 +131,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef)
+        public override void SetUpDefinition(LoopCollection parentLoopCollection)
         {
             throw new System.NotImplementedException();
         }
@@ -157,7 +153,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef)
+        public override void SetUpDefinition(LoopCollection parentLoopCollection)
         {
             throw new System.NotImplementedException();
         }
@@ -177,7 +173,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef)
+        public override void SetUpDefinition(LoopCollection parentLoopCollection)
         {
             throw new System.NotImplementedException();
         }
@@ -202,7 +198,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef)
+        public override void SetUpDefinition(LoopCollection parentLoopCollection)
         {
             throw new System.NotImplementedException();
         }
@@ -226,7 +222,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef)
+        public override void SetUpDefinition(LoopCollection parentLoopCollection)
         {
             throw new System.NotImplementedException();
         }
@@ -246,7 +242,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef)
+        public override void SetUpDefinition(LoopCollection parentLoopCollection)
         {
             throw new System.NotImplementedException();
         }
@@ -276,7 +272,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef)
+        public override void SetUpDefinition(LoopCollection parentLoopCollection)
         {
             throw new System.NotImplementedException();
         }

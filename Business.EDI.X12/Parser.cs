@@ -57,7 +57,7 @@ namespace Business.EDI.X12.v2
                         newHeaderSection = false;
                 }
 
-                tempBuildingDoc.DocumentDefinition.IsQualified(lineContent);
+                //tempBuildingDoc.DocumentDefinition.IsQualified(lineContent);
 
                 lineContent = sStream.ReadNextLine();
             }
