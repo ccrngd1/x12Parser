@@ -68,6 +68,8 @@ namespace Model.EDI.X12.v2.Base
     {
         public X12Doc OwningX12Doc;
 
+        public LoopCollection ParentLoopCollection;
+
         protected List<LoopEntity> LoopEntities;
 
         public LoopDefinition Definition;
@@ -96,7 +98,7 @@ namespace Model.EDI.X12.v2.Base
 
         public abstract bool Validate();
 
-        public abstract void SetUpDefinition(LoopCollection parentLoopCollection);
+        public abstract void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef);
         
     }
 
@@ -175,7 +177,7 @@ namespace Model.EDI.X12.v2.Base
             throw new NotImplementedException();
         }
 
-        public override void SetUpDefinition(LoopCollection parentLoopCollection)
+        public override void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef)
         {
             throw new NotImplementedException();
         }

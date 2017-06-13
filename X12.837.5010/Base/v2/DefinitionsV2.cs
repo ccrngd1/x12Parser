@@ -39,7 +39,7 @@ namespace Model.EDI.X12.v2.Base
 
             if (segMatches.Count() == 1)
             {
-
+                //segMatches[0].CreateInstance(lineSegmentFields, )
             }
             else
             {
@@ -66,18 +66,20 @@ namespace Model.EDI.X12.v2.Base
         public string LoopName;
         public string LoopDescription;
 
-        public LoopCollection ParentLoopCollection;  
+        public LoopCollection OwningLoopCollection;  
 
         public List<LoopDefinition> SubLoops;
         public List<SegmentDefinition> LoopSegments;
 
-        public LoopDefinition(int repCount)
+        public LoopDefinition(int repCount, LoopCollection owner)
         {
             SubLoops = new List<LoopDefinition>();
             LoopSegments = new List<SegmentDefinition>();
 
-            RepeatCount = repCount; 
+            RepeatCount = repCount;
+            OwningLoopCollection = owner;
         }
+
 
         public List<SegmentDefinition> IsQualified(List<string> lineSegmentsFields)
         {
@@ -94,8 +96,7 @@ namespace Model.EDI.X12.v2.Base
         public SegmentUsageType Usage;
         public int RepeatCount;
         private List<Func<List<string>, bool>> _addlQualifierLogic = new List<Func<List<string>, bool>>();
-        private Type SegmentType;
-        //private SegmentCollection _owningCollection; //might not need to know the owning collection since that is at a LoopEntity level
+        private Type SegmentType; 
         public List<int> RequiredFields = new List<int>();
         public List<int> UnusedFields = new List<int>();
         public List<string> SyntaxRuleList = new List<string>();

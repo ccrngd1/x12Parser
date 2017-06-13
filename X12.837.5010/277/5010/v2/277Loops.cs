@@ -12,12 +12,14 @@ namespace Model.EDI.X12.Format277.v5010.v2
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition(LoopCollection parentLoopCollection)
+        public override void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef)
         {
-            this.Definition.ParentLoopCollection = parentLoopCollection;
-            
-            this.Definition.SubLoops.Add(new LoopDefinition(999));
-        } 
+            ParentLoopCollection = parentLoopCollection;
+
+            Definition = selfDef;
+
+            Definition.SubLoops.Add(new LoopDefinition(999));
+        }  
     }
 
     public partial class Loop2000A : LoopEntity
@@ -36,7 +38,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition(LoopCollection parentLoopCollection)
+        public override void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef)
         {
             throw new System.NotImplementedException();
         }
@@ -51,30 +53,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
         }
     }
 
-    public partial class Loop2200ACollection : LoopCollection<Loop2200A>
-    {
-        public Loop2200ACollection(string loopName, string loopNameDescription) : base(loopName, loopNameDescription) { }
-        
-
-        public override bool Validate()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void SetUpDefinition(LoopCollection parentLoopCollection)
-        {
-            throw new System.NotImplementedException();
-        }
-    }
-
-    public partial class Loop2200A : LoopEntity
-    {
-        public TrnCollection TransmissionReceiptControlIdentifier;
-        public DtpCollection InformationSourceReceiptDate;
-        public DtpCollection InformationSourceProcessDate;
-    }
-
-
+    #region other loops 
     public partial class Loop2000BCollection : LoopCollection<Loop2000B>
     {
         public Loop2000BCollection(string loopName, string loopNameDescription) : base(loopName, loopNameDescription) { }
@@ -86,7 +65,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition(LoopCollection parentLoopCollection)
+        public override void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef)
         {
             throw new System.NotImplementedException();
         }
@@ -110,7 +89,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition(LoopCollection parentLoopCollection)
+        public override void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef)
         {
             throw new System.NotImplementedException();
         }
@@ -131,7 +110,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition(LoopCollection parentLoopCollection)
+        public override void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef)
         {
             throw new System.NotImplementedException();
         }
@@ -156,7 +135,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition(LoopCollection parentLoopCollection)
+        public override void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef)
         {
             throw new System.NotImplementedException();
         }
@@ -178,7 +157,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition(LoopCollection parentLoopCollection)
+        public override void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef)
         {
             throw new System.NotImplementedException();
         }
@@ -198,7 +177,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition(LoopCollection parentLoopCollection)
+        public override void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef)
         {
             throw new System.NotImplementedException();
         }
@@ -223,7 +202,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition(LoopCollection parentLoopCollection)
+        public override void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef)
         {
             throw new System.NotImplementedException();
         }
@@ -247,7 +226,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition(LoopCollection parentLoopCollection)
+        public override void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef)
         {
             throw new System.NotImplementedException();
         }
@@ -267,7 +246,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition(LoopCollection parentLoopCollection)
+        public override void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef)
         {
             throw new System.NotImplementedException();
         }
@@ -297,7 +276,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             throw new System.NotImplementedException();
         }
 
-        public override void SetUpDefinition(LoopCollection parentLoopCollection)
+        public override void SetUpDefinition(LoopCollection parentLoopCollection, LoopDefinition selfDef)
         {
             throw new System.NotImplementedException();
         }
@@ -310,5 +289,5 @@ namespace Model.EDI.X12.Format277.v5010.v2
         public RefCollection ServiceLineItemIdentification;
         public DtpCollection ServiceLineDate; 
     }
-
+    #endregion
 }
