@@ -15,8 +15,8 @@ namespace UnitTestProject1
         [TestMethod]
         public void TestMethod1()
         {
-            SegmentCollection testNM1 = new SegmentCollection(typeof(NM1));
-            SegmentCollection testPER = new SegmentCollection(typeof(PER));
+            SegmentCollection testNM1 = new Nm1Collection(null);
+            SegmentCollection testPER = new PerCollection(null);
 
             List<SegmentCollection> testColl =new List<SegmentCollection>();
 
@@ -24,21 +24,21 @@ namespace UnitTestProject1
 
             Type tt = typeof(NM1);
 
-            var test = Convert.ChangeType(((baseStdSegment) new NM1()),tt);
+            var test = Convert.ChangeType(((BaseStdSegment) new NM1()),tt);
 
         }
 
         [TestMethod]
         public void SetUp277()
         {
-            Model.EDI.X12.Format277.v5010.v2.X12_277_5010 doc = new X12_277_5010();
+            Model.EDI.X12.Format277.v5010.v2.X12_277_5010 doc = new X12_277_5010(true);
         }
 
         [TestMethod]
         public void Check277HLLevel()
         {
 
-            X12_277_5010 doc = new X12_277_5010();
+            X12_277_5010 doc = new X12_277_5010(true);
 
             Loop2000ACollection tempLoopCollection = doc.InformationSourceLevelLoop;
 
@@ -52,7 +52,7 @@ namespace UnitTestProject1
             SegmentCollection tempCastedSegmentCollection = tempSegmentCollection;
 
             HL tempHLSegment = tempSegmentCollection[0];
-            baseStdSegment tempCastedBaseSegment = tempHLSegment;
+            BaseStdSegment tempCastedBaseSegment = tempHLSegment;
 
             Console.WriteLine(tempHLSegment.HierarchChildCode);
             Console.WriteLine(tempHLSegment.HierarchIdNumber);

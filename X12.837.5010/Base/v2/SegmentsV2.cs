@@ -8,7 +8,7 @@ using System.IO;
 namespace Model.EDI.X12.v2
 {
     [ProtoBuf.ProtoContract]
-    public class IEA : baseStdSegment
+    public class IEA : BaseStdSegment
     {
         [ProtoBuf.ProtoMember(1)]
         public string numOfInclFunctGroup;
@@ -31,7 +31,7 @@ namespace Model.EDI.X12.v2
     }
 
     [ProtoBuf.ProtoContract]
-    public class GS : baseStdSegment
+    public class GS : BaseStdSegment
     {
         [ProtoBuf.ProtoMember(1)]
         public string functionalIdCode;
@@ -66,7 +66,7 @@ namespace Model.EDI.X12.v2
     }
 
     [ProtoBuf.ProtoContract]
-    public class ISA : baseStdSegment
+    public class ISA : BaseStdSegment
     {
         public string AuthInformationQualifier { get; set; }
         public string AuthorizationInformation { get; set; }
@@ -169,7 +169,7 @@ namespace Model.EDI.X12.v2
     }
 
     [ProtoBuf.ProtoContract]
-    public class GE : baseStdSegment
+    public class GE : BaseStdSegment
     {
         [ProtoBuf.ProtoMember(1)]
         public string numberOfTransactionSetsIncluded;
@@ -194,7 +194,7 @@ namespace Model.EDI.X12.v2
     }
 
     [ProtoBuf.ProtoContract]
-    public class ST : baseStdSegment
+    public class ST : BaseStdSegment
     {
         [ProtoBuf.ProtoMember(1)]
         public string transactionSetId;
@@ -221,7 +221,7 @@ namespace Model.EDI.X12.v2
     }
 
     [ProtoBuf.ProtoContract]
-    public class BHT : baseStdSegment
+    public class BHT : BaseStdSegment
     {
         [ProtoBuf.ProtoMember(1)]
         public string structureCode;
@@ -263,7 +263,7 @@ namespace Model.EDI.X12.v2
     }
     
     [ProtoBuf.ProtoContract]
-    public class SE : baseStdSegment
+    public class SE : BaseStdSegment
     {
         [ProtoBuf.ProtoMember(1)]
         public string numberIncludedSegments;
@@ -288,7 +288,7 @@ namespace Model.EDI.X12.v2
     } 
 
     [ProtoBuf.ProtoContract]
-    public class HL : baseStdSegment
+    public class HL : BaseStdSegment
     {
         [ProtoBuf.ProtoMember(1)]
         public string HierarchIdNumber;
@@ -334,7 +334,7 @@ namespace Model.EDI.X12.v2
     }
 
     [ProtoBuf.ProtoContract]
-    public class NM1 : baseStdSegment
+    public class NM1 : BaseStdSegment
     {
         [ProtoBuf.ProtoMember(1)]
         public string entityIdCode;
@@ -377,7 +377,7 @@ namespace Model.EDI.X12.v2
     }
 
     [ProtoBuf.ProtoContract]
-    public class DMG : baseStdSegment
+    public class DMG : BaseStdSegment
     {
         [ProtoBuf.ProtoMember(1)]
         public string dtFormatQual;
@@ -420,7 +420,7 @@ namespace Model.EDI.X12.v2
     }
 
     [ProtoBuf.ProtoContract]
-    public class TRN : baseStdSegment
+    public class TRN : BaseStdSegment
     {
         [ProtoBuf.ProtoMember(1)]
         public string traceTypeCode;
@@ -448,7 +448,7 @@ namespace Model.EDI.X12.v2
         }
     }
     [ProtoBuf.ProtoContract]
-    public class REF : baseStdSegment
+    public class REF : BaseStdSegment
     {
         public string refIdQualifier;
         [ProtoBuf.ProtoMember(1)]
@@ -475,7 +475,7 @@ namespace Model.EDI.X12.v2
         }
     }
     [ProtoBuf.ProtoContract]
-    public class AMT : baseStdSegment
+    public class AMT : BaseStdSegment
     {
         public string amountQualifierCode;
         [ProtoBuf.ProtoMember(1)]
@@ -500,7 +500,7 @@ namespace Model.EDI.X12.v2
         }
     }
     [ProtoBuf.ProtoContract]
-    public class DTP : baseStdSegment
+    public class DTP : BaseStdSegment
     {
         [ProtoBuf.ProtoMember(1)]
         public string dtQual;
@@ -526,7 +526,7 @@ namespace Model.EDI.X12.v2
         }
     }
     [ProtoBuf.ProtoContract]
-    public class SVC : baseStdSegment
+    public class SVC : BaseStdSegment
     {
         [ProtoBuf.ProtoMember(1)]
         public string compositMedProcId;
@@ -561,7 +561,7 @@ namespace Model.EDI.X12.v2
     }
 
     [ProtoBuf.ProtoContract]
-    public class STC : baseStdSegment
+    public class STC : BaseStdSegment
     {
         [ProtoBuf.ProtoMember(1)]
         public string healthCareStatClaim;
@@ -602,7 +602,7 @@ namespace Model.EDI.X12.v2
         }
     }
     [ProtoBuf.ProtoContract]
-    public class PER : baseStdSegment
+    public class PER : BaseStdSegment
     {
         [ProtoBuf.ProtoMember(1)]
         public string contactFunctCode;
@@ -641,7 +641,7 @@ namespace Model.EDI.X12.v2
 
     //new start
 
-    public class SBR : baseStdSegment
+    public class SBR : BaseStdSegment
     {
         public string PayerResponseSeqNo;
         public string IndividualrelatCode;
@@ -668,7 +668,7 @@ namespace Model.EDI.X12.v2
             return "";
         }
     }
-    public class PAT : baseStdSegment
+    public class PAT : BaseStdSegment
     {
         public string IndividualRelatCode;
         public string PatientLocationCode;
@@ -696,7 +696,7 @@ namespace Model.EDI.X12.v2
         }
     }
 
-    public class N3 : baseStdSegment
+    public class N3 : BaseStdSegment
     {
         public string AddressLine1;
         public string AddressLine2;
@@ -716,7 +716,7 @@ namespace Model.EDI.X12.v2
             return true;
         }
     }
-    public class N4 : baseStdSegment
+    public class N4 : BaseStdSegment
     {
         public string City;
         public string State;
@@ -742,7 +742,7 @@ namespace Model.EDI.X12.v2
         }
     }
 
-    public class CLM : baseStdSegment
+    public class CLM : BaseStdSegment
     {
         public string ClaimSubmitterId;
         public string MonentaryAmount;
@@ -781,7 +781,7 @@ namespace Model.EDI.X12.v2
         }
     }
 
-    public class PRV : baseStdSegment
+    public class PRV : BaseStdSegment
     {
         public string Code;
         public string ReferenceIdQualifier;
@@ -804,7 +804,7 @@ namespace Model.EDI.X12.v2
             return "";
         }
     }
-    public class CUR : baseStdSegment
+    public class CUR : BaseStdSegment
     {
         public string IdCode;
         public string CurrencyCode;
@@ -843,7 +843,7 @@ namespace Model.EDI.X12.v2
             return "";
         }
     }
-    public class PWK : baseStdSegment
+    public class PWK : BaseStdSegment
     {
         public string ReportType;
         public string ReportTransmissionCode;
@@ -870,7 +870,7 @@ namespace Model.EDI.X12.v2
             return "";
         }
     }
-    public class CN1 : baseStdSegment
+    public class CN1 : BaseStdSegment
     {
         public string ContractTypeCode;
         public string MonetaryAmount;
@@ -895,7 +895,7 @@ namespace Model.EDI.X12.v2
         }
     }
 
-    public class K3 : baseStdSegment
+    public class K3 : BaseStdSegment
     {
         public string FixedFormatInfomation;
         public K3() { }
@@ -914,7 +914,7 @@ namespace Model.EDI.X12.v2
             return true;
         }
     }
-    public class NTE : baseStdSegment
+    public class NTE : BaseStdSegment
     {
         public string ReferenceCode;
         public string Description;
@@ -934,7 +934,7 @@ namespace Model.EDI.X12.v2
             return "";
         }
     }
-    public class CR1 : baseStdSegment
+    public class CR1 : BaseStdSegment
     {
         public string UnitOfMeasurement;
         public string Weight;
@@ -962,7 +962,7 @@ namespace Model.EDI.X12.v2
             return "";
         }
     }
-    public class CR2 : baseStdSegment
+    public class CR2 : BaseStdSegment
     {
         public string Count;
         public string Quantity;
@@ -992,7 +992,7 @@ namespace Model.EDI.X12.v2
             return "";
         }
     }
-    public class CRC : baseStdSegment
+    public class CRC : BaseStdSegment
     {
         public string CodeCategory;
         public string YesNo;
@@ -1017,7 +1017,7 @@ namespace Model.EDI.X12.v2
             return "";
         }
     }
-    public class HI : baseStdSegment
+    public class HI : BaseStdSegment
     {
         public string CodeInfomation1;
         public string CodeInfomation2;
@@ -1048,7 +1048,7 @@ namespace Model.EDI.X12.v2
             return "";
         }
     }
-    public class HCP : baseStdSegment
+    public class HCP : BaseStdSegment
     {
         public string Methodology;
         public string Amount;
@@ -1080,7 +1080,7 @@ namespace Model.EDI.X12.v2
             return "";
         }
     }
-    public class CAS : baseStdSegment
+    public class CAS : BaseStdSegment
     {
         public string AdjustmentGroupCode1;
         public string ReasonCode1;
@@ -1120,7 +1120,7 @@ namespace Model.EDI.X12.v2
             return "";
         }
     }
-    public class OI : baseStdSegment
+    public class OI : BaseStdSegment
     {
         public string IdicatorCode;
         public string ReasonCode;
@@ -1143,7 +1143,7 @@ namespace Model.EDI.X12.v2
             return "";
         }
     }
-    public class MOA : baseStdSegment
+    public class MOA : BaseStdSegment
     {
         public string Percent;
         public string Amount1;
@@ -1169,7 +1169,7 @@ namespace Model.EDI.X12.v2
             return "";
         }
     }
-    public class LX : baseStdSegment
+    public class LX : BaseStdSegment
     {
         public string AssignedNumber;
         public LX() { }
@@ -1188,7 +1188,7 @@ namespace Model.EDI.X12.v2
             return true;
         }
     }
-    public class SV1 : baseStdSegment
+    public class SV1 : BaseStdSegment
     {
         public string MedicalProcedureId;
         public string Amount;
@@ -1227,7 +1227,7 @@ namespace Model.EDI.X12.v2
             return "";
         }
     }
-    public class SV5 : baseStdSegment
+    public class SV5 : BaseStdSegment
     {
         public string SV501MedicalProcedureId;
         public string Unit;
@@ -1252,7 +1252,7 @@ namespace Model.EDI.X12.v2
             return "";
         }
     }
-    public class CR3 : baseStdSegment
+    public class CR3 : BaseStdSegment
     {
         public string TypeCode;
         public string Unit;
@@ -1276,7 +1276,7 @@ namespace Model.EDI.X12.v2
         }
     }
 
-    public class QTY : baseStdSegment
+    public class QTY : BaseStdSegment
     {
         public string Qualifier;
         public string Quantity;
@@ -1300,7 +1300,7 @@ namespace Model.EDI.X12.v2
         }
     }
 
-    public class MEA : baseStdSegment
+    public class MEA : BaseStdSegment
     {
         public string ReferenceCode;
         public string Qualifier;
@@ -1321,7 +1321,7 @@ namespace Model.EDI.X12.v2
             return "";
         }
     }
-    public class PS1 : baseStdSegment
+    public class PS1 : BaseStdSegment
     {
         public string ReferenceId;
         public string Amount;
@@ -1342,7 +1342,7 @@ namespace Model.EDI.X12.v2
             return "";
         }
     }
-    public class LIN : baseStdSegment
+    public class LIN : BaseStdSegment
     {
         public string AssignedId;
         public string ProductServiceQualifier;
@@ -1363,7 +1363,7 @@ namespace Model.EDI.X12.v2
             return "";
         }
     }
-    public class CTP : baseStdSegment
+    public class CTP : BaseStdSegment
     {
         public string ClassOfTradeCode;
         public string PriceIdCode;
@@ -1386,7 +1386,7 @@ namespace Model.EDI.X12.v2
             return "";
         }
     }
-    public class SVD : baseStdSegment
+    public class SVD : BaseStdSegment
     {
         public string IDCode;
         public string Amount;
@@ -1410,7 +1410,7 @@ namespace Model.EDI.X12.v2
             return "";
         }
     }
-    public class LQ : baseStdSegment
+    public class LQ : BaseStdSegment
     {
         public string QualifierCode;
         public string IndustryCode;
@@ -1431,7 +1431,7 @@ namespace Model.EDI.X12.v2
         }
     }
 
-    public class FRM : baseStdSegment
+    public class FRM : BaseStdSegment
     {
         public string AssignedId;
         public string YesNo;

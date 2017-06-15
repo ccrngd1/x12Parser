@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq; 
 
 namespace Model.EDI.X12.v2.Base
@@ -23,6 +24,15 @@ namespace Model.EDI.X12.v2.Base
             FieldId = fieldId;
             QualifierValues = parameters.ToList();
         }
-    }  
+    }
 
+    public interface ISegmentDefinition
+    {
+        List<SegmentQualifiers> SegmentQualifierValues { get; set; }
+    }
+
+    public interface ISegmentValidator
+    {
+        List<Func<List<string>, bool>> AddlQualifierLogic { get; set; }
+    }
 }

@@ -2,8 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Model.EDI.X12.v1.Base;
+using System.Text; 
 
 namespace Model.EDI.X12.v2.Base
 {
@@ -24,35 +23,37 @@ namespace Model.EDI.X12.v2.Base
     /// It sets up the header segments that are globally required
     /// It also houses the Delimiters that will be referenced during parsing of line segments and building
     /// </summary>
-    public class X12Doc
+    public abstract class X12Doc
     {
         private const string firstDelim = "*";
         private const string secondDelim = "#";
 
-        public Delimiters DocDelimiters = new Delimiters(); 
+        public Delimiters DocDelimiters = new Delimiters();
+
+        public List<LoopCollection> TopLevelLoops = new List<LoopCollection>();
 
         [ProtoBuf.ProtoMember(1)]
-        public StCollection TransactionSetHeader= new StCollection();
+        public ISA InterchagneControlHeader = new ISA();
         [ProtoBuf.ProtoMember(2)]
-        public BhtCollection BeginHierarchicalTransaction= new  BhtCollection();
+        public GS FunctionGroupHeader = new GS();
+
+        [ProtoBuf.ProtoMember(1)]
+        public ST TransactionSetHeader = new ST();
+        [ProtoBuf.ProtoMember(2)]
+        public BHT BeginHierarchicalTransaction = new BHT();
+        [ProtoBuf.ProtoMember(3)]
+        public SE TransactionSetTrailer = new SE();
 
         [ProtoBuf.ProtoMember(3)]
-        public GeCollection FunctionalGroupTrailer=new GeCollection();
+        public GE FunctionalGroupTrailer = new GE();
         [ProtoBuf.ProtoMember(4)]
-        public IsaCollection InterchagneControlHeader=new IsaCollection();
-        [ProtoBuf.ProtoMember(5)]
-        public GsCollection FunctionGroupHeader=new GsCollection();
-        [ProtoBuf.ProtoMember(6)]
-        public IeaCollection InterchangeControlTrailer=new IeaCollection();
+        public IEA InterchangeControlTrailer = new IEA();
 
-        [ProtoBuf.ProtoMember(12)]
-        public SeCollection TransactionSetTrailer = new SeCollection();
-
-        public X12Doc()
+        public X12Doc(bool includeDefinition)
         {
         }
 
-        public virtual void SetUpWholeDefinition() { }
+        public abstract void SetUpDefinitions();
     }
 
     /// <summary>
@@ -65,24 +66,66 @@ namespace Model.EDI.X12.v2.Base
     [ProtoBuf.ProtoContract]
     public abstract class LoopCollection
     {
+        //the doc this collection belongs to
         public X12Doc OwningX12Doc;
 
         public LoopCollection ParentLoopCollection;
+        public List<LoopCollection> ChildLoopCollection;
 
-        protected List<LoopEntity> LoopEntities; 
+        //the instantiated loops (loopEntity objects) of this collection (IE Loop2100A objects)
+        public List<LoopEntity> LoopEntities; 
 
         public string LoopName;
         public string LoopNameDescription;
+        public int RepitionLimit;
 
-        public LoopCollection(string loopName, string loopNameDescription)
+        public List<BaseStdSegment> SegmentDefinitions = new List<BaseStdSegment>(); 
+
+        private LoopCollection _next;
+        public LoopCollection NextCollection
         {
-            LoopEntities = new List<LoopEntity>(); 
+            get { return _next; }
+            set
+            {
+                if (_next == null)
+                    _next = null;
+                else
+                    throw new AccessViolationException("Next Collection already set");
+            }
+        }
+        
+        public LoopCollection _prev;
+
+        public LoopCollection PrevCollection
+        {
+            get { return _prev; }
+            set
+            {
+                if (_prev == null)
+                    _prev = value;
+                else 
+                    throw new AccessViolationException("Previous Collection already set"); 
+            }
+        }
+
+        public LoopCollection(string loopName, string loopNameDescription, X12Doc owningDoc, int repLimit, LoopCollection parent, LoopCollection prev)
+        {
+            LoopEntities = new List<LoopEntity>();
+
+            OwningX12Doc = owningDoc;
+
+            LoopName = loopName;
+            LoopNameDescription = loopNameDescription;
+
+            RepitionLimit = repLimit;
+
+            ParentLoopCollection = parent;
+            _prev = prev;
         }
          
         public abstract bool Validate();
 
-        public abstract void SetUpDefinition(LoopCollection parentLoopCollection);
-        
+        public abstract void SetUpDefinition();
     }
 
     /// <summary>
@@ -151,19 +194,9 @@ namespace Model.EDI.X12.v2.Base
         {
             get { return base.LoopEntities[index] as T; }
             set { LoopEntities[index] = value; }
-        }
+        } 
 
-        public override bool Validate()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void SetUpDefinition(LoopCollection parentLoopCollection)
-        {
-            throw new NotImplementedException();
-        }
-
-        public LoopCollection(string loopName, string loopNameDescription) : base(loopName, loopNameDescription)
+        public LoopCollection(string loopName, string loopNameDescription, X12Doc owningDoc, int repLimit, LoopCollection parent, LoopCollection prev) : base(loopName, loopNameDescription, owningDoc, repLimit, parent, prev)
         {
         }
     }
@@ -175,11 +208,30 @@ namespace Model.EDI.X12.v2.Base
     public abstract class LoopEntity
     { 
         public string LoopName;
+        public int Index;
 
-        //public LoopCollection SubLoopsList;
-        public List<LoopCollection> SubLoopLists; 
+        public X12Doc OwningDoc;
+        public LoopEntity PreviousLoop;
+        public LoopEntity NextLoop;
+        public LoopCollection ParentLoopCollection;
+        
+        public List<LoopCollection> SubLoopCollections; 
+
+        public List<BaseStdSegment> SegmentDefinitions = new List<BaseStdSegment>(); 
         
         public virtual bool Validate() { throw new NotImplementedException(); }
+
+        public LoopEntity(X12Doc owningDoc, LoopEntity prev, LoopCollection parent)
+        {
+            OwningDoc = owningDoc;
+            PreviousLoop = prev;
+            ParentLoopCollection = parent;
+        }
+
+        public void SetUpDefinition(List<BaseStdSegment> segDef)
+        {
+            SegmentDefinitions = segDef;
+        }
     }
 
     /// <summary>
@@ -187,17 +239,20 @@ namespace Model.EDI.X12.v2.Base
     /// This will contain our repeats of a single segment
     /// Nmae/Type are elevated to allow for creation and addition of the right type directly into the Segments List
     /// </summary>
-    public class SegmentCollection
+    public abstract class SegmentCollection
     {
-        protected string SegmentName;
-        protected List<baseStdSegment> Segments; 
-        protected Type BaseType;
+        public string SegmentName;
+        public List<BaseStdSegment> Segments;
+
+        public Type BaseType;
+        public BaseStdSegment SegmentDefinition;
 
         public LoopEntity OwningLoop;
 
-        public SegmentCollection(Type baseType)
+        public SegmentCollection(Type baseType, LoopEntity owningLoop)
         {
             BaseType = baseType;
+            OwningLoop = owningLoop;
         }
     }
 
@@ -207,14 +262,14 @@ namespace Model.EDI.X12.v2.Base
     /// when instantiating and populating a segment programatically, this baseFieldValue will not be essential
     /// but may be overriden to store data back into the array to allow for building
     /// </summary>
-    public abstract class baseStdSegment
+    public abstract class BaseStdSegment : ISegmentDefinition
     {
         public string _rawValue = null;
         public baseFieldValues _fieldValues;
         
-        public baseStdSegment() { }
+        public BaseStdSegment() { }
 
-        public baseStdSegment(string value)
+        public BaseStdSegment(string value)
         {
             _rawValue = value;
             _fieldValues = new baseFieldValues(_rawValue.Split(new[] { " " }, StringSplitOptions.None).ToList());
@@ -222,6 +277,8 @@ namespace Model.EDI.X12.v2.Base
 
         public abstract void Populate();
         public abstract bool Validate();
+
+        public List<SegmentQualifiers> SegmentQualifierValues { get; set; }
     }
 
     /// <summary>
