@@ -16,9 +16,12 @@ namespace Model.EDI.X12.Format277.v5010.v2
 
         public override void SetUpDefinition()
         {
+            ChildLoopCollection.Add();
             SegmentDefinitions.Add(new HL()
             {
-                SegmentQualifierValues = new List<SegmentQualifiers>()
+                SegmentQualifierValues = new List<SegmentQualifiers>(),
+                OwningLoopCollection =  this,
+                IsLoopStarter = true
             }); 
         }  
     }
@@ -48,7 +51,12 @@ namespace Model.EDI.X12.Format277.v5010.v2
 
         public override void SetUpDefinition()
         {
-            throw new System.NotImplementedException();
+            SegmentDefinitions.Add(new NM1()
+            {
+                SegmentQualifierValues = new List<SegmentQualifiers>(),
+                OwningLoopCollection = this,
+                IsLoopStarter = true
+            });
         }
     }
 

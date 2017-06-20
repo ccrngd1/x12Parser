@@ -31,4 +31,11 @@ namespace Model.EDI.X12
         Loop,
         Segment,
     }
+
+    public enum QulificationLevel
+    {
+        TopMost =0,
+        FirstChild=1,
+        Recursive
+    }
 }

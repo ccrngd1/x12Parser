@@ -70,7 +70,11 @@ namespace Model.EDI.X12.v2.Base
         public X12Doc OwningX12Doc;
 
         public LoopCollection ParentLoopCollection;
-        public List<LoopCollection> ChildLoopCollection;
+
+        //remove this - it was intended for checking seg qualifiers further down the stack
+        //this isnt needed tho, since at any time we have a LoopEntity in our parser state, this means that entity already has its possible LoopCollections with their own SegmentDefs
+        //this does requires we keep track of how we got to our currently LoopEntity (parent loopEntity obj in parser most likely)
+        //public List<LoopCollection> ChildLoopCollection;
 
         //the instantiated loops (loopEntity objects) of this collection (IE Loop2100A objects)
         public List<LoopEntity> LoopEntities; 
@@ -79,8 +83,10 @@ namespace Model.EDI.X12.v2.Base
         public string LoopNameDescription;
         public int RepitionLimit;
 
-        public List<BaseStdSegment> SegmentDefinitions = new List<BaseStdSegment>(); 
+        public List<BaseStdSegment> SegmentDefinitions { get; set; }
 
+
+        //todo: still useful?
         private LoopCollection _next;
         public LoopCollection NextCollection
         {
@@ -93,9 +99,9 @@ namespace Model.EDI.X12.v2.Base
                     throw new AccessViolationException("Next Collection already set");
             }
         }
-        
-        public LoopCollection _prev;
 
+        //todo: still useful?
+        public LoopCollection _prev;
         public LoopCollection PrevCollection
         {
             get { return _prev; }
@@ -110,6 +116,8 @@ namespace Model.EDI.X12.v2.Base
 
         public LoopCollection(string loopName, string loopNameDescription, X12Doc owningDoc, int repLimit, LoopCollection parent, LoopCollection prev)
         {
+            SegmentDefinitions = new List<BaseStdSegment>();
+
             LoopEntities = new List<LoopEntity>();
 
             OwningX12Doc = owningDoc;
@@ -121,11 +129,44 @@ namespace Model.EDI.X12.v2.Base
 
             ParentLoopCollection = parent;
             _prev = prev;
+
+            if(_prev != null)
+                _prev.NextCollection = this;
         }
          
         public abstract bool Validate();
 
         public abstract void SetUpDefinition();
+
+        public List<BaseStdSegment> IsQualified(baseFieldValues baseFieldValues, QulificationLevel recursiveCheck)
+        {
+            var retVal = new List<BaseStdSegment>();
+
+            try
+            {
+                foreach (BaseStdSegment segmentDefinition in SegmentDefinitions)
+                {
+                    if(segmentDefinition.IsQualified(baseFieldValues))
+                        retVal.Add(segmentDefinition);
+                }
+
+                if (recursiveCheck != QulificationLevel.TopMost)
+                {
+                    if(recursiveCheck==QulificationLevel.FirstChild) recursiveCheck=QulificationLevel.TopMost;
+
+                    foreach (var childLoopCollection in ChildLoopCollection)
+                    {
+                        retVal.AddRange(childLoopCollection.IsQualified(baseFieldValues, recursiveCheck));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //todo srsly, how are we handling these here errors
+            }
+
+            return retVal;
+        }
     }
 
     /// <summary>
@@ -199,6 +240,21 @@ namespace Model.EDI.X12.v2.Base
         public LoopCollection(string loopName, string loopNameDescription, X12Doc owningDoc, int repLimit, LoopCollection parent, LoopCollection prev) : base(loopName, loopNameDescription, owningDoc, repLimit, parent, prev)
         {
         }
+        public void Add(baseFieldValues baseValues)
+        {
+
+        }
+
+        public void Add(BaseStdSegment stdSegment)
+        {
+            if (stdSegment.IsLoopStarter)
+                LoopEntities.Add(default(T));
+
+
+            var currentLoopEnt = LoopEntities.Last();
+
+            currentLoopEnt.
+        }
     }
 
     /// <summary>
@@ -211,9 +267,14 @@ namespace Model.EDI.X12.v2.Base
         public int Index;
 
         public X12Doc OwningDoc;
-        public LoopEntity PreviousLoop;
-        public LoopEntity NextLoop;
-        public LoopCollection ParentLoopCollection;
+
+        //todo: still useful?
+        public LoopEntity PreviousLoop { get; set; }
+        //todo: still useful?
+        public LoopEntity NextLoop { get; set; }
+
+
+        public LoopCollection ParentLoopCollection { get; set; }
         
         public List<LoopCollection> SubLoopCollections; 
 
@@ -245,7 +306,8 @@ namespace Model.EDI.X12.v2.Base
         public List<BaseStdSegment> Segments;
 
         public Type BaseType;
-        public BaseStdSegment SegmentDefinition;
+
+        public BaseStdSegment SegmentDefinition { get; set; }
 
         public LoopEntity OwningLoop;
 
@@ -263,15 +325,47 @@ namespace Model.EDI.X12.v2.Base
     /// but may be overriden to store data back into the array to allow for building
     /// </summary>
     public abstract class BaseStdSegment : ISegmentDefinition
-    {
-        public string _rawValue = null;
-        public baseFieldValues _fieldValues;
-        
-        public BaseStdSegment() { } 
+    { 
+        public baseFieldValues FieldValues;
+
+
+        /// <summary>
+        /// only for seg def usage
+        /// </summary>
+        public LoopCollection OwningLoopCollection { get; set; }
+
+        /// <summary>
+        /// only for seg def usage
+        /// </summary>
+        public bool IsLoopStarter { get; set; }
+
+        public string SegmentName
+        {
+            get
+            {
+                if (!FieldValues.Any()) return null;
+                return FieldValues[0];
+            }
+        }
+
+        public BaseStdSegment()
+        {
+            SegmentQualifierValues = new List<SegmentQualifiers>();
+        }
+
+        public BaseStdSegment(baseFieldValues bsf)
+        {
+            FieldValues = bsf;
+        }
+
+        public BaseStdSegment(List<string> values):this()
+        {
+            FieldValues.AddRange(values);
+        }
 
         public void Populate(baseFieldValues baseVals)
         {
-            _fieldValues = baseVals;
+            FieldValues = baseVals;
         }
         public abstract bool Validate();
 
@@ -279,14 +373,44 @@ namespace Model.EDI.X12.v2.Base
 
         public bool IsQualified(baseFieldValues segmentFields)
         {
-            bool retVal = true;
-
-            foreach(var qualVal in SegmentQualifierValues)
+            try
             {
-                retVal = retVal && qualVal.IsQaulified(segmentFields);
+                bool retVal = string.Equals(this.GetType().Name, segmentFields[0],
+                    StringComparison.CurrentCultureIgnoreCase);
+
+                foreach (var qualVal in SegmentQualifierValues)
+                {
+                    retVal = retVal && qualVal.IsQaulified(segmentFields);
+                }
+
+                return retVal;
+            }
+            catch (Exception ex)
+            {
+                //todo what are we doing???
             }
 
-            return retVal;
+            return false;
+        }
+
+        public string GetFieldValue(int index)
+        {
+            if (FieldValues.Count > index)
+            {
+                return FieldValues[index];
+            }
+
+            return null;
+        }
+
+        public void SetFieldValue(int index, string value)
+        {
+            if (FieldValues.Count < index)
+            {
+                FieldValues.Capacity = index+1;
+            }
+
+            FieldValues[index] = value;
         }
     }
 
@@ -296,7 +420,7 @@ namespace Model.EDI.X12.v2.Base
     /// </summary>
     public class baseFieldValues : List<string>
     {
-        public string _rawValue;
+        public string RawValue { get; private set; }
 
         public baseFieldValues(List<string> values)
         {
@@ -305,6 +429,8 @@ namespace Model.EDI.X12.v2.Base
 
         public baseFieldValues(byte[] buffer, int offset, int length, byte elementSep, string compSep)
         {
+            RawValue = System.Text.Encoding.Default.GetString(buffer, offset, length);
+
             var sb = new StringBuilder();
 
             for (int i = offset; i < offset + length; i++)

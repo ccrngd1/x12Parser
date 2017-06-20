@@ -15,9 +15,7 @@ namespace Model.EDI.X12.v2
         [ProtoBuf.ProtoMember(2)]
         public string interCtrlNumber;
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -50,9 +48,7 @@ namespace Model.EDI.X12.v2
         [ProtoBuf.ProtoMember(8)]
         public string verReleaseIdCode;
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -89,7 +85,7 @@ namespace Model.EDI.X12.v2
 
         public ISA()
         {
-        } 
+        }
 
         public void FromStream(Stream s)
         {
@@ -105,7 +101,7 @@ namespace Model.EDI.X12.v2
             {
                 ElementSeperator = (char)valueBuffer[3];
                 LineSeperator = Encoding.ASCII.GetString(valueBuffer, 105, 1);//Issue, spec says its character length of 1, but some files have \r\n some files do not have fixed isa correct
-                
+
                 //so many invalid files, really sucks
                 if (char.IsLetterOrDigit(LineSeperator[0]) || valueBuffer[103] != ElementSeperator || valueBuffer[106] != 'G')
                 {
@@ -160,12 +156,7 @@ namespace Model.EDI.X12.v2
         public override string ToString()
         {
             return "";
-        }
-
-        public override void Populate()
-        {
-            throw new NotImplementedException();
-        }
+        } 
     }
 
     [ProtoBuf.ProtoContract]
@@ -178,9 +169,7 @@ namespace Model.EDI.X12.v2
 
         public GE() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -205,9 +194,7 @@ namespace Model.EDI.X12.v2
 
         public ST() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -224,30 +211,25 @@ namespace Model.EDI.X12.v2
     public class BHT : BaseStdSegment
     {
         [ProtoBuf.ProtoMember(1)]
-        public string structureCode;
+        public string structureCode { get { return GetFieldValue(1); } set { SetFieldValue(1,value); } }
         [ProtoBuf.ProtoMember(2)]
-        public string transactionSetPurposeCode;
+        public string transactionSetPurposeCode { get { return GetFieldValue(2); } set { SetFieldValue(2, value); } }
         [ProtoBuf.ProtoMember(3)]
-        public string refId;
+        public string refId { get { return GetFieldValue(3); } set { SetFieldValue(3, value); } }
         [ProtoBuf.ProtoMember(4)]
-        public string date;
+        public string date { get { return GetFieldValue(4); } set { SetFieldValue(4, value); } }
         [ProtoBuf.ProtoMember(5)]
-        public string time;
+        public string time { get { return GetFieldValue(5); } set { SetFieldValue(5, value); } }
         [ProtoBuf.ProtoMember(6)]
-        public string transactionTypeCode;
+        public string transactionTypeCode { get { return GetFieldValue(6); } set { SetFieldValue(6, value); } }
 
-        public BHT() { }
+        public BHT():base() { }
 
         public BHT(string[] splitX12Line) : this(splitX12Line.ToList())
         {
         }
 
-        public BHT(List<string> splitX12Line)
-        {
-
-        }
-
-        public override void Populate()
+        public BHT(List<string> splitX12Line) :base(splitX12Line)
         {
         }
 
@@ -261,7 +243,7 @@ namespace Model.EDI.X12.v2
             return "";
         }
     }
-    
+
     [ProtoBuf.ProtoContract]
     public class SE : BaseStdSegment
     {
@@ -272,9 +254,7 @@ namespace Model.EDI.X12.v2
 
         public SE() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override string ToString()
         {
@@ -285,7 +265,7 @@ namespace Model.EDI.X12.v2
         {
             return true;
         }
-    } 
+    }
 
     [ProtoBuf.ProtoContract]
     public class HL : BaseStdSegment
@@ -318,9 +298,7 @@ namespace Model.EDI.X12.v2
             HierarchParentId = splitX12Line[2];
         }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -361,9 +339,7 @@ namespace Model.EDI.X12.v2
 
         public NM1() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -404,9 +380,7 @@ namespace Model.EDI.X12.v2
 
         public DMG() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -433,9 +407,7 @@ namespace Model.EDI.X12.v2
 
         public TRN() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -460,9 +432,7 @@ namespace Model.EDI.X12.v2
 
         public REF() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -485,9 +455,7 @@ namespace Model.EDI.X12.v2
 
         public AMT() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -511,9 +479,7 @@ namespace Model.EDI.X12.v2
 
         public DTP() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -545,9 +511,7 @@ namespace Model.EDI.X12.v2
 
         public SVC() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -587,9 +551,7 @@ namespace Model.EDI.X12.v2
         public string healthCareStatClaim3;
         public STC() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -624,9 +586,7 @@ namespace Model.EDI.X12.v2
         public string contactInqRef;
         public PER() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -654,9 +614,7 @@ namespace Model.EDI.X12.v2
         public string ClaimFileIndCode;
         public SBR() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -681,9 +639,7 @@ namespace Model.EDI.X12.v2
         public string Pregnant;
         public PAT() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -702,9 +658,7 @@ namespace Model.EDI.X12.v2
         public string AddressLine2;
         public N3() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override string ToString()
         {
@@ -727,9 +681,7 @@ namespace Model.EDI.X12.v2
         public string CountrySubCode;
         public N4() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -766,9 +718,7 @@ namespace Model.EDI.X12.v2
         public string DelayReasonCode;
         public CLM() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -790,9 +740,7 @@ namespace Model.EDI.X12.v2
         public string SpecialtyInfo;
         public string OrganizationCode;
         public PRV() { }
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -829,9 +777,7 @@ namespace Model.EDI.X12.v2
         public string Time5;
 
         public CUR() { }
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -856,9 +802,7 @@ namespace Model.EDI.X12.v2
         public string RequestCategoryCode;
         public PWK() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -880,9 +824,7 @@ namespace Model.EDI.X12.v2
         public string VersionId;
         public CN1() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override string ToString()
         {
@@ -900,9 +842,7 @@ namespace Model.EDI.X12.v2
         public string FixedFormatInfomation;
         public K3() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override string ToString()
         {
@@ -920,9 +860,7 @@ namespace Model.EDI.X12.v2
         public string Description;
         public NTE() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -948,9 +886,7 @@ namespace Model.EDI.X12.v2
         public string Description2;
         public CR1() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -978,9 +914,7 @@ namespace Model.EDI.X12.v2
         public string YesNo2;
         public CR2() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -1003,9 +937,7 @@ namespace Model.EDI.X12.v2
         public string ConditionIndicator5;
         public CRC() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -1034,9 +966,7 @@ namespace Model.EDI.X12.v2
 
         public HI() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -1066,9 +996,7 @@ namespace Model.EDI.X12.v2
         public string PolicyComplianceCode;
         public string ExceptionCode;
         public HCP() { }
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -1106,9 +1034,7 @@ namespace Model.EDI.X12.v2
         public string ReasonCode6;
         public string Amount6;
         public CAS() { }
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -1129,9 +1055,7 @@ namespace Model.EDI.X12.v2
         public string ProviderAgreementCode;
         public string ReleaseOfInfomationCode;
         public OI() { }
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -1155,9 +1079,7 @@ namespace Model.EDI.X12.v2
         public string Amount2;
         public string Amount3;
         public MOA() { }
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -1174,9 +1096,7 @@ namespace Model.EDI.X12.v2
         public string AssignedNumber;
         public LX() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override string ToString()
         {
@@ -1213,9 +1133,7 @@ namespace Model.EDI.X12.v2
         public string ProviderAgreementCode;
         public SV1() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -1238,9 +1156,7 @@ namespace Model.EDI.X12.v2
         public string PrognosisCode;
         public SV5() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -1261,9 +1177,7 @@ namespace Model.EDI.X12.v2
         public string Description;
         public CR3() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -1285,9 +1199,7 @@ namespace Model.EDI.X12.v2
 
         public QTY() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -1307,9 +1219,7 @@ namespace Model.EDI.X12.v2
         public string Value;
         public MEA() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -1328,9 +1238,7 @@ namespace Model.EDI.X12.v2
         public string StateCode;
         public PS1() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -1349,9 +1257,7 @@ namespace Model.EDI.X12.v2
         public string ProductServiceId;
         public LIN() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -1372,9 +1278,7 @@ namespace Model.EDI.X12.v2
         public string CompositeUnitOfMeasure;
         public CTP() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -1396,9 +1300,7 @@ namespace Model.EDI.X12.v2
         public string AssignedNumber;
         public SVD() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -1416,9 +1318,7 @@ namespace Model.EDI.X12.v2
         public string IndustryCode;
         public LQ() { }
 
-        public override void Populate()
-        {
-        }
+
 
         public override bool Validate()
         {
@@ -1441,11 +1341,9 @@ namespace Model.EDI.X12.v2
 
         public FRM()
         {
-        } 
-
-        public override void Populate()
-        {
         }
+
+
 
         public override bool Validate()
         {

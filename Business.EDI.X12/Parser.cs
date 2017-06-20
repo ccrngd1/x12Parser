@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Model.EDI.X12;
 using Model.EDI.X12.v2.Base;
 
 namespace Business.EDI.X12.v2
@@ -14,15 +15,17 @@ namespace Business.EDI.X12.v2
         {
             bool newHeaderSection = false;
 
-            List<X12Doc> retDocs = new List<X12Doc>();
+            var retDocs = new List<X12Doc>();
             X12Doc tempBuildingDoc = doc;
 
             var sStream = new SegmentStream(File.OpenRead(fullFilePath));
 
-            var lineContent = sStream.ReadNextLine();
+            baseFieldValues lineContent = sStream.ReadNextLine();
 
-            var headerSplit = HeaderSegments.Split(',').ToList();
-            var trailerSplit = TrailerSegments.Split(',').ToList();
+            List<string> headerSplit = HeaderSegments.Split(',').ToList();
+            List<string> trailerSplit = TrailerSegments.Split(',').ToList();
+
+            LoopCollection currentLoopCollection = null;
 
             while (lineContent != null)
             {
@@ -33,15 +36,20 @@ namespace Business.EDI.X12.v2
                     {
                         retDocs.Add(tempBuildingDoc);
                         newHeaderSection = true;
-                    }
+                    } 
+
+                    if (tempBuildingDoc.BeginHierarchicalTransaction.IsQualified(lineContent))
+                        tempBuildingDoc.BeginHierarchicalTransaction.Populate(lineContent);
+                    else if (tempBuildingDoc.TransactionSetHeader.IsQualified(lineContent))
+                        tempBuildingDoc.TransactionSetHeader.Populate(lineContent);
+                    else if (tempBuildingDoc.InterchagneControlHeader.IsQualified(lineContent))
+                        tempBuildingDoc.InterchagneControlHeader.Populate(lineContent);
+                    else if (tempBuildingDoc.FunctionGroupHeader.IsQualified(lineContent))
+                        tempBuildingDoc.FunctionGroupHeader.Populate(lineContent);
                     else
                     {
-                        //nothing to do, we have a few header segments
-                        //this just means we are reading through all of them
-                        Console.WriteLine("oops header");
+                        Console.WriteLine("nothing for header segment qual");
                     }
-
-                    if(tempBuildingDoc.BeginHierarchicalTransaction.)
                 }
                 //is a trailer segment
                 else if (trailerSplit.Contains(lineContent[0]))
@@ -58,10 +66,68 @@ namespace Business.EDI.X12.v2
                     if (newHeaderSection)
                         newHeaderSection = false;
 
+                    var currentLoopProcessed = false;
+                    if (currentLoopCollection != null)
+                    {
+                        var qualifiedSegments = currentLoopCollection.IsQualified(lineContent, QulificationLevel.Recursive);
+
+                        if (qualifiedSegments.Count == 1)
+                        {
+                            currentLoopCollection = qualifiedSegments[0].OwningLoopCollection;
+                            currentLoopProcessed = true;
+                        }
+                        else //there wasn't just 1 match
+                        {
+                            if (qualifiedSegments == null || !qualifiedSegments.Any()) //there were none
+                            {
+
+                                //if the currentLoop and its subloops can't handle this, lets walk up the stack
+                                while (currentLoopCollection.ParentLoopCollection != null)
+                                {
+                                    currentLoopCollection = currentLoopCollection.ParentLoopCollection;
+
+                                    qualifiedSegments = currentLoopCollection.IsQualified(lineContent, QulificationLevel.TopMost);
+
+                                    if (qualifiedSegments.Count == 1)
+                                    {
+
+                                    }
+                                    else
+                                    {
+                                        //todo: something?
+                                        Console.Write("some parental crap");
+                                    }
+                                }
+                            }
+                            else //there were multiple and needs a tiebreaker 
+                            {
+                                //todo: something
+                                Console.WriteLine("we have too many, what do we do?");
+                            }
+                        }
+                    }
+
+                    //if the current loop we have saved off does not claim it, we should just interogate the whole doc again
+                    //this may not be efficient, we may want to walk back up our stack to make it mo' betta
+                    if (!currentLoopProcessed)
+                    {
+                        var qualifiedSegments = new List<BaseStdSegment>();
+                        foreach (LoopCollection loopCollection in tempBuildingDoc.TopLevelLoops)
+                        {
+                            qualifiedSegments = loopCollection.IsQualified(lineContent, QulificationLevel.Recursive);
+                        }
+
+                        if (qualifiedSegments.Count == 1)
+                        {
+                            currentLoopCollection = qualifiedSegments[0].OwningLoopCollection;
+                        }
+                    }
+
                     //tempBuildingDoc.DocumentDefinition.IsQualified(lineContent);
 
                     //doc.
                 }
+
                 lineContent = sStream.ReadNextLine();
             }
 
