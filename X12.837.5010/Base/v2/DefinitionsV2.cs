@@ -24,6 +24,11 @@ namespace Model.EDI.X12.v2.Base
             FieldId = fieldId;
             QualifierValues = parameters.ToList();
         }
+
+        public bool IsQaulified(baseFieldValues segmentFields)
+        {
+            return QualifierValues.Contains(segmentFields[FieldId]);
+        }
     }
 
     public interface ISegmentDefinition

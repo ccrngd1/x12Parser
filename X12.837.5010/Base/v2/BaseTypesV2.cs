@@ -267,18 +267,27 @@ namespace Model.EDI.X12.v2.Base
         public string _rawValue = null;
         public baseFieldValues _fieldValues;
         
-        public BaseStdSegment() { }
+        public BaseStdSegment() { } 
 
-        public BaseStdSegment(string value)
+        public void Populate(baseFieldValues baseVals)
         {
-            _rawValue = value;
-            _fieldValues = new baseFieldValues(_rawValue.Split(new[] { " " }, StringSplitOptions.None).ToList());
+            _fieldValues = baseVals;
         }
-
-        public abstract void Populate();
         public abstract bool Validate();
 
         public List<SegmentQualifiers> SegmentQualifierValues { get; set; }
+
+        public bool IsQualified(baseFieldValues segmentFields)
+        {
+            bool retVal = true;
+
+            foreach(var qualVal in SegmentQualifierValues)
+            {
+                retVal = retVal && qualVal.IsQaulified(segmentFields);
+            }
+
+            return retVal;
+        }
     }
 
     /// <summary>

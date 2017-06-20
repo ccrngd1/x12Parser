@@ -40,6 +40,8 @@ namespace Business.EDI.X12.v2
                         //this just means we are reading through all of them
                         Console.WriteLine("oops header");
                     }
+
+                    if(tempBuildingDoc.BeginHierarchicalTransaction.)
                 }
                 //is a trailer segment
                 else if (trailerSplit.Contains(lineContent[0]))
@@ -55,10 +57,11 @@ namespace Business.EDI.X12.v2
                 {
                     if (newHeaderSection)
                         newHeaderSection = false;
+
+                    //tempBuildingDoc.DocumentDefinition.IsQualified(lineContent);
+
+                    //doc.
                 }
-
-                //tempBuildingDoc.DocumentDefinition.IsQualified(lineContent);
-
                 lineContent = sStream.ReadNextLine();
             }
 
