@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Model.EDI.X12.v2.Base;
+﻿using Model.EDI.X12.v2.Base;
 
 namespace Model.EDI.X12.v2
 {

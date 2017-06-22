@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="277\5010\v1\Loops.cs" />
     <Compile Include="277\5010\v2\277Definition.cs" />
+    <Compile Include="277\5010\v2\277LoopEntities.cs" />
     <Compile Include="277\5010\v2\277Loops.cs" />
     <Compile Include="277\5010\v2\277Partial-SetUpDefs.cs" />
     <Compile Include="277\5010\v2\277Partial-Validate.cs" />

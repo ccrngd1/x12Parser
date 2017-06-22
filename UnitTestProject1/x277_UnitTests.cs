@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Business.EDI.X12.v2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Model.EDI.X12.Format277.v5010.v2;
+//using Model.EDI.X12.Format277.v5010.v2;
 using Model.EDI.X12.v2.Base;
 
 namespace UnitTestProject1
@@ -17,8 +17,8 @@ namespace UnitTestProject1
         [TestMethod]
         public void TestSetupDefinitionsSingleMethod()
         {
-            var test = new X12_277_5010(true);
-            var test2 = new X12_277_5010();
+            //var test = new X12_277_5010(true);
+            //var test2 = new X12_277_5010();
 
             //Assert.IsNotNull(test.DocumentDefinition);
         }
@@ -27,7 +27,7 @@ namespace UnitTestProject1
         public void Test277Parser()
         {
 
-            var parsedTest = Parser.ParseFile< X12_277_5010>(@"\\r90lmgla\c$\test files\x12\277\test277");
+            //var parsedTest = Parser.ParseFile< X12_277_5010>(@"\\r90lmgla\c$\test files\x12\277\test277");
         }
     }
 }

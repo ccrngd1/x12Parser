@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic; 
 using System.Linq;
+using System.Security.Principal;
 using System.Text; 
 
 namespace CodeGenerator
@@ -9,13 +10,22 @@ namespace CodeGenerator
     {
         public string Named;
         public string Typed;
+
+        public NameType(string n, string t)
+        {
+            Named = n;
+            Typed = t;
+        } 
     }
 
     public class LoopsCSVHolder
     {
-        public string LoopName { get; set; }
-        public string FieldName { get; set; }
-        public string Description { get; set; }
+        private string _loopName;
+        private string _description;
+        private string _fieldName;
+        public string LoopName { get { return Util.NormalizeName(_loopName); } set { _loopName = value; } }
+        public string FieldName { get { return Util.NormalizeName(_fieldName); } set { _fieldName = value; } }
+        public string Description { get { return Util.NormalizeDescription(_description); } set { _description = value; } }
         public string Repeat { get; set; }
         public string Qualifiers { get; set; }
         public string Required { get; set; }
@@ -94,17 +104,38 @@ namespace CodeGenerator
             return csvLines;
         }
 
-        public static string NormalizeDescription(string desc)
+        public static string NormalizeName(string name)
         {
-            var fixUpSegDesc = desc.ToLower().Split(' ');
+            if (string.IsNullOrWhiteSpace(name)) return null;
+
+            if (char.IsDigit(name[0])) //check for 2000A type names first
+            {
+                int c = name[name.Length - 1];
+                if (char.IsLetter((char)(c)))
+                {
+                    name = string.Format("{0}{1}", name.Substring(0, name.Length - 1), (char) c);
+                }
+                return name;
+            }
+
+            //now deal with ISA, and compound words, they cant start with numbers anyway
+            var fixUpSegDesc = name.ToLower().Split(' ');
             for (int ii = 0; ii < fixUpSegDesc.Length; ii++)
             {
-                var c = fixUpSegDesc[ii][0] + 32;
+                int c = fixUpSegDesc[ii][0] - 32; //make this single character ToUpper
 
-                fixUpSegDesc[ii] = string.Format("{0}{1}", c, fixUpSegDesc[ii].Substring(1));
+                fixUpSegDesc[ii] = string.Format("{0}{1}", (char)c, fixUpSegDesc[ii].Substring(1));
             }
 
             return string.Join("", fixUpSegDesc);
+        }
+
+        public static string NormalizeDescription(string desc)
+        {
+            string s = NormalizeName(desc);
+
+            if (string.IsNullOrWhiteSpace(s)) return "Empty";
+            return s;
         }
     }
     
@@ -124,11 +155,12 @@ namespace CodeGenerator
                 {
                     if (string.IsNullOrWhiteSpace(csvLines[i].LoopName)) continue;
 
-                    writer.WriteLine("public partial class Loop{0}Collection:LoopCollection<Loop{0}", csvLines[i].LoopName);
+                    writer.WriteLine("public partial class Loop{0}Collection:LoopCollection<Loop{0}>", csvLines[i].LoopName);
                     writer.WriteLine("{");
 
-                    writer.WriteLine("\tpublic Loop{0}Collection(string loopName, string loopNameDescription, X12Doc owningDoc, int repLimit, LoopCollection parent, LoopCollection prev)");
-                    writer.WriteLine("\t\t:base(loopName, loopNameDescription, owningDoc, repLimit, parent, prev) { }");
+                    writer.WriteLine("\tpublic Loop{0}Collection(string loopName, string loopNameDescription, X12Doc owningDoc, LoopCollection parent, LoopCollection prev)",
+                        csvLines[i].LoopName);
+                    writer.WriteLine("\t\t:base(loopName, loopNameDescription, owningDoc, parent, prev) { }");
 
                     writer.WriteLine("}"); //} LoopCollection
                 }
@@ -146,19 +178,19 @@ namespace CodeGenerator
                 List<NameType> subLoops= new List<NameType>();
                 List<NameType> segments = new List<NameType>();
 
-                for (int i = 0; i < csvLines.Count; i++)
+                for (int i = 0; i <=csvLines.Count; i++)
                 {
-                    if (!string.IsNullOrWhiteSpace(csvLines[i].LoopName))
+                    if (i==csvLines.Count || !string.IsNullOrWhiteSpace(csvLines[i].LoopName))
                     {
                         if (i != 0)
                         {
                             //if we have something in these lists, we need to make a ctor before closing the tag out
-                            writer.WriteLine("public Loop{0}Collection(X12Doc owningDoc, LoopEntity prev, LoopCollection parent):base(owningDoc, prev, parent){{",
+                            writer.WriteLine("public Loop{0}(X12Doc owningDoc, LoopEntity prev, LoopCollection parent):base(owningDoc, prev, parent){{",
                                 currentLoopName);
 
                             foreach (NameType nameType in segments)
                             {
-                                writer.WriteLine("{0} = new {1}(this, nameof({0});", nameType.Named, nameType.Typed);
+                                writer.WriteLine("{0} = new {1}Collection(this, nameof({0}));", nameType.Named, nameType.Typed);
                                 writer.WriteLine("SegmentCollections.Add({0});", nameType.Named);
                             }
 
@@ -166,39 +198,45 @@ namespace CodeGenerator
 
                             foreach (NameType nameType in subLoops)
                             {
-                                writer.WriteLine("{0} = new Loop{1}Collection(\"Loop{1}\", nameof({0}), OwningDoc, parent, parent", 
+                                writer.WriteLine("{0} = new Loop{1}Collection(\"Loop{1}\", nameof({0}), OwningDoc, parent, parent);", 
                                     nameType.Named, nameType.Typed);
+                                writer.WriteLine("ChildLoopCollections.Add({0})", nameType.Named);
                             }
+
+                            writer.WriteLine("}");
 
                             subLoops = new List<NameType>();
                             segments = new List<NameType>();
 
                             writer.WriteLine(
                                 "}"); //bah, the first one will be wrong and need to be manually deleted - idc
+
+                            if (i == csvLines.Count) break;
                         }
 
                         writer.WriteLine("public partial class Loop{0} : LoopEntity{{", csvLines[i].LoopName);
                         currentLoopName = csvLines[i].LoopName;
                     }
                     else
-                    {
-                        if (!csvLines[i].IsSubLoop) //if this isnt a sub loop, that means we are a segment under a loop
-                        {
+                    { 
                             writer.WriteLine("\tpublic {0}Collection {1} {{get;set;}}", 
-                                csvLines[i].FieldName,Util.NormalizeDescription(csvLines[i].Description));
-                        }
-                        else //this is a sub loop, check to see if it has a parent of this loop, if so, add it
+                                csvLines[i].FieldName, csvLines[i].Description);
+
+                            segments.Add(new NameType(csvLines[i].Description, csvLines[i].FieldName)); 
+
+                        if(i<csvLines.Count-1 && csvLines[i+1].IsSubLoop) //this is a sub loop, check to see if it has a parent of this loop, if so, add it
                         {
                             //have to check down from this to see if the next subLoop def has this loop name in it
                             for (int j = i + 1; j < csvLines.Count; j++)
-                            {
-                                if (!csvLines[j].IsSubLoop) continue;
-
-                                if (csvLines[j].ParentLoopName == currentLoopName) //have to check all subloops from here on, because we could have a sub loop of a subloop then come back to our next subloop (trust me)
+                            { 
+                                //have to check all subloops from here on, because we could have a sub loop of a subloop then come back to our next subloop (trust me)
+                                if (csvLines[j].ParentLoopName == currentLoopName) 
                                 {
                                     writer.WriteLine("\tpublic Loop{0}Collecction {1} {{get;set;}}",
-                                        csvLines[j].LoopName, Util.NormalizeDescription(csvLines[j].Description));
-                                } 
+                                        csvLines[j].LoopName, csvLines[j].Description);
+
+                                    subLoops.Add(new NameType(csvLines[j].Description, csvLines[j].LoopName));
+                                }
                             }
                         }
                     }
