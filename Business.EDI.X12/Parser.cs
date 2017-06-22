@@ -25,7 +25,7 @@ namespace Business.EDI.X12.v2
             List<string> headerSplit = HeaderSegments.Split(',').ToList();
             List<string> trailerSplit = TrailerSegments.Split(',').ToList();
 
-            LoopCollection currentLoopCollection = null;
+            LoopEntity currentLoop = null;
 
             while (lineContent != null)
             {
@@ -67,45 +67,60 @@ namespace Business.EDI.X12.v2
                         newHeaderSection = false;
 
                     var currentLoopProcessed = false;
-                    if (currentLoopCollection != null)
+                    if (currentLoop != null)
                     {
-                        var qualifiedSegments = currentLoopCollection.IsQualified(lineContent, QulificationLevel.Recursive);
+                        List<BaseStdSegment> qualifiedSegments = currentLoop.IsQualified(lineContent, QulificationLevel.Recursive);
 
                         if (qualifiedSegments.Count == 1)
                         {
-                            currentLoopCollection = qualifiedSegments[0].OwningLoopCollection;
+                            if (qualifiedSegments[0].IsLoopStarter)
+                            {
+                                currentLoop.ParentLoopCollection.Add();
+                                currentLoop = currentLoop.ParentLoopCollection.LoopEntities.Last();
+                            }
+
+                            currentLoop.Add(qualifiedSegments[0].CreateBaseStdSegment(lineContent));
                             currentLoopProcessed = true;
                         }
-                        else //there wasn't just 1 match
+                        else if (!qualifiedSegments.Any()) //there were none
                         {
-                            if (qualifiedSegments == null || !qualifiedSegments.Any()) //there were none
+                            var currentLoopCollection = currentLoop.ParentLoopCollection;
+
+                            //if the currentLoop and its subloops can't handle this, lets walk up the stack
+                            while (currentLoopCollection.ParentLoopCollection != null)
                             {
+                                currentLoopCollection = currentLoopCollection.ParentLoopCollection;
 
-                                //if the currentLoop and its subloops can't handle this, lets walk up the stack
-                                while (currentLoopCollection.ParentLoopCollection != null)
+                                qualifiedSegments = currentLoopCollection.IsQualified(lineContent, QulificationLevel.TopMost);
+
+                                if (qualifiedSegments.Count == 1)
                                 {
-                                    currentLoopCollection = currentLoopCollection.ParentLoopCollection;
-
-                                    qualifiedSegments = currentLoopCollection.IsQualified(lineContent, QulificationLevel.TopMost);
-
-                                    if (qualifiedSegments.Count == 1)
-                                    {
-
-                                    }
+                                    if (qualifiedSegments[0].IsLoopStarter) //should always be a starter
+                                        currentLoopCollection.Add();
                                     else
                                     {
-                                        //todo: something?
-                                        Console.Write("some parental crap");
+                                        //todo: is this an error?
+                                        Console.WriteLine("new loop but not a starter segment?");
                                     }
+
+                                    currentLoop = currentLoopCollection.LoopEntities.Last();
+
+                                    currentLoop.Add(qualifiedSegments[0].CreateBaseStdSegment(lineContent));
+                                    currentLoopProcessed = true;
+                                }
+                                else
+                                {
+                                    //todo: something?
+                                    Console.Write("some parental crap");
                                 }
                             }
-                            else //there were multiple and needs a tiebreaker 
-                            {
-                                //todo: something
-                                Console.WriteLine("we have too many, what do we do?");
-                            }
                         }
-                    }
+                        else //there were multiple and needs a tiebreaker 
+                        {
+                            //todo: something
+                            Console.WriteLine("we have too many, what do we do?");
+                        }
+                    }  
 
                     //if the current loop we have saved off does not claim it, we should just interogate the whole doc again
                     //this may not be efficient, we may want to walk back up our stack to make it mo' betta
@@ -114,12 +129,21 @@ namespace Business.EDI.X12.v2
                         var qualifiedSegments = new List<BaseStdSegment>();
                         foreach (LoopCollection loopCollection in tempBuildingDoc.TopLevelLoops)
                         {
-                            qualifiedSegments = loopCollection.IsQualified(lineContent, QulificationLevel.Recursive);
+                            qualifiedSegments.AddRange(loopCollection.IsQualified(lineContent, QulificationLevel.Recursive));
                         }
 
                         if (qualifiedSegments.Count == 1)
                         {
-                            currentLoopCollection = qualifiedSegments[0].OwningLoopCollection;
+                            if (qualifiedSegments[0].IsLoopStarter) //should always be
+                                qualifiedSegments[0].OwningLoopCollection.Add();
+                            else
+                            {
+                                Console.WriteLine("another weird ");
+                            }
+
+                            currentLoop = qualifiedSegments[0].OwningLoopCollection.LoopEntities.Last();
+                            currentLoop.Add(qualifiedSegments[0].CreateBaseStdSegment(lineContent));
+                            currentLoopProcessed = true;
                         }
                     }
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Model.EDI.X12.v2.Base;
 using Model.EDI.X12.v2;
 
@@ -16,12 +17,14 @@ namespace Model.EDI.X12.Format277.v5010.v2
 
         public override void SetUpDefinition()
         {
-            ChildLoopCollection.Add();
+            SetUpChildDefinitions = true;
+
             SegmentDefinitions.Add(new HL()
             {
                 SegmentQualifierValues = new List<SegmentQualifiers>(),
                 OwningLoopCollection =  this,
-                IsLoopStarter = true
+                IsLoopStarter = true,
+                SegmentDefinitionName = "InformationSourceLevel"
             }); 
         }  
     }
@@ -34,9 +37,13 @@ namespace Model.EDI.X12.Format277.v5010.v2
 
         public Loop2000A(X12Doc owningDoc, LoopEntity prev, LoopCollection parent):base(owningDoc, prev, parent)
         {
-            InformationSourceLevel = new HlCollection(this);
-            
+            InformationSourceLevel = new HlCollection(this, ParentLoopCollection.SegmentDefinitions.Where(c=>c.SegmentDefinitionName == "InformationSourceLevel").First()); 
+
             PayerName = new Loop2100ACollection("Loop2100A", nameof(PayerName), OwningDoc, 1,parent, parent );
+
+            SegmentCollections.Add(InformationSourceLevel);
+
+            ChildLoopCollections.Add(PayerName);
         }
     }
 
@@ -55,7 +62,8 @@ namespace Model.EDI.X12.Format277.v5010.v2
             {
                 SegmentQualifierValues = new List<SegmentQualifiers>(),
                 OwningLoopCollection = this,
-                IsLoopStarter = true
+                IsLoopStarter = true,
+                SegmentDefinitionName = "InformationSourceName"
             });
         }
     }

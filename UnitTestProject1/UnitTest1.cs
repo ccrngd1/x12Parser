@@ -15,8 +15,8 @@ namespace UnitTestProject1
         [TestMethod]
         public void TestMethod1()
         {
-            SegmentCollection testNM1 = new Nm1Collection(null);
-            SegmentCollection testPER = new PerCollection(null);
+            SegmentCollection testNM1 = new Nm1Collection(null, null);
+            SegmentCollection testPER = new PerCollection(null, null);
 
             List<SegmentCollection> testColl =new List<SegmentCollection>();
 

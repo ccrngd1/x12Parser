@@ -34,6 +34,10 @@ namespace Model.EDI.X12.v2.Base
     public interface ISegmentDefinition
     {
         List<SegmentQualifiers> SegmentQualifierValues { get; set; }
+
+        bool IsLoopStarter { get; set; }
+
+        BaseStdSegment CreateBaseStdSegment(baseFieldValues bsf);
     }
 
     public interface ISegmentValidator

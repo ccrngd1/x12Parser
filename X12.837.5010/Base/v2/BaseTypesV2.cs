@@ -67,9 +67,11 @@ namespace Model.EDI.X12.v2.Base
     public abstract class LoopCollection
     {
         //the doc this collection belongs to
-        public X12Doc OwningX12Doc;
+        public X12Doc OwningX12Doc { get; set; }
 
-        public LoopCollection ParentLoopCollection;
+        public LoopCollection ParentLoopCollection { get; set; }
+
+        public bool SetUpChildDefinitions { get; set; }
 
         //remove this - it was intended for checking seg qualifiers further down the stack
         //this isnt needed tho, since at any time we have a LoopEntity in our parser state, this means that entity already has its possible LoopCollections with their own SegmentDefs
@@ -154,9 +156,16 @@ namespace Model.EDI.X12.v2.Base
                 {
                     if(recursiveCheck==QulificationLevel.FirstChild) recursiveCheck=QulificationLevel.TopMost;
 
-                    foreach (var childLoopCollection in ChildLoopCollection)
+                    //we would have to search lower than our current level
+                    //can only do this if we are currently working in a loop
+                    //if we are, check its child loopCollections as well
+                    if (LoopEntities != null && LoopEntities.Any())
                     {
-                        retVal.AddRange(childLoopCollection.IsQualified(baseFieldValues, recursiveCheck));
+                        foreach (var childLoopCollection in LoopEntities.Last().ChildLoopCollections)
+                        {
+                            retVal.AddRange(childLoopCollection.IsQualified(baseFieldValues,recursiveCheck));
+                        }
+                        
                     }
                 }
             }
@@ -167,6 +176,12 @@ namespace Model.EDI.X12.v2.Base
 
             return retVal;
         }
+
+
+
+        public abstract void Add(LoopEntity loop);
+
+        public abstract void Add();
     }
 
     /// <summary>
@@ -240,21 +255,25 @@ namespace Model.EDI.X12.v2.Base
         public LoopCollection(string loopName, string loopNameDescription, X12Doc owningDoc, int repLimit, LoopCollection parent, LoopCollection prev) : base(loopName, loopNameDescription, owningDoc, repLimit, parent, prev)
         {
         }
-        public void Add(baseFieldValues baseValues)
-        {
 
+        public override void Add(LoopEntity loop)
+        {
+            if(SetUpChildDefinitions)
+                loop.SetUpDefinition(SegmentDefinitions);
+
+            LoopEntities.Add(loop);
         }
 
-        public void Add(BaseStdSegment stdSegment)
+        public override void Add()
         {
-            if (stdSegment.IsLoopStarter)
-                LoopEntities.Add(default(T));
+            var l = (T) Activator.CreateInstance(typeof(T), OwningX12Doc, LoopEntities.LastOrDefault(), this);
 
+            if (SetUpChildDefinitions)
+                l.SetUpDefinition(SegmentDefinitions);
 
-            var currentLoopEnt = LoopEntities.Last();
+            LoopEntities.Add(l);
+        } 
 
-            currentLoopEnt.
-        }
     }
 
     /// <summary>
@@ -262,36 +281,74 @@ namespace Model.EDI.X12.v2.Base
     /// There is very little additional data stored here, and is meant only for the Definition/Parsing overload to come later
     /// </summary>
     public abstract class LoopEntity
-    { 
-        public string LoopName;
-        public int Index;
+    {
+        public string LoopName { get; set; }
 
-        public X12Doc OwningDoc;
+        public int Index { get; set; }
+
+        public X12Doc OwningDoc { get; set; }
 
         //todo: still useful?
         public LoopEntity PreviousLoop { get; set; }
+
         //todo: still useful?
         public LoopEntity NextLoop { get; set; }
 
-
         public LoopCollection ParentLoopCollection { get; set; }
-        
-        public List<LoopCollection> SubLoopCollections; 
 
-        public List<BaseStdSegment> SegmentDefinitions = new List<BaseStdSegment>(); 
-        
-        public virtual bool Validate() { throw new NotImplementedException(); }
+        public List<LoopCollection> ChildLoopCollections { get; set; }
 
-        public LoopEntity(X12Doc owningDoc, LoopEntity prev, LoopCollection parent)
+        public List<BaseStdSegment> SegmentDefinitions => ParentLoopCollection.SegmentDefinitions;
+
+        public List<BaseStdSegment> IsQualified(baseFieldValues baseFieldValues, QulificationLevel recursiveCheck)
+        {
+            return ParentLoopCollection.IsQualified(baseFieldValues, recursiveCheck);
+        }
+
+        public List<SegmentCollection> SegmentCollections { get; set; }
+
+        public virtual bool Validate()
+        {
+            throw new NotImplementedException();
+        }
+
+        private LoopEntity()
+        {
+            ChildLoopCollections = new List<LoopCollection>();
+            SegmentCollections = new List<SegmentCollection>();
+        }
+
+        public LoopEntity(X12Doc owningDoc, LoopEntity prev, LoopCollection parent) : this()
         {
             OwningDoc = owningDoc;
             PreviousLoop = prev;
             ParentLoopCollection = parent;
-        }
+
+            Index = ParentLoopCollection.LoopEntities.Count;
+        } 
 
         public void SetUpDefinition(List<BaseStdSegment> segDef)
-        {
-            SegmentDefinitions = segDef;
+        { 
+            foreach (var childLoop in ChildLoopCollections)
+            {
+                childLoop.SetUpDefinition();
+            }
+        } 
+
+        public void Add(BaseStdSegment segment)
+        { 
+            List<SegmentCollection> handlers = SegmentCollections
+                .Where(c => c.SegmentDefinition.SegmentDefinitionName == segment.SegmentDefinitionName).ToList();
+
+            if (handlers.Any())
+            {
+                handlers[0].Add(segment);
+            }
+            else
+            {
+                //todo: what to do with these pesky errors
+                Console.WriteLine("should have had somethign to handle this");
+            }
         }
     }
 
@@ -302,19 +359,30 @@ namespace Model.EDI.X12.v2.Base
     /// </summary>
     public abstract class SegmentCollection
     {
-        public string SegmentName;
-        public List<BaseStdSegment> Segments;
+        public List<BaseStdSegment> Segments { get; set; }
 
-        public Type BaseType;
+        //todo: do we still need this?
+        public Type BaseType { get; set; }
 
-        public BaseStdSegment SegmentDefinition { get; set; }
+        public BaseStdSegment SegmentDefinition { get; set; } 
 
-        public LoopEntity OwningLoop;
+        public LoopEntity OwningLoopEntity { get; set; }
 
-        public SegmentCollection(Type baseType, LoopEntity owningLoop)
+        private SegmentCollection()
+        {
+            Segments = new List<BaseStdSegment>();
+        }
+
+        public SegmentCollection(Type baseType, LoopEntity owningLoopEntity, BaseStdSegment segmentDef):this()
         {
             BaseType = baseType;
-            OwningLoop = owningLoop;
+            OwningLoopEntity = owningLoopEntity;
+            SegmentDefinition = segmentDef;
+        }
+
+        public void Add(BaseStdSegment segment)
+        {
+            Segments.Add(segment);
         }
     }
 
@@ -326,9 +394,8 @@ namespace Model.EDI.X12.v2.Base
     /// </summary>
     public abstract class BaseStdSegment : ISegmentDefinition
     { 
-        public baseFieldValues FieldValues;
-
-
+        public baseFieldValues FieldValues{get;set;}
+        
         /// <summary>
         /// only for seg def usage
         /// </summary>
@@ -338,6 +405,10 @@ namespace Model.EDI.X12.v2.Base
         /// only for seg def usage
         /// </summary>
         public bool IsLoopStarter { get; set; }
+
+        public string SegmentDefinitionName { get; set; }
+
+        public SegmentCollection OwningSegmentCollection { get; set; }
 
         public string SegmentName
         {
@@ -353,10 +424,11 @@ namespace Model.EDI.X12.v2.Base
             SegmentQualifierValues = new List<SegmentQualifiers>();
         }
 
-        public BaseStdSegment(baseFieldValues bsf)
-        {
-            FieldValues = bsf;
-        }
+        //todo: probably won't need this any longer
+        //public BaseStdSegment(baseFieldValues bsf)
+        //{
+        //    FieldValues = bsf;
+        //}
 
         public BaseStdSegment(List<string> values):this()
         {
@@ -411,6 +483,14 @@ namespace Model.EDI.X12.v2.Base
             }
 
             FieldValues[index] = value;
+        }
+
+        public BaseStdSegment CreateBaseStdSegment(baseFieldValues bsf)
+        {
+            var obj = (BaseStdSegment)this.MemberwiseClone();
+            obj.Populate(bsf);
+
+            return obj;
         }
     }
 
