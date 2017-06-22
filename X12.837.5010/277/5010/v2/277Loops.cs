@@ -3,7 +3,7 @@
 //using Model.EDI.X12.v2;
 
 //namespace Model.EDI.X12.Format277.v5010.v2
-//{ 
+//{
 //    public partial class Loop2000ACollection : LoopCollection<Loop2000A>
 //    {
 //        public Loop2000ACollection(string loopName, string loopNameDescription, X12Doc owningDoc, LoopCollection parent, LoopCollection prev)

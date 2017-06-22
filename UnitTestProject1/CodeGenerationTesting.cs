@@ -72,13 +72,13 @@ namespace UnitTestProject1
     [TestClass]
     public class Generate277
     {
-        [TestMethod]
-        public void GenerateRawLoopsV2_277()
-        {
-            X12_V2_Generation.CreateLoops(@"C:\Users\nick.lawson\Google Drive\Documents\projects\x12Parser\X12.837.5010\277 Loops.txt",
-                @"C:\Users\nick.lawson\Google Drive\Documents\projects\x12Parser\CodeGenerator\RAWGeneratedFiles\",
-                "Model.EDI.X12.Format277.v5010.v2");
-        }
+        //[TestMethod]
+        //public void GenerateRawLoopsV2_277()
+        //{
+        //    X12_V2_Generation.CreateLoops(@"C:\Users\nick.lawson\Google Drive\Documents\projects\x12Parser\X12.837.5010\277 Loops.txt",
+        //        @"C:\Users\nick.lawson\Google Drive\Documents\projects\x12Parser\CodeGenerator\RAWGeneratedFiles\",
+        //        "Model.EDI.X12.Format277.v5010.v2");
+        //}
 
         [TestMethod]
         public void GenerateRawLoopCollectionsV2_2_277()
@@ -92,6 +92,22 @@ namespace UnitTestProject1
         public void GenerateRawLoopEntitiesV2_2_277()
         {
             X12_v2_2_Generation.CreateXXXLoopEntitiesCSFile(@"C:\Users\nick.lawson\Google Drive\Documents\projects\x12Parser\X12.837.5010\277 Loops.txt",
+                @"C:\Users\nick.lawson\Google Drive\Documents\projects\x12Parser\CodeGenerator\RAWGeneratedFiles\",
+                "Model.EDI.X12.Format277.v5010.v2");
+        }
+
+        [TestMethod]
+        public void GenerateRawValidateV2_2_277()
+        {
+            X12_v2_2_Generation.CreateXXXPartialValidate(@"C:\Users\nick.lawson\Google Drive\Documents\projects\x12Parser\X12.837.5010\277 Loops.txt",
+                @"C:\Users\nick.lawson\Google Drive\Documents\projects\x12Parser\CodeGenerator\RAWGeneratedFiles\",
+                "Model.EDI.X12.Format277.v5010.v2");
+        }
+
+        [TestMethod]
+        public void GenerateRawDefintionsV2_2_277()
+        {
+            X12_v2_2_Generation.CreateXXXPartialSetUpDef(@"C:\Users\nick.lawson\Google Drive\Documents\projects\x12Parser\X12.837.5010\277 Loops.txt",
                 @"C:\Users\nick.lawson\Google Drive\Documents\projects\x12Parser\CodeGenerator\RAWGeneratedFiles\",
                 "Model.EDI.X12.Format277.v5010.v2");
         }
@@ -111,6 +127,7 @@ namespace UnitTestProject1
         //        @"C:\Users\ccrng\Google Drive\Documents\projects\x12Parser\CodeGenerator\RAWGeneratedFiles\",
         //        "Model.EDI.X12.Format277.v5010.v2");
         //} 
-         
+
     }
 } 
+

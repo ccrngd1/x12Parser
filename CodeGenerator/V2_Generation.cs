@@ -167,6 +167,50 @@ namespace CodeGenerator
             }
         }
 
+        public static void CreateXXXPartialValidate(string sourceFile, string destinationFolder, string namespaces)
+        {
+            var csvLines = Util.ReadMetaData(sourceFile);
+            using (var writer =
+                new System.IO.StreamWriter(
+                    System.IO.Path.Combine(destinationFolder, namespaces + ".RAWLoopCollectionsValidate.cs")))
+            {
+                for (int i = 0; i < csvLines.Count; i++)
+                {
+                    if (string.IsNullOrWhiteSpace(csvLines[i].LoopName)) continue;
+
+                    writer.WriteLine("public partial class Loop{0}Collection", csvLines[i].LoopName);
+                    writer.WriteLine("{"); 
+
+                    writer.WriteLine("public override bool Validate(){return true;}//ToDo: add real validation");
+
+                    writer.WriteLine("}"); //} LoopCollection
+                }
+            }
+        }
+
+        public static void CreateXXXPartialSetUpDef(string sourceFile, string destinationFolder, string namespaces)
+        {
+            var csvLines = Util.ReadMetaData(sourceFile);
+            using (var writer =
+                new System.IO.StreamWriter(
+                    System.IO.Path.Combine(destinationFolder, namespaces + ".RAWLoopCollectionsSetupDefinitions.cs")))
+            {
+                for (int i = 0; i < csvLines.Count; i++)
+                {
+                    if (string.IsNullOrWhiteSpace(csvLines[i].LoopName)) continue;
+
+                    writer.WriteLine("public partial class Loop{0}Collection", csvLines[i].LoopName);
+                    writer.WriteLine("{");
+
+                    writer.WriteLine("public override void SetUpDefinition(){ "); //todo! - this is where I left off!!!
+
+                    writer.WriteLine("}");//setupDef function
+
+                    writer.WriteLine("}"); //} LoopCollection
+                }
+            }
+        }
+
         public static void CreateXXXLoopEntitiesCSFile(string sourceFile, string destinationFolder, string namespaces)
         {
             var csvLines = Util.ReadMetaData(sourceFile);
@@ -200,7 +244,7 @@ namespace CodeGenerator
                             {
                                 writer.WriteLine("{0} = new Loop{1}Collection(\"Loop{1}\", nameof({0}), OwningDoc, parent, parent);", 
                                     nameType.Named, nameType.Typed);
-                                writer.WriteLine("ChildLoopCollections.Add({0})", nameType.Named);
+                                writer.WriteLine("ChildLoopCollections.Add({0});", nameType.Named);
                             }
 
                             writer.WriteLine("}");
@@ -232,7 +276,7 @@ namespace CodeGenerator
                                 //have to check all subloops from here on, because we could have a sub loop of a subloop then come back to our next subloop (trust me)
                                 if (csvLines[j].ParentLoopName == currentLoopName) 
                                 {
-                                    writer.WriteLine("\tpublic Loop{0}Collecction {1} {{get;set;}}",
+                                    writer.WriteLine("\tpublic Loop{0}Collection {1} {{get;set;}}",
                                         csvLines[j].LoopName, csvLines[j].Description);
 
                                     subLoops.Add(new NameType(csvLines[j].Description, csvLines[j].LoopName));
