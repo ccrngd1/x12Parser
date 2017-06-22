@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Model.EDI.X12.v2.Base;
 using Model.EDI.X12.v2;
 
@@ -10,23 +9,6 @@ namespace Model.EDI.X12.Format277.v5010.v2
         public Loop2000ACollection(string loopName, string loopNameDescription, X12Doc owningDoc, int repLimit, LoopCollection parent, LoopCollection prev) 
             : base(loopName, loopNameDescription, owningDoc, repLimit, parent, prev) { }
 
-        public override bool Validate()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void SetUpDefinition()
-        {
-            SetUpChildDefinitions = true;
-
-            SegmentDefinitions.Add(new HL()
-            {
-                SegmentQualifierValues = new List<SegmentQualifiers>(),
-                OwningLoopCollection =  this,
-                IsLoopStarter = true,
-                SegmentDefinitionName = "InformationSourceLevel"
-            }); 
-        }  
     }
 
     public partial class Loop2000A : LoopEntity
@@ -49,23 +31,9 @@ namespace Model.EDI.X12.Format277.v5010.v2
 
     public partial class Loop2100ACollection : LoopCollection<Loop2100A>
     {
-        public Loop2100ACollection(string loopName, string loopNameDescription, X12Doc owningDoc, int repLimit, LoopCollection parent, LoopCollection prev) : base(loopName, loopNameDescription, owningDoc, repLimit, parent, prev) { }
+        public Loop2100ACollection(string loopName, string loopNameDescription, X12Doc owningDoc, int repLimit, LoopCollection parent, LoopCollection prev) 
+            : base(loopName, loopNameDescription, owningDoc, repLimit, parent, prev) { }
 
-        public override bool Validate()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void SetUpDefinition()
-        {
-            SegmentDefinitions.Add(new NM1()
-            {
-                SegmentQualifierValues = new List<SegmentQualifiers>(),
-                OwningLoopCollection = this,
-                IsLoopStarter = true,
-                SegmentDefinitionName = "InformationSourceName"
-            });
-        }
     }
 
     public partial class Loop2100A : LoopEntity
@@ -73,7 +41,10 @@ namespace Model.EDI.X12.Format277.v5010.v2
         public Nm1Collection InformationSourceName;
         
         public Loop2100A(X12Doc owningDoc, LoopEntity prev, LoopCollection parent):base(owningDoc,prev,parent)
-        { 
+        {
+            InformationSourceName = new Nm1Collection(this, ParentLoopCollection.SegmentDefinitions.Where(c=>c.SegmentDefinitionName == "InformationSourceName").First());
+
+            SegmentCollections.Add(InformationSourceName);
         } 
     }
 

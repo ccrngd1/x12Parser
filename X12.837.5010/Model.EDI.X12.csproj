@@ -67,7 +67,8 @@
     <Compile Include="277\5010\v1\Loops.cs" />
     <Compile Include="277\5010\v2\277Definition.cs" />
     <Compile Include="277\5010\v2\277Loops.cs" />
-    <Compile Include="277\5010\v2\277Partial.cs" />
+    <Compile Include="277\5010\v2\277Partial-SetUpDefs.cs" />
+    <Compile Include="277\5010\v2\277Partial-Validate.cs" />
     <Compile Include="837\5010\Inst\v2\837ILoops.cs" />
     <Compile Include="837\5010\Prof\v1\837Loops.cs" />
     <Compile Include="837\5010\Prof\v2\837Definition.cs" />
