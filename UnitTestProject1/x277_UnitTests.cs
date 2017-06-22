@@ -17,7 +17,8 @@ namespace UnitTestProject1
         [TestMethod]
         public void TestSetupDefinitionsSingleMethod()
         {
-            var test = new X12_277_5010(true); 
+            var test = new X12_277_5010(true);
+            var test2 = new X12_277_5010();
 
             //Assert.IsNotNull(test.DocumentDefinition);
         }
@@ -25,9 +26,8 @@ namespace UnitTestProject1
         [TestMethod]
         public void Test277Parser()
         {
-            var test = new X12_277_5010(true); 
 
-            var parsedTest = test.ParseFile(@"\\r90lmgla\c$\test files\x12\277\test277");
+            var parsedTest = Parser.ParseFile< X12_277_5010>(@"\\r90lmgla\c$\test files\x12\277\test277");
         }
     }
 }

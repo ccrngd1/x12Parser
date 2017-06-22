@@ -19,7 +19,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
 
         public Loop2000A(X12Doc owningDoc, LoopEntity prev, LoopCollection parent):base(owningDoc, prev, parent)
         {
-            InformationSourceLevel = new HlCollection(this, ParentLoopCollection.SegmentDefinitions.Where(c=>c.SegmentDefinitionName == "InformationSourceLevel").First()); 
+            InformationSourceLevel = new HlCollection(this, nameof(InformationSourceLevel)); 
 
             PayerName = new Loop2100ACollection("Loop2100A", nameof(PayerName), OwningDoc, 1,parent, parent );
 
@@ -42,7 +42,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
         
         public Loop2100A(X12Doc owningDoc, LoopEntity prev, LoopCollection parent):base(owningDoc,prev,parent)
         {
-            InformationSourceName = new Nm1Collection(this, ParentLoopCollection.SegmentDefinitions.Where(c=>c.SegmentDefinitionName == "InformationSourceName").First());
+            InformationSourceName = new Nm1Collection(this, nameof(InformationSourceName));
 
             SegmentCollections.Add(InformationSourceName);
         } 

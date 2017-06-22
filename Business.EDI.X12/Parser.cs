@@ -11,12 +11,13 @@ namespace Business.EDI.X12.v2
     {
         private const string HeaderSegments = "ISA,GS,ST,BHT";
         private const string TrailerSegments = "IEA,GE,SE";
-        public static List<X12Doc> ParseFile(this X12Doc doc, string fullFilePath)
+        public static List<X12Doc> ParseFile<T>(string fullFilePath) where T:X12Doc
         {
-            bool newHeaderSection = false;
+            X12Doc tempBuildingDoc = default(T);
 
-            var retDocs = new List<X12Doc>();
-            X12Doc tempBuildingDoc = doc;
+            var newHeaderSection = false;
+
+            var retDocs = new List<X12Doc>(); 
 
             var sStream = new SegmentStream(File.OpenRead(fullFilePath));
 

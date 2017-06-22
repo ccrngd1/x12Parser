@@ -9,8 +9,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
 
         public override void SetUpDefinition()
         {
-            SetUpChildDefinitions = true;
-
+            SetUpChildDefinitions = true; 
             SegmentDefinitions.Add(new HL()
             {
                 SegmentQualifierValues = new List<SegmentQualifiers>(),
@@ -18,8 +17,10 @@ namespace Model.EDI.X12.Format277.v5010.v2
                 IsLoopStarter = true,
                 SegmentDefinitionName = "InformationSourceLevel"
             });
+
+
         }
-    }
+    } 
 
     public partial class Loop2100ACollection
     {

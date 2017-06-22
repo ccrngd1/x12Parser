@@ -53,6 +53,8 @@ namespace Model.EDI.X12.v2.Base
         {
         }
 
+        public X12Doc() : this(false) { }
+
         public abstract void SetUpDefinitions();
     }
 
@@ -81,9 +83,9 @@ namespace Model.EDI.X12.v2.Base
         //the instantiated loops (loopEntity objects) of this collection (IE Loop2100A objects)
         public List<LoopEntity> LoopEntities; 
 
-        public string LoopName;
-        public string LoopNameDescription;
-        public int RepitionLimit;
+        public string LoopName { get; set; }
+        public string LoopNameDescription { get; set; }
+        public int RepitionLimit { get; set; }
 
         public List<BaseStdSegment> SegmentDefinitions { get; set; }
 
@@ -96,7 +98,7 @@ namespace Model.EDI.X12.v2.Base
             set
             {
                 if (_next == null)
-                    _next = null;
+                    _next = value;
                 else
                     throw new AccessViolationException("Next Collection already set");
             }
@@ -104,6 +106,7 @@ namespace Model.EDI.X12.v2.Base
 
         //todo: still useful?
         public LoopCollection _prev;
+
         public LoopCollection PrevCollection
         {
             get { return _prev; }
@@ -327,11 +330,18 @@ namespace Model.EDI.X12.v2.Base
             Index = ParentLoopCollection.LoopEntities.Count;
         } 
 
-        public void SetUpDefinition(List<BaseStdSegment> segDef)
+        public virtual void SetUpDefinition(List<BaseStdSegment> segDef)
         { 
             foreach (var childLoop in ChildLoopCollections)
             {
                 childLoop.SetUpDefinition();
+            }
+
+            foreach (SegmentCollection segmentCollection in SegmentCollections)
+            {
+                segmentCollection.SegmentDefinition =
+                    ParentLoopCollection.SegmentDefinitions.Where(
+                        c => c.SegmentDefinitionName == segmentCollection.SegmentDefinitionName).First();
             }
         } 
 
@@ -368,22 +378,24 @@ namespace Model.EDI.X12.v2.Base
 
         public LoopEntity OwningLoopEntity { get; set; }
 
+        public string SegmentDefinitionName { get; set; }
+
         private SegmentCollection()
         {
             Segments = new List<BaseStdSegment>();
         }
 
-        public SegmentCollection(Type baseType, LoopEntity owningLoopEntity, BaseStdSegment segmentDef):this()
+        public SegmentCollection(Type baseType, LoopEntity owningLoopEntity, string segDefName):this()
         {
             BaseType = baseType;
             OwningLoopEntity = owningLoopEntity;
-            SegmentDefinition = segmentDef;
+            SegmentDefinitionName = segDefName;
         }
 
         public void Add(BaseStdSegment segment)
         {
             Segments.Add(segment);
-        }
+        } 
     }
 
     /// <summary>
