@@ -6,12 +6,12 @@ namespace Model.EDI.X12.Format277.v5010.v2
 {
     public partial class Loop2000ACollection : LoopCollection<Loop2000A>
     {
-        public Loop2000ACollection(string loopName, string loopNameDescription, X12Doc owningDoc, int repLimit, LoopCollection parent, LoopCollection prev) 
-            : base(loopName, loopNameDescription, owningDoc, repLimit, parent, prev) { }
+        public Loop2000ACollection(string loopName, string loopNameDescription, X12Doc owningDoc, LoopCollection parent, LoopCollection prev) 
+            : base(loopName, loopNameDescription, owningDoc, parent, prev) { }
 
     }
 
-    public partial class Loop2000A : LoopEntity
+    public partial class Loop2000A : LoopEntity 
     {
         public HlCollection InformationSourceLevel;
         
@@ -21,7 +21,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
         {
             InformationSourceLevel = new HlCollection(this, nameof(InformationSourceLevel)); 
 
-            PayerName = new Loop2100ACollection("Loop2100A", nameof(PayerName), OwningDoc, 1,parent, parent );
+            PayerName = new Loop2100ACollection("Loop2100A", nameof(PayerName), OwningDoc, parent, parent );
 
             SegmentCollections.Add(InformationSourceLevel);
 
@@ -31,8 +31,8 @@ namespace Model.EDI.X12.Format277.v5010.v2
 
     public partial class Loop2100ACollection : LoopCollection<Loop2100A>
     {
-        public Loop2100ACollection(string loopName, string loopNameDescription, X12Doc owningDoc, int repLimit, LoopCollection parent, LoopCollection prev) 
-            : base(loopName, loopNameDescription, owningDoc, repLimit, parent, prev) { }
+        public Loop2100ACollection(string loopName, string loopNameDescription, X12Doc owningDoc, LoopCollection parent, LoopCollection prev) 
+            : base(loopName, loopNameDescription, owningDoc, parent, prev) { }
 
     }
 

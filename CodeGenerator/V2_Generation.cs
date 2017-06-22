@@ -1,25 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Generic; 
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text; 
 
 namespace CodeGenerator
 {
-    public class LoopsCSVHolder
+    public struct NameType
     {
-        public string LoopName;
-        public string FieldName;
-        public string Name;
-        public string Repeat;
-        public string Qualifiers;
-        public string Required;
-        public string RequiredFields;
-        public string UnusedFields;
-        public string RequiredGroupFields;
+        public string Named;
+        public string Typed;
     }
 
-    public class X12_V2_Generation
+    public class LoopsCSVHolder
+    {
+        public string LoopName { get; set; }
+        public string FieldName { get; set; }
+        public string Description { get; set; }
+        public string Repeat { get; set; }
+        public string Qualifiers { get; set; }
+        public string Required { get; set; }
+        public string RequiredFields { get; set; }
+        public string UnusedFields { get; set; }
+        public string SyntaxRules { get; set; }
+
+        public bool IsSubLoop
+        {
+            get { return !string.IsNullOrWhiteSpace(LoopName) && !string.IsNullOrWhiteSpace(FieldName); }
+        }
+
+        public string ParentLoopName
+        {
+            get
+            {
+                if (IsSubLoop) return FieldName;
+                else return null;
+            }
+        }
+    }
+
+    public static class Util
     {
         public static List<LoopsCSVHolder> ReadMetaData(string sourceFile)
         {
@@ -49,7 +68,7 @@ namespace CodeGenerator
                             t.FieldName = columns[1]?.Trim().Replace(" ", "");
 
                         if (!string.IsNullOrWhiteSpace(columns[2]))
-                            t.Name = columns[2]?.Trim().Replace(" ", "");
+                            t.Description = columns[2]?.Trim().Replace(" ", "");
 
                         t.Repeat = string.IsNullOrWhiteSpace(columns[3]) ? "1" : columns[3].Trim().Replace(" ", "");
 
@@ -66,7 +85,7 @@ namespace CodeGenerator
                             t.UnusedFields = columns[7]?.Trim().Replace(" ", "");
 
                         if (!string.IsNullOrWhiteSpace(columns[8]))
-                            t.RequiredGroupFields = columns[8]?.Trim().Replace(" ", "");
+                            t.SyntaxRules = columns[8]?.Trim().Replace(" ", "");
 
                         csvLines.Add(t);
                     }
@@ -75,9 +94,126 @@ namespace CodeGenerator
             return csvLines;
         }
 
+        public static string NormalizeDescription(string desc)
+        {
+            var fixUpSegDesc = desc.ToLower().Split(' ');
+            for (int ii = 0; ii < fixUpSegDesc.Length; ii++)
+            {
+                var c = fixUpSegDesc[ii][0] + 32;
+
+                fixUpSegDesc[ii] = string.Format("{0}{1}", c, fixUpSegDesc[ii].Substring(1));
+            }
+
+            return string.Join("", fixUpSegDesc);
+        }
+    }
+    
+    //this generator made on 6/22/2017 to start pumping out new loops and definitions
+    //this is after the major shift in how to keep/use segment/loop definitions
+    //this process will need to create XXXDefinition.cs, XXXLoopCollections.cs, XXXLoopEntities.cs, XXXPartial-SetUpDefs.cs, XXXPartial-Validate.cs
+    public class X12_v2_2_Generation
+    {
+        public static void CreateXXXLoopCollectionCSFile(string sourceFile, string destinationFolder, string namespaces)
+        {
+            var csvLines = Util.ReadMetaData(sourceFile);
+            using (var writer =
+                    new System.IO.StreamWriter(
+                        System.IO.Path.Combine(destinationFolder, namespaces + ".RAWLoopCollections.cs")))
+            {
+                for (int i = 0; i < csvLines.Count; i++)
+                {
+                    if (string.IsNullOrWhiteSpace(csvLines[i].LoopName)) continue;
+
+                    writer.WriteLine("public partial class Loop{0}Collection:LoopCollection<Loop{0}", csvLines[i].LoopName);
+                    writer.WriteLine("{");
+
+                    writer.WriteLine("\tpublic Loop{0}Collection(string loopName, string loopNameDescription, X12Doc owningDoc, int repLimit, LoopCollection parent, LoopCollection prev)");
+                    writer.WriteLine("\t\t:base(loopName, loopNameDescription, owningDoc, repLimit, parent, prev) { }");
+
+                    writer.WriteLine("}"); //} LoopCollection
+                }
+            }
+        }
+
+        public static void CreateXXXLoopEntitiesCSFile(string sourceFile, string destinationFolder, string namespaces)
+        {
+            var csvLines = Util.ReadMetaData(sourceFile);
+            using (var writer =
+                new System.IO.StreamWriter(
+                    System.IO.Path.Combine(destinationFolder, namespaces + ".RAWLoopEntities.cs")))
+            {
+                string currentLoopName = null;
+                List<NameType> subLoops= new List<NameType>();
+                List<NameType> segments = new List<NameType>();
+
+                for (int i = 0; i < csvLines.Count; i++)
+                {
+                    if (!string.IsNullOrWhiteSpace(csvLines[i].LoopName))
+                    {
+                        if (i != 0)
+                        {
+                            //if we have something in these lists, we need to make a ctor before closing the tag out
+                            writer.WriteLine("public Loop{0}Collection(X12Doc owningDoc, LoopEntity prev, LoopCollection parent):base(owningDoc, prev, parent){{",
+                                currentLoopName);
+
+                            foreach (NameType nameType in segments)
+                            {
+                                writer.WriteLine("{0} = new {1}(this, nameof({0});", nameType.Named, nameType.Typed);
+                                writer.WriteLine("SegmentCollections.Add({0});", nameType.Named);
+                            }
+
+                            writer.WriteLine(" ");//just for looks
+
+                            foreach (NameType nameType in subLoops)
+                            {
+                                writer.WriteLine("{0} = new Loop{1}Collection(\"Loop{1}\", nameof({0}), OwningDoc, parent, parent", 
+                                    nameType.Named, nameType.Typed);
+                            }
+
+                            subLoops = new List<NameType>();
+                            segments = new List<NameType>();
+
+                            writer.WriteLine(
+                                "}"); //bah, the first one will be wrong and need to be manually deleted - idc
+                        }
+
+                        writer.WriteLine("public partial class Loop{0} : LoopEntity{{", csvLines[i].LoopName);
+                        currentLoopName = csvLines[i].LoopName;
+                    }
+                    else
+                    {
+                        if (!csvLines[i].IsSubLoop) //if this isnt a sub loop, that means we are a segment under a loop
+                        {
+                            writer.WriteLine("\tpublic {0}Collection {1} {{get;set;}}", 
+                                csvLines[i].FieldName,Util.NormalizeDescription(csvLines[i].Description));
+                        }
+                        else //this is a sub loop, check to see if it has a parent of this loop, if so, add it
+                        {
+                            //have to check down from this to see if the next subLoop def has this loop name in it
+                            for (int j = i + 1; j < csvLines.Count; j++)
+                            {
+                                if (!csvLines[j].IsSubLoop) continue;
+
+                                if (csvLines[j].ParentLoopName == currentLoopName) //have to check all subloops from here on, because we could have a sub loop of a subloop then come back to our next subloop (trust me)
+                                {
+                                    writer.WriteLine("\tpublic Loop{0}Collecction {1} {{get;set;}}",
+                                        csvLines[j].LoopName, Util.NormalizeDescription(csvLines[j].Description));
+                                } 
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
+
+    public class X12_V2_Generation
+    {
+
         public static void CreateLoops(string sourceFile, string destinationFolder, string namespaces)
         {
-            var csvLines = ReadMetaData(sourceFile);
+            var csvLines = Util.ReadMetaData(sourceFile);
 
             //start writing the loop def file, which contains all the loops with their segments
             //does not do subloops
@@ -92,10 +228,7 @@ namespace CodeGenerator
                     writer.WriteLine("public partial class Loop{0}Collection : LoopCollection<Loop{0}> {{",
                         csvLines[i].LoopName);
 
-                    writer.WriteLine("public Loop{0}Collection(){{}}", csvLines[i].LoopName);
-                    writer.WriteLine("public override bool Validate(){ throw new System.NotImplementedException();}");
-                    writer.WriteLine(
-                        "public override void SetUpDefinition(){throw new System.NotImplementedException();}");
+                    writer.WriteLine("public Loop{0}Collection(){{}}", csvLines[i].LoopName); 
 
                     writer.WriteLine("}"); //LoopCollection
 
@@ -113,7 +246,7 @@ namespace CodeGenerator
                             csvLines[i].FieldName = csvLines[i].FieldName[0] +
                                                     csvLines[i].FieldName.ToLower().Substring(1);
                             writer.WriteLine("public {0}Collection {1} = new {0}Collection();", csvLines[i].FieldName,
-                                csvLines[i].Name);
+                                csvLines[i].Description);
                         }
                         else
                         {
@@ -128,7 +261,7 @@ namespace CodeGenerator
 
         public static void CreateDefinitions(string sourceFile, string destinationFolder, string namespaces)
         {
-            var csvLines = ReadMetaData(sourceFile);
+            var csvLines = Util.ReadMetaData(sourceFile);
 
             using (
                 var writer =
@@ -175,7 +308,7 @@ namespace CodeGenerator
                             writer.WriteLine("{0}, ", usage);
                             writer.WriteLine("{0}, ", csvLines[i].Repeat);
                             writer.WriteLine("typeof({0}), ", csvLines[i].FieldName.ToUpper());
-                            writer.WriteLine("{0}", csvLines[i].Name);
+                            writer.WriteLine("{0}", csvLines[i].Description);
                             writer.WriteLine(");");
 
                             ////Generation code below for this section of code
@@ -204,9 +337,9 @@ namespace CodeGenerator
                                 csvLines[i].FieldName, csvLines[i].UnusedFields);
 
                             writer.WriteLine("{0}Def.SyntaxRuleList.AddRange(\"{1}\".Split(',').ToList());",
-                                csvLines[i].FieldName, csvLines[i].RequiredGroupFields);
+                                csvLines[i].FieldName, csvLines[i].SyntaxRules);
 
-                            writer.WriteLine("{0}.Definition = {1}Def;", csvLines[i].Name, csvLines[i].FieldName);
+                            writer.WriteLine("{0}.Definition = {1}Def;", csvLines[i].Description, csvLines[i].FieldName);
                             writer.WriteLine("docDef.segments.Add({0}Def);", csvLines[i].FieldName);
                         }
                         else
@@ -223,7 +356,7 @@ namespace CodeGenerator
 
         public static void CreateSingleDefintion(string sourceFile, string destinationFolder, string namespaces)
         {
-            var csvLines = ReadMetaData(sourceFile);
+            var csvLines = Util.ReadMetaData(sourceFile);
 
             StringBuilder sbMainLoops = new StringBuilder();
             StringBuilder sbSubLoops = new StringBuilder();
@@ -266,24 +399,24 @@ namespace CodeGenerator
                             //SegmentDefinition(SegmentUsageType use, int reps, Type segT)
                             sbSegments.AppendFormat("var {0}_{4}_{3} = new SegmentDefinition({1},{2},typeof({0}));\r\n",
                                 csvLines[i].FieldName.ToUpper(), usage, csvLines[i].Repeat, currentLoop,
-                                csvLines[i].Name);
+                                csvLines[i].Description);
 
                             if (!string.IsNullOrWhiteSpace(csvLines[i].Qualifiers))
                             {
                                 csvLines[i].Qualifiers = csvLines[i].Qualifiers.Replace("\"", " ");
                                 sbSegments.AppendFormat("{0}_{1}_{2}.Qualifiers.Add(new SegmentQualifiers(1, \"{3}\".Split(',')));\r\n",
-                                    csvLines[i].FieldName.ToUpper(), csvLines[i].Name, currentLoop, csvLines[i].Qualifiers);
+                                    csvLines[i].FieldName.ToUpper(), csvLines[i].Description, currentLoop, csvLines[i].Qualifiers);
                             }
 
-                            if (!string.IsNullOrWhiteSpace(csvLines[i].RequiredGroupFields))
+                            if (!string.IsNullOrWhiteSpace(csvLines[i].SyntaxRules))
                             {
-                                csvLines[i].RequiredGroupFields = csvLines[i].RequiredGroupFields.Replace("\"", " ");
+                                csvLines[i].SyntaxRules = csvLines[i].SyntaxRules.Replace("\"", " ");
                                 sbSegments.AppendFormat("{0}_{1}_{2}.SyntaxRuleList.AddRange(\"{3}\".Split(','));\r\n",
-                                csvLines[i].FieldName.ToUpper(), csvLines[i].Name, currentLoop, csvLines[i].RequiredGroupFields);
+                                csvLines[i].FieldName.ToUpper(), csvLines[i].Description, currentLoop, csvLines[i].SyntaxRules);
                             }
 
                             sbSegments.AppendFormat("{0}.LoopSegments.Add({1}_{2}_{0}); \r\n", currentLoop,
-                                csvLines[i].FieldName.ToUpper(), csvLines[i].Name);
+                                csvLines[i].FieldName.ToUpper(), csvLines[i].Description);
                         }
                         else if (!string.IsNullOrWhiteSpace(csvLines[i].LoopName)
                                  && !string.IsNullOrWhiteSpace(csvLines[i].FieldName))
@@ -293,7 +426,7 @@ namespace CodeGenerator
                                 csvLines[i].LoopName, csvLines[i].Repeat);
                             sbSubLoops.AppendFormat("Loop{0}Definition.LoopName = \"{0}\"; \r\n", csvLines[i].LoopName);
                             sbSubLoops.AppendFormat("Loop{0}Definition.LoopDescription = \"{1}\"; \r\n", csvLines[i].LoopName,
-                                csvLines[i].Name);
+                                csvLines[i].Description);
 
                             sbSubLoops.AppendFormat("Loop{1}Definition.SubLoops.Add(Loop{0}Definition); \r\n", csvLines[i].LoopName,
                                 csvLines[i].FieldName.ToUpper());
@@ -308,7 +441,7 @@ namespace CodeGenerator
                                 csvLines[i].LoopName, csvLines[i].Repeat);
                             sbMainLoops.AppendFormat("Loop{0}Definition.LoopName = \"{0}\"; \r\n", csvLines[i].LoopName);
                             sbMainLoops.AppendFormat("Loop{0}Definition.LoopDescription = \"{1}\"; \r\n", csvLines[i].LoopName,
-                                csvLines[i].Name);
+                                csvLines[i].Description);
                             sbMainLoops.AppendFormat("DocumentDefinition.loops.Add(Loop{0}Definition); \r\n", csvLines[i].LoopName);
 
                             currentLoop = string.Format("Loop{0}Definition", csvLines[i].LoopName);

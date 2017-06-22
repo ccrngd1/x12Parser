@@ -10,12 +10,14 @@ namespace Model.EDI.X12.Format277.v5010.v2
         public override void SetUpDefinition()
         {
             SetUpChildDefinitions = true; 
+            RepitionLimit = 1;
             SegmentDefinitions.Add(new HL()
             {
                 SegmentQualifierValues = new List<SegmentQualifiers>(),
                 OwningLoopCollection = this,
                 IsLoopStarter = true,
-                SegmentDefinitionName = "InformationSourceLevel"
+                SegmentDefinitionName = "InformationSourceLevel",
+                
             });
 
 

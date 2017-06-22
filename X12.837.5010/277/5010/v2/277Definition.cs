@@ -16,7 +16,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
 
         public X12_277_5010(bool includeDefinition):base(includeDefinition)
         {
-            InformationSourceLevelLoop = new Loop2000ACollection("Loop2000A", "InformationSourceLevelLoop", this, 999, null, null );
+            InformationSourceLevelLoop = new Loop2000ACollection("Loop2000A", "InformationSourceLevelLoop", this, null, null );
 
             TopLevelLoops.Add(InformationSourceLevelLoop);
 

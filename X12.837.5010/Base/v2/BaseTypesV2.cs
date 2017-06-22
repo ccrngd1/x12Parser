@@ -119,7 +119,7 @@ namespace Model.EDI.X12.v2.Base
             }
         }
 
-        public LoopCollection(string loopName, string loopNameDescription, X12Doc owningDoc, int repLimit, LoopCollection parent, LoopCollection prev)
+        public LoopCollection(string loopName, string loopNameDescription, X12Doc owningDoc, LoopCollection parent, LoopCollection prev)
         {
             SegmentDefinitions = new List<BaseStdSegment>();
 
@@ -129,8 +129,6 @@ namespace Model.EDI.X12.v2.Base
 
             LoopName = loopName;
             LoopNameDescription = loopNameDescription;
-
-            RepitionLimit = repLimit;
 
             ParentLoopCollection = parent;
             _prev = prev;
@@ -255,7 +253,7 @@ namespace Model.EDI.X12.v2.Base
             set { LoopEntities[index] = value; }
         } 
 
-        public LoopCollection(string loopName, string loopNameDescription, X12Doc owningDoc, int repLimit, LoopCollection parent, LoopCollection prev) : base(loopName, loopNameDescription, owningDoc, repLimit, parent, prev)
+        public LoopCollection(string loopName, string loopNameDescription, X12Doc owningDoc, LoopCollection parent, LoopCollection prev) : base(loopName, loopNameDescription, owningDoc, parent, prev)
         {
         }
 
