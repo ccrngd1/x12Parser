@@ -23,11 +23,28 @@ namespace CodeGenerator
         private string _loopName;
         private string _description;
         private string _fieldName;
+        private string _repeats;
         public string LoopName { get { return Util.NormalizeName(_loopName); } set { _loopName = value; } }
         public string FieldName { get { return Util.NormalizeName(_fieldName); } set { _fieldName = value; } }
         public string Description { get { return Util.NormalizeDescription(_description); } set { _description = value; } }
         public string Repeat { get; set; }
-        public string Qualifiers { get; set; }
+
+        public string Qualifiers
+        {
+            get
+            {
+                if (_repeats.Length == 1 && char.IsDigit(_repeats[0]))
+                {
+                    return _repeats;
+                }
+                else
+                {
+                    return "999";
+                }
+            }
+            set { _repeats = value; }
+        }
+
         public string Required { get; set; }
         public string RequiredFields { get; set; }
         public string UnusedFields { get; set; }
@@ -202,7 +219,26 @@ namespace CodeGenerator
                     writer.WriteLine("public partial class Loop{0}Collection", csvLines[i].LoopName);
                     writer.WriteLine("{");
 
-                    writer.WriteLine("public override void SetUpDefinition(){ "); //todo! - this is where I left off!!!
+                    writer.WriteLine("public override void SetUpDefinition(){ "); 
+                    writer.WriteLine("SetUpChildDefinitions=true;");
+                    writer.WriteLine("RepititionLimit = {0}",csvLines[i].Repeat);
+
+                    bool firstPass = true;
+                    for (int j = i+1; j < csvLines.Count; j++)
+                    {
+                        if(!string.IsNullOrWhiteSpace(csvLines[j].LoopName)) break;
+
+                        writer.WriteLine("{0}Collection.RepititionLimit = {1};", csvLines[j].FieldName, csvLines[j].Repeat);
+                        writer.WriteLine("SegmentDefinitions.Add(new {0}(){{",  csvLines[j].FieldName);
+                        writer.WriteLine("OwningLoopCollection = this;");
+
+                        if(firstPass) writer.WriteLine("IsLoopStarter");
+
+                        writer.WriteLine("SegmentDefinitionName = \"{0}\"", csvLines[j].Description);
+                        writer.WriteLine("});");
+
+                        firstPass = false;
+                    }
 
                     writer.WriteLine("}");//setupDef function
 

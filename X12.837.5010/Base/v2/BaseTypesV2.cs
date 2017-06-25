@@ -378,6 +378,8 @@ namespace Model.EDI.X12.v2.Base
 
         public string SegmentDefinitionName { get; set; }
 
+        public int RepititionLimit { get; set; }
+
         private SegmentCollection()
         {
             Segments = new List<BaseStdSegment>();
