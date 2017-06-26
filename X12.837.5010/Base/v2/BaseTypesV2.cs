@@ -75,11 +75,6 @@ namespace Model.EDI.X12.v2.Base
 
         public bool SetUpChildDefinitions { get; set; }
 
-        //remove this - it was intended for checking seg qualifiers further down the stack
-        //this isnt needed tho, since at any time we have a LoopEntity in our parser state, this means that entity already has its possible LoopCollections with their own SegmentDefs
-        //this does requires we keep track of how we got to our currently LoopEntity (parent loopEntity obj in parser most likely)
-        //public List<LoopCollection> ChildLoopCollection;
-
         //the instantiated loops (loopEntity objects) of this collection (IE Loop2100A objects)
         public List<LoopEntity> LoopEntities; 
 

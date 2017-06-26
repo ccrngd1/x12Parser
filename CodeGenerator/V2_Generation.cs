@@ -21,15 +21,15 @@ namespace CodeGenerator
     public class LoopsCSVHolder
     {
         private string _loopName;
-        private string _description;
         private string _fieldName;
         private string _repeats;
+        private string _description;
         public string LoopName { get { return Util.NormalizeName(_loopName); } set { _loopName = value; } }
         public string FieldName { get { return Util.NormalizeName(_fieldName); } set { _fieldName = value; } }
-        public string Description { get { return Util.NormalizeDescription(_description); } set { _description = value; } }
-        public string Repeat { get; set; }
 
-        public string Qualifiers
+        public string Description { get { return Util.NormalizeDescription(_description); } set { _description = value; } }
+
+        public string Repeat
         {
             get
             {
@@ -45,7 +45,9 @@ namespace CodeGenerator
             set { _repeats = value; }
         }
 
-        public string Required { get; set; }
+        public string Qualifiers { get; set; }
+
+public string Required { get; set; }
         public string RequiredFields { get; set; }
         public string UnusedFields { get; set; }
         public string SyntaxRules { get; set; }
@@ -89,30 +91,30 @@ namespace CodeGenerator
                         var t = new LoopsCSVHolder();
 
                         if (!string.IsNullOrWhiteSpace(columns[0]))
-                            t.LoopName = columns[0].Trim().Replace(" ", "");
+                            t.LoopName = columns[0].Trim();
 
                         if (!string.IsNullOrWhiteSpace(columns[1]))
-                            t.FieldName = columns[1]?.Trim().Replace(" ", "");
+                            t.FieldName = columns[1]?.Trim();
 
                         if (!string.IsNullOrWhiteSpace(columns[2]))
-                            t.Description = columns[2]?.Trim().Replace(" ", "");
+                            t.Description = columns[2]?.Trim();
 
-                        t.Repeat = string.IsNullOrWhiteSpace(columns[3]) ? "1" : columns[3].Trim().Replace(" ", "");
+                        t.Repeat = string.IsNullOrWhiteSpace(columns[3]) ? "1" : columns[3].Trim();
 
                         if (!string.IsNullOrWhiteSpace(columns[4]))
-                            t.Qualifiers = columns[4]?.Trim().Replace(" ", "");
+                            t.Qualifiers = columns[4]?.Trim();
 
                         if (!string.IsNullOrWhiteSpace(columns[5]))
-                            t.Required = columns[5]?.Trim().Replace(" ", "");
+                            t.Required = columns[5]?.Trim();
 
                         if (!string.IsNullOrWhiteSpace(columns[6]))
-                            t.RequiredFields = columns[6]?.Trim().Replace(" ", "");
+                            t.RequiredFields = columns[6]?.Trim();
 
                         if (!string.IsNullOrWhiteSpace(columns[7]))
-                            t.UnusedFields = columns[7]?.Trim().Replace(" ", "");
+                            t.UnusedFields = columns[7]?.Trim();
 
                         if (!string.IsNullOrWhiteSpace(columns[8]))
-                            t.SyntaxRules = columns[8]?.Trim().Replace(" ", "");
+                            t.SyntaxRules = columns[8]?.Trim();
 
                         csvLines.Add(t);
                     }
@@ -221,18 +223,17 @@ namespace CodeGenerator
 
                     writer.WriteLine("public override void SetUpDefinition(){ "); 
                     writer.WriteLine("SetUpChildDefinitions=true;");
-                    writer.WriteLine("RepititionLimit = {0}",csvLines[i].Repeat);
+                    writer.WriteLine("RepitionLimit = {0};", csvLines[i].Repeat);
 
                     bool firstPass = true;
                     for (int j = i+1; j < csvLines.Count; j++)
                     {
                         if(!string.IsNullOrWhiteSpace(csvLines[j].LoopName)) break;
+                        
+                        writer.WriteLine("SegmentDefinitions.Add(new {0}(){{",  csvLines[j].FieldName?.ToUpper());
+                        writer.WriteLine("OwningLoopCollection = this,");
 
-                        writer.WriteLine("{0}Collection.RepititionLimit = {1};", csvLines[j].FieldName, csvLines[j].Repeat);
-                        writer.WriteLine("SegmentDefinitions.Add(new {0}(){{",  csvLines[j].FieldName);
-                        writer.WriteLine("OwningLoopCollection = this;");
-
-                        if(firstPass) writer.WriteLine("IsLoopStarter");
+                        if(firstPass) writer.WriteLine("IsLoopStarter=true,");
 
                         writer.WriteLine("SegmentDefinitionName = \"{0}\"", csvLines[j].Description);
                         writer.WriteLine("});");
@@ -278,9 +279,9 @@ namespace CodeGenerator
 
                             foreach (NameType nameType in subLoops)
                             {
-                                writer.WriteLine("{0} = new Loop{1}Collection(\"Loop{1}\", nameof({0}), OwningDoc, parent, parent);", 
+                                writer.WriteLine("{0}Loop = new Loop{1}Collection(\"Loop{1}\", nameof({0}Loop), OwningDoc, parent, parent);", 
                                     nameType.Named, nameType.Typed);
-                                writer.WriteLine("ChildLoopCollections.Add({0});", nameType.Named);
+                                writer.WriteLine("ChildLoopCollections.Add({0}Loop);", nameType.Named);
                             }
 
                             writer.WriteLine("}");
@@ -312,7 +313,7 @@ namespace CodeGenerator
                                 //have to check all subloops from here on, because we could have a sub loop of a subloop then come back to our next subloop (trust me)
                                 if (csvLines[j].ParentLoopName == currentLoopName) 
                                 {
-                                    writer.WriteLine("\tpublic Loop{0}Collection {1} {{get;set;}}",
+                                    writer.WriteLine("\tpublic Loop{0}Collection {1}Loop {{get;set;}}",
                                         csvLines[j].LoopName, csvLines[j].Description);
 
                                     subLoops.Add(new NameType(csvLines[j].Description, csvLines[j].LoopName));

@@ -13,7 +13,7 @@ namespace Business.EDI.X12.v2
         private const string TrailerSegments = "IEA,GE,SE";
         public static List<X12Doc> ParseFile<T>(string fullFilePath) where T:X12Doc
         {
-            X12Doc tempBuildingDoc = default(T);
+            X12Doc tempBuildingDoc = (T)Activator.CreateInstance(typeof(T)); 
 
             var newHeaderSection = false;
 
