@@ -452,24 +452,35 @@ namespace Model.EDI.X12.v2.Base
 
         public SegmentCollection OwningSegmentCollection { get; set; }
 
-        public string SegmentName
-        {
-            get
-            {
-                if (!FieldValues.Any()) return null;
-                return FieldValues[0];
-            }
-        }
+        public List<SegmentQualifiers> SegmentQualifierValues { get; set; }
+        public List<string> SyntaxRules { get; set; }
+        public List<int> RequiredFileds { get; set; }
+        public List<int> UnUsedFields { get; set; }
+        public SegmentUsageType Usage { get; set; }
+
+        //todo can we remvoe?
+        //public string SegmentName
+        //{
+        //    get
+        //    {
+        //        if (!FieldValues.Any()) return null;
+        //        return FieldValues[0];
+        //    }
+        //}
 
         public BaseStdSegment()
         {
             SegmentQualifierValues = new List<SegmentQualifiers>();
+            SyntaxRules = new List<string>();
+            RequiredFileds = new List<int>();
+            UnUsedFields = new List<int>();
+
             FieldValues = new baseFieldValues(new List<string>() {this.GetType().Name});
         } 
 
         public BaseStdSegment(List<string> values):this()
         {
-            FieldValues.AddRange(values);
+            FieldValues = new baseFieldValues(values);
         }
 
         public void Populate(baseFieldValues baseVals)
@@ -488,8 +499,6 @@ namespace Model.EDI.X12.v2.Base
 
             return retVal;
         }
-
-        public List<SegmentQualifiers> SegmentQualifierValues { get; set; }
 
         public bool IsQualified(baseFieldValues segmentFields)
         {

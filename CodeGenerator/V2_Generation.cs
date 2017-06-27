@@ -235,7 +235,78 @@ public string Required { get; set; }
 
                         if(firstPass) writer.WriteLine("IsLoopStarter=true,");
 
-                        writer.WriteLine("SegmentDefinitionName = \"{0}\"", csvLines[j].Description);
+                        writer.WriteLine("SegmentDefinitionName = \"{0}\",", csvLines[j].Description);
+
+                        #region writer.WriteLine("SegmentQualifierValues
+                        string seqQualConcat = "";
+                        if (!string.IsNullOrWhiteSpace(csvLines[j].Qualifiers))
+                        {
+                            var segQuals = new StringBuilder();
+                            foreach (var csv in csvLines[j].Qualifiers.Replace('"',' ').Split(','))
+                            {
+                                segQuals.AppendFormat("\"{0}\",",csv.Trim());
+                            }
+                            seqQualConcat = segQuals.ToString();
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(seqQualConcat))
+                        {
+                            writer.WriteLine("SegmentQualifierValues = new List<SegmentQualifiers>(){{ new SegmentQualifiers(1,{0})}},", 
+                                seqQualConcat.Substring(0, seqQualConcat.Length-1));
+                        }
+                        #endregion
+
+                        #region writer.WriteLine("SyntaxRules
+                        string syntaxi = "";
+                        if (!string.IsNullOrWhiteSpace(csvLines[j].SyntaxRules))
+                        {
+                            var sytnaxConcat = new StringBuilder();
+                            foreach (var syn in csvLines[j].SyntaxRules.Replace('"', ' ').Split(','))
+                            {
+                                sytnaxConcat.AppendFormat("\"{0}\",", syn.Trim());
+                            }
+                            syntaxi = sytnaxConcat.ToString();
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(syntaxi))
+                        {
+                            writer.WriteLine("SyntaxRules = new List<string>(){{ {0} }},", syntaxi.Substring(0, syntaxi.Length-1));
+                        }
+                        #endregion
+
+                        #region writer.WriteLine("RequiredFileds
+                        string reqFields = csvLines[j].RequiredFields ;
+
+                        if (!string.IsNullOrWhiteSpace(reqFields))
+                        {
+                            writer.WriteLine("RequiredFileds = new List<int>() {{ {0} }},", reqFields.Replace('"', ' '));
+                        }
+                        #endregion
+
+                        #region writer.WriteLine("UnUsedFields
+                        string unUsed = csvLines[j].UnusedFields;
+
+                        if (!string.IsNullOrWhiteSpace(unUsed))
+                        {
+                            writer.WriteLine("UnUsedFields = new List<int>() {{ {0} }},", unUsed.Replace('"', ' '));
+                        }
+                        #endregion
+
+                        #region
+
+                        string usageT = "Optional";
+
+                        if (!string.IsNullOrWhiteSpace(csvLines[j].Required))
+                        {
+                            if (csvLines[j].Required.ToUpper().Contains("Y"))
+                            {
+                                usageT = "Required";
+                            }
+                        }
+
+                        writer.WriteLine("Usage = SegmentUsageType.{0}", usageT);
+                        #endregion
+
                         writer.WriteLine("});");
 
                         firstPass = false;

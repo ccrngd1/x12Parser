@@ -8,10 +8,10 @@ namespace Model.EDI.X12
 {
     public enum SegmentUsageType
     {
-        Optional,
-        Required,
-        Situational,
-        Relational
+        Optional=0,
+        Required=1,
+        Situational=2,
+        Relational=3
     }
 
     public enum X12ErrorTypes
