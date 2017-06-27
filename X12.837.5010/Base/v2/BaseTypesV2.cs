@@ -119,37 +119,8 @@ namespace Model.EDI.X12.v2.Base
 
         public List<BaseStdSegment> SegmentDefinitions { get; set; }
 
-
-        //todo: still useful?
-        private LoopCollection _next;
-        public LoopCollection NextCollection
-        {
-            get { return _next; }
-            set
-            {
-                if (_next == null)
-                    _next = value;
-                else
-                    throw new AccessViolationException("Next Collection already set");
-            }
-        }
-
-        //todo: still useful?
-        public LoopCollection _prev;
-
-        public LoopCollection PrevCollection
-        {
-            get { return _prev; }
-            set
-            {
-                if (_prev == null)
-                    _prev = value;
-                else 
-                    throw new AccessViolationException("Previous Collection already set"); 
-            }
-        }
-
-        public LoopCollection(string loopName, string loopNameDescription, X12Doc owningDoc, LoopCollection parent, LoopCollection prev)
+        
+        public LoopCollection(string loopName, string loopNameDescription, X12Doc owningDoc, LoopCollection parent)
         {
             SegmentDefinitions = new List<BaseStdSegment>();
 
@@ -161,10 +132,7 @@ namespace Model.EDI.X12.v2.Base
             LoopNameDescription = loopNameDescription;
 
             ParentLoopCollection = parent;
-            _prev = prev;
 
-            if(_prev != null)
-                _prev.NextCollection = this;
         }
          
         public abstract bool Validate();
@@ -283,7 +251,7 @@ namespace Model.EDI.X12.v2.Base
             set { LoopEntities[index] = value; }
         } 
 
-        public LoopCollection(string loopName, string loopNameDescription, X12Doc owningDoc, LoopCollection parent, LoopCollection prev) : base(loopName, loopNameDescription, owningDoc, parent, prev)
+        public LoopCollection(string loopName, string loopNameDescription, X12Doc owningDoc, LoopCollection parent, LoopCollection prev) : base(loopName, loopNameDescription, owningDoc, parent)
         {
         }
 

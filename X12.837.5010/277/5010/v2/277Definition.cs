@@ -19,16 +19,16 @@ namespace Model.EDI.X12.Format277.v5010.v2
             InformationSourceLevelLoop = new Loop2000ACollection("Loop2000A", "InformationSourceLevelLoop", this, null, null);
             TopLevelLoops.Add(InformationSourceLevelLoop);
 
-            InformationReiverDetailLoop = new Loop2000BCollection("Loop2000B", "InformationReiverDetailLoop",this,null,InformationSourceLevelLoop);
+            InformationReiverDetailLoop = new Loop2000BCollection("Loop2000B", "InformationReiverDetailLoop",this,null,null);
             TopLevelLoops.Add(InformationReiverDetailLoop);
 
-            ServiceProviderDetailLoop = new Loop2000CCollection("Loop2000C", "ServiceProviderDetailLoop",this,null, InformationReiverDetailLoop);
+            ServiceProviderDetailLoop = new Loop2000CCollection("Loop2000C", "ServiceProviderDetailLoop",this,null, null);
             TopLevelLoops.Add(ServiceProviderDetailLoop);
 
-            SubscriberDetailLoop = new Loop2000DCollection("Loop2000D", "SubscriberDetailLoop", this, null, ServiceProviderDetailLoop);
+            SubscriberDetailLoop = new Loop2000DCollection("Loop2000D", "SubscriberDetailLoop", this, null, null);
             TopLevelLoops.Add(SubscriberDetailLoop);
 
-            DependentDetailLoop = new Loop2000ECollection("Loop2000E", "DependentDetailLoop",this, null, SubscriberDetailLoop);
+            DependentDetailLoop = new Loop2000ECollection("Loop2000E", "DependentDetailLoop",this, null, null);
             TopLevelLoops.Add(DependentDetailLoop);
 
             if (includeDefinition)
