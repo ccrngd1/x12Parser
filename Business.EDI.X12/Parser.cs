@@ -9,19 +9,22 @@ namespace Business.EDI.X12.v2
 {
     public static class Parser
     {
+        
+
         private const string HeaderSegments = "ISA,GS,ST,BHT";
         private const string TrailerSegments = "IEA,GE,SE";
         public static List<X12Doc> ParseFile<T>(string fullFilePath) where T:X12Doc
         {
-            X12Doc tempBuildingDoc = (T)Activator.CreateInstance(typeof(T)); 
+            X12Doc tempBuildingDoc = (T)Activator.CreateInstance(typeof(T), args: new object[] {true}); 
 
             var newHeaderSection = false;
+            var newTrailerSection = false;
 
             var retDocs = new List<X12Doc>(); 
 
-            var sStream = new SegmentStream(File.OpenRead(fullFilePath));
+            var sStream = new SegmentStream(File.OpenRead(fullFilePath), ref tempBuildingDoc); 
 
-            baseFieldValues lineContent = sStream.ReadNextLine();
+            baseFieldValues lineContent = new baseFieldValues(sStream.ReadNextLine(tempBuildingDoc.DocDelimiters));
 
             List<string> headerSplit = HeaderSegments.Split(',').ToList();
             List<string> trailerSplit = TrailerSegments.Split(',').ToList();
@@ -35,8 +38,13 @@ namespace Business.EDI.X12.v2
                 {
                     if (!newHeaderSection)
                     {
+                        if(newTrailerSection)
+                            tempBuildingDoc = (T)Activator.CreateInstance(typeof(T), args: new object[] { true });
+
                         retDocs.Add(tempBuildingDoc);
+
                         newHeaderSection = true;
+                        newTrailerSection = false;
                     } 
 
                     if (tempBuildingDoc.BeginHierarchicalTransaction.IsQualified(lineContent))
@@ -47,25 +55,28 @@ namespace Business.EDI.X12.v2
                         tempBuildingDoc.InterchagneControlHeader.Populate(lineContent);
                     else if (tempBuildingDoc.FunctionGroupHeader.IsQualified(lineContent))
                         tempBuildingDoc.FunctionGroupHeader.Populate(lineContent);
-                    else
-                    {
-                        Console.WriteLine("nothing for header segment qual");
-                    }
+                    else 
+                        Console.WriteLine("nothing for header segment qual"); 
                 }
                 //is a trailer segment
                 else if (trailerSplit.Contains(lineContent[0]))
                 {
-                    if (newHeaderSection)
-                        newHeaderSection = false;
+                    newTrailerSection = true;  
+                    newHeaderSection = false;
+
+                    if(tempBuildingDoc.TransactionSetTrailer.IsQualified(lineContent))
+                        tempBuildingDoc.TransactionSetTrailer.Populate(lineContent);
+                    else if (tempBuildingDoc.FunctionalGroupTrailer.IsQualified(lineContent))
+                        tempBuildingDoc.FunctionalGroupTrailer.Populate(lineContent);
+                    else if(tempBuildingDoc.InterchangeControlTrailer.IsQualified(lineContent))
+                        tempBuildingDoc.InterchangeControlTrailer.Populate(lineContent);
                     else
-                    {
-                        Console.WriteLine("oops trailer");
-                    }
+                        Console.WriteLine("oops");
                 }
                 else //has to be in the doc def
-                {
-                    if (newHeaderSection)
-                        newHeaderSection = false;
+                { 
+                    newHeaderSection = false;
+                    newTrailerSection = false;
 
                     var currentLoopProcessed = false;
                     if (currentLoop != null)
@@ -139,6 +150,7 @@ namespace Business.EDI.X12.v2
                                 qualifiedSegments[0].OwningLoopCollection.Add();
                             else
                             {
+                                //todo how to handle this
                                 Console.WriteLine("another weird ");
                             }
 
@@ -146,14 +158,15 @@ namespace Business.EDI.X12.v2
                             currentLoop.Add(qualifiedSegments[0].CreateBaseStdSegment(lineContent));
                             currentLoopProcessed = true;
                         }
-                    }
-
-                    //tempBuildingDoc.DocumentDefinition.IsQualified(lineContent);
-
-                    //doc.
+                        else
+                        {
+                            //todo how to handle these
+                            Console.WriteLine("nothing found");   
+                        }
+                    } 
                 }
 
-                lineContent = sStream.ReadNextLine();
+                lineContent = sStream.ReadNextLine(tempBuildingDoc.DocDelimiters);
             }
 
             return retDocs;

@@ -11,14 +11,14 @@ namespace UnitTestProject1
         [TestMethod]
         public void GenerateSegmentsV2()
         {
-            V2_Generation_SegmentCollection segCollectionGenny = new V2_Generation_SegmentCollection();
+            var segCollectionGenny = new V2_Generation_SegmentCollection();
 
-            string basePath = @"C:\Users\nick.lawson\Google Drive\Documents\projects\x12Parser\X12.837.5010\Base\v2\";
+            var basePath = @"C:\Users\nick.lawson\Google Drive\Documents\projects\x12Parser\X12.837.5010\Base\v2\";
 
-            string s = segCollectionGenny.GenerateSegmentCollections(
-                basePath + "SegmentsV2.cs");
+            string s = segCollectionGenny.GenerateSegmentCollections_v2(basePath + "SegmentsV2_old.cs");
 
-            using (var fs = new StreamWriter(basePath + "CollectionsRAWV2.cs"))
+            using (var fs = new StreamWriter(
+                @"C:\Users\nick.lawson\Google Drive\Documents\projects\x12Parser\CodeGenerator\RAWGeneratedFiles\Model.EDI.X12.v2SegmentsRAWV2.cs"))
             {
                 fs.Write(s);
             }

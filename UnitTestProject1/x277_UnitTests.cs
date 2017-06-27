@@ -17,10 +17,10 @@ namespace UnitTestProject1
         [TestMethod]
         public void TestSetupDefinitionsSingleMethod()
         {
-            //var test = new X12_277_5010(true);
-            //var test2 = new X12_277_5010();
+            var test = new X12_277_5010(true);
+            var test2 = new X12_277_5010();
 
-            //Assert.IsNotNull(test.DocumentDefinition);
+
         }
 
         [TestMethod]

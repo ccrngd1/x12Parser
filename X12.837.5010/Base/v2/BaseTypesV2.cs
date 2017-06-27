@@ -7,15 +7,16 @@ using System.Text;
 namespace Model.EDI.X12.v2.Base
 {
     /// <summary>
-    /// This is the struct that will hold the characters that delimit particular sections of a x12 line
+    /// This is the class that will hold the characters that delimit particular sections of a x12 line
     /// </summary>
-    public struct Delimiters
+    public class Delimiters
     {
+        internal bool isISASet { get; set; }
+
         public char Segment { get; set; }
         public char Element { get; set; }
-        public char SubElement { get; set; }
-        public char Repetition { get; set; }
-        public string Line { get; set; }
+        public char Component { get; set; }
+        public char Repetition { get; set; } 
     }
 
     /// <summary>
@@ -25,32 +26,66 @@ namespace Model.EDI.X12.v2.Base
     /// </summary>
     public abstract class X12Doc
     {
-        private const string firstDelim = "*";
-        private const string secondDelim = "#";
+        private Delimiters _docDelims;
+        public Delimiters DocDelimiters {
+            get
+            {
+                if (_docDelims!=null && !_docDelims.isISASet && InterchagneControlHeader!=null)
+                {
+                    if (!string.IsNullOrWhiteSpace(InterchagneControlHeader.ElementSeperator))
+                    {
+                        _docDelims.Element = InterchagneControlHeader.ElementSeperator[0];
+                    }
 
-        public Delimiters DocDelimiters = new Delimiters();
+                    if (!string.IsNullOrWhiteSpace(InterchagneControlHeader.ComponentElementSeparator))
+                    {
+                        _docDelims.Component = InterchagneControlHeader.ComponentElementSeparator[0];
+                    }
 
-        public List<LoopCollection> TopLevelLoops = new List<LoopCollection>();
+                    if (!string.IsNullOrWhiteSpace(InterchagneControlHeader.RepetitionSeparator))
+                    {
+                        _docDelims.Repetition = InterchagneControlHeader.RepetitionSeparator[0];
+                    }
 
-        [ProtoBuf.ProtoMember(1)]
-        public ISA InterchagneControlHeader = new ISA();
-        [ProtoBuf.ProtoMember(2)]
-        public GS FunctionGroupHeader = new GS();
+                    if (!string.IsNullOrWhiteSpace(InterchagneControlHeader.LineSeperator))
+                    {
+                        _docDelims.Segment = InterchagneControlHeader.LineSeperator[0];
+                    }
+                }
 
-        [ProtoBuf.ProtoMember(1)]
-        public ST TransactionSetHeader = new ST();
-        [ProtoBuf.ProtoMember(2)]
-        public BHT BeginHierarchicalTransaction = new BHT();
-        [ProtoBuf.ProtoMember(3)]
-        public SE TransactionSetTrailer = new SE();
+                return _docDelims;
+            }
+            set { _docDelims = value; } }
 
-        [ProtoBuf.ProtoMember(3)]
-        public GE FunctionalGroupTrailer = new GE();
-        [ProtoBuf.ProtoMember(4)]
-        public IEA InterchangeControlTrailer = new IEA();
+        public readonly List<LoopCollection> TopLevelLoops = new List<LoopCollection>();
+        
+        public ISA InterchagneControlHeader { get; set; }
+        public GS FunctionGroupHeader { get; set; }
+        
+        public ST TransactionSetHeader { get; set; }
+        public BHT BeginHierarchicalTransaction { get; set; }
+        public SE TransactionSetTrailer { get; set; }
+
+        public GE FunctionalGroupTrailer { get; set; }
+        public IEA InterchangeControlTrailer { get; set; }
 
         public X12Doc(bool includeDefinition)
         {
+            DocDelimiters = new Delimiters()
+            {
+                Element = '*',
+                Component = ':',
+                Repetition = '^',
+                Segment = '~'
+            };
+
+            InterchagneControlHeader=new ISA();
+            FunctionGroupHeader = new GS();
+            TransactionSetHeader=new ST();
+            BeginHierarchicalTransaction= new BHT();
+            TransactionSetTrailer=new SE();
+            FunctionalGroupTrailer=new GE();
+            InterchangeControlTrailer = new IEA();
         }
 
         public X12Doc() : this(false) { }
@@ -429,13 +464,8 @@ namespace Model.EDI.X12.v2.Base
         public BaseStdSegment()
         {
             SegmentQualifierValues = new List<SegmentQualifiers>();
-        }
-
-        //todo: probably won't need this any longer
-        //public BaseStdSegment(baseFieldValues bsf)
-        //{
-        //    FieldValues = bsf;
-        //}
+            FieldValues = new baseFieldValues(new List<string>() {this.GetType().Name});
+        } 
 
         public BaseStdSegment(List<string> values):this()
         {
@@ -446,7 +476,18 @@ namespace Model.EDI.X12.v2.Base
         {
             FieldValues = baseVals;
         }
-        public abstract bool Validate();
+
+        public virtual bool Validate()
+        {
+            var retVal = true;
+
+            foreach (var qualVal in SegmentQualifierValues)
+            {
+                retVal = retVal && qualVal.IsQaulified(FieldValues);
+            }
+
+            return retVal;
+        }
 
         public List<SegmentQualifiers> SegmentQualifierValues { get; set; }
 
@@ -484,9 +525,14 @@ namespace Model.EDI.X12.v2.Base
 
         public void SetFieldValue(int index, string value)
         {
-            if (FieldValues.Count < index)
+            if (FieldValues.Count < index+1)
             {
-                FieldValues.Capacity = index+1;
+                FieldValues.Capacity = index+5;
+
+                while (FieldValues.Count < index+1)
+                {
+                    FieldValues.Add(null);
+                }
             }
 
             FieldValues[index] = value;
@@ -498,7 +544,15 @@ namespace Model.EDI.X12.v2.Base
             obj.Populate(bsf);
 
             return obj;
-        }
+        } 
+
+        public override string ToString()
+        {
+            if (OwningLoopCollection != null && OwningLoopCollection.OwningX12Doc != null && OwningLoopCollection.OwningX12Doc.DocDelimiters.Element > 0)
+                return string.Join(OwningLoopCollection.OwningX12Doc.DocDelimiters.Element.ToString(), FieldValues);
+
+            return string.Join("*", FieldValues);
+        } 
     }
 
     /// <summary>
@@ -507,12 +561,14 @@ namespace Model.EDI.X12.v2.Base
     /// </summary>
     public class baseFieldValues : List<string>
     {
-        public string RawValue { get; private set; }
+        public string RawValue { get; private set; } 
 
         public baseFieldValues(List<string> values)
         {
-
+            this.AddRange(values);
         }
+
+        //public baseFieldValues() { }
 
         public baseFieldValues(byte[] buffer, int offset, int length, byte elementSep, string compSep)
         {

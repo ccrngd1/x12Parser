@@ -1,33 +1,34 @@
 ﻿using System;
-using System.IO;
+using System.IO; 
 using Model.EDI.X12.v2;
 using Model.EDI.X12.v2.Base;
 
 namespace Business.EDI.X12.v2
-{
+{ 
+
     public class SegmentStream : IDisposable
     {
-        public Stream BaseStream { get; protected set; }
-        public ISA ISA { get; protected set; }
+        public Stream BaseStream { get; protected set; } 
         public bool IsDisposed { get; private set; }
         public bool EndOfFile { get; internal set; }
 
-        public SegmentStream(Stream s)
+        public SegmentStream(Stream s, ref X12Doc x12doc)
         {
             // BufferSize = s.Length;
             buffer = new byte[BufferSize];
             BaseStream = s;
             EndOfFile = false;
-            ISA = new ISA();
-            ISA.FromStream(s);
+            x12doc.InterchagneControlHeader = new ISA();
+            x12doc.InterchagneControlHeader.FromStream(s);
             lastPoisition = s.Position;
             head = tail = 0;
         }
 
-        public baseFieldValues ReadNextLine()
+
+        public baseFieldValues ReadNextLine(Delimiters delims)
         {
             var index = tail;
-            var exitbyte = (byte)ISA.LineSeperator[0];
+            var exitbyte = (byte)delims.Segment;
             var sb = new MemoryStream();
             if (head == 0 || tail == BufferSize || tail == head)
             {
@@ -74,16 +75,17 @@ namespace Business.EDI.X12.v2
                 {
                     return null;
                 }
-                return new baseFieldValues(buffer, (int)oldtail, (int)(index - oldtail), (byte)ISA.ElementSeperator, ISA.ComponentElementSeparator);
+                return new baseFieldValues(buffer, (int)oldtail, (int)(index - oldtail), (byte)delims.Element, delims.Component.ToString());
             }
             else
             {
                 sb.Write(buffer, 0, (int)(index));
 
-                return new baseFieldValues(sb.ToArray(), (int)oldtail, (int)(sb.Length - oldtail), (byte)ISA.ElementSeperator, ISA.ComponentElementSeparator);
+                return new baseFieldValues(sb.ToArray(), (int)oldtail, (int)(sb.Length - oldtail), (byte)delims.Element, delims.Component.ToString());
             }
 
         }
+
         public void Dispose()
         {
             if (BaseStream != null)
