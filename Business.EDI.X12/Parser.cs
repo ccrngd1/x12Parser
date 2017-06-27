@@ -81,7 +81,7 @@ namespace Business.EDI.X12.v2
                     var currentLoopProcessed = false;
                     if (currentLoop != null)
                     {
-                        List<BaseStdSegment> qualifiedSegments = currentLoop.IsQualified(lineContent, QulificationLevel.Recursive);
+                        List<BaseStdSegment> qualifiedSegments = currentLoop.IsQualified(lineContent, QulificationLevel.TopMost);
 
                         if (qualifiedSegments.Count == 1)
                         {
@@ -94,43 +94,62 @@ namespace Business.EDI.X12.v2
                             currentLoop.Add(qualifiedSegments[0].CreateBaseStdSegment(lineContent));
                             currentLoopProcessed = true;
                         }
-                        else if (!qualifiedSegments.Any()) //there were none
+                        else //want to try first level sub loop
                         {
-                            var currentLoopCollection = currentLoop.ParentLoopCollection;
 
-                            //if the currentLoop and its subloops can't handle this, lets walk up the stack
-                            while (currentLoopCollection.ParentLoopCollection != null)
+                            qualifiedSegments = currentLoop.IsQualified(lineContent, QulificationLevel.FirstChild);
+
+                            if (qualifiedSegments.Count == 1)
                             {
-                                currentLoopCollection = currentLoopCollection.ParentLoopCollection;
-
-                                qualifiedSegments = currentLoopCollection.IsQualified(lineContent, QulificationLevel.TopMost);
-
-                                if (qualifiedSegments.Count == 1)
+                                if (qualifiedSegments[0].IsLoopStarter)
                                 {
-                                    if (qualifiedSegments[0].IsLoopStarter) //should always be a starter
-                                        currentLoopCollection.Add();
+                                    currentLoop.ParentLoopCollection.Add();
+                                    currentLoop = currentLoop.ParentLoopCollection.LoopEntities.Last();
+                                }
+
+                                currentLoop.Add(qualifiedSegments[0].CreateBaseStdSegment(lineContent));
+                                currentLoopProcessed = true;
+                            }
+
+                            else if (!qualifiedSegments.Any()) //there were none
+                            {
+                                var currentLoopCollection = currentLoop.ParentLoopCollection;
+
+                                //if the currentLoop and its subloops can't handle this, lets walk up the stack
+                                while (currentLoopCollection.ParentLoopCollection != null)
+                                {
+                                    currentLoopCollection = currentLoopCollection.ParentLoopCollection;
+
+                                    qualifiedSegments =
+                                        currentLoopCollection.IsQualified(lineContent, QulificationLevel.TopMost);
+
+                                    if (qualifiedSegments.Count == 1)
+                                    {
+                                        if (qualifiedSegments[0].IsLoopStarter) //should always be a starter
+                                            currentLoopCollection.Add();
+                                        else
+                                        {
+                                            //todo: is this an error?
+                                            Console.WriteLine("new loop but not a starter segment?");
+                                        }
+
+                                        currentLoop = currentLoopCollection.LoopEntities.Last();
+
+                                        currentLoop.Add(qualifiedSegments[0].CreateBaseStdSegment(lineContent));
+                                        currentLoopProcessed = true;
+                                    }
                                     else
                                     {
-                                        //todo: is this an error?
-                                        Console.WriteLine("new loop but not a starter segment?");
+                                        //todo: something?
+                                        Console.Write("some parental crap");
                                     }
-
-                                    currentLoop = currentLoopCollection.LoopEntities.Last();
-
-                                    currentLoop.Add(qualifiedSegments[0].CreateBaseStdSegment(lineContent));
-                                    currentLoopProcessed = true;
-                                }
-                                else
-                                {
-                                    //todo: something?
-                                    Console.Write("some parental crap");
                                 }
                             }
-                        }
-                        else //there were multiple and needs a tiebreaker 
-                        {
-                            //todo: something
-                            Console.WriteLine("we have too many, what do we do?");
+                            else //there were multiple and needs a tiebreaker 
+                            {
+                                //todo: something
+                                Console.WriteLine("we have too many, what do we do?");
+                            }
                         }
                     }  
 

@@ -37,7 +37,10 @@ namespace Model.EDI.X12.Format277.v5010.v2
 
         public override void SetUpDefinitions()
         {
-            InformationSourceLevelLoop.SetUpDefinition();
+            foreach (LoopCollection loopCollection in TopLevelLoops)
+            {
+                loopCollection.SetUpDefinition();
+            }
         }
     }
 }
