@@ -29,7 +29,7 @@ namespace Business.EDI.X12.v2
             List<string> headerSplit = HeaderSegments.Split(',').ToList();
             List<string> trailerSplit = TrailerSegments.Split(',').ToList();
 
-            LoopEntity currentLoop = null;
+            LoopEntity currentLoop = null; //todo : should this be a stack? it would allow me to push/pop when I was moving levels...it might help for debug purposes but most likely not in the actual parsing
 
             while (lineContent != null)
             {
@@ -83,7 +83,7 @@ namespace Business.EDI.X12.v2
                     {
                         List<BaseStdSegment> qualifiedSegments = currentLoop.IsQualified(lineContent, QulificationLevel.TopMost);
 
-                        if (qualifiedSegments.Count == 1)
+                        if (qualifiedSegments.Count == 1) //check just the top most, so check Loop2000A to see if we have a matching def before moving to check Loop2100A and Loop2200A
                         {
                             if (qualifiedSegments[0].IsLoopStarter)
                             {
@@ -103,10 +103,14 @@ namespace Business.EDI.X12.v2
                             {
                                 if (qualifiedSegments[0].IsLoopStarter)
                                 {
-                                    currentLoop.ParentLoopCollection.Add();
-                                    currentLoop = currentLoop.ParentLoopCollection.LoopEntities.Last();
+                                    //6/27 @ 6pm - remove this to get parser to create the owningCOllection correctly
+                                    //currentLoop.ParentLoopCollection.Add();
+                                    //currentLoop = currentLoop.ParentLoopCollection.LoopEntities.Last();
+
+                                    qualifiedSegments[0].OwningLoopCollection.Add();
                                 }
 
+                                currentLoop = qualifiedSegments[0].OwningLoopCollection.LoopEntities.Last();
                                 currentLoop.Add(qualifiedSegments[0].CreateBaseStdSegment(lineContent));
                                 currentLoopProcessed = true;
                             }
@@ -120,8 +124,9 @@ namespace Business.EDI.X12.v2
                                 {
                                     currentLoopCollection = currentLoopCollection.ParentLoopCollection;
 
-                                    qualifiedSegments =
-                                        currentLoopCollection.IsQualified(lineContent, QulificationLevel.TopMost);
+                                    //the segment should never belong to the parent, because we ahve already dipped down to the next level...it CAN belong to a sibling, so check first child level
+                                    //for isntance, if we are in Loop2100B and get a segment for Loop2200B - both are children of Loop2000B, so we have to walk up 2100B->2000B then chekc all children (2100B and 2200B)
+                                    qualifiedSegments = currentLoopCollection.IsQualified(lineContent, QulificationLevel.FirstChild);
 
                                     if (qualifiedSegments.Count == 1)
                                     {
@@ -138,9 +143,10 @@ namespace Business.EDI.X12.v2
                                         currentLoop.Add(qualifiedSegments[0].CreateBaseStdSegment(lineContent));
                                         currentLoopProcessed = true;
                                     }
-                                    else
+                                    else 
                                     {
-                                        //todo: something?
+                                        //this isn't unexpected...as we walk up the LoopCollection hierarchy, we may not find a match
+                                        //for instance, if we are in Loop2220D, we will walk up to Loop2200D, then to Loop2000D, before trying Loop2000E which could be our match
                                         Console.Write("some parental crap");
                                     }
                                 }
