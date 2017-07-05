@@ -98,26 +98,27 @@ namespace Model.EDI.X12.v2.Base
     /// Intent is that Individual Loops would inherit from this to create a Loop####XXCollection class
     /// IE Loop2000ACollectionBase
     /// The LoopEntities would then be of type Loop2000A, but it will up to the implementing class to cast this back
-    /// This could ahve been made somewhat simpler if this was LoopCollectionBase &lt; T &gt; but that would eliminate the ability to treat all loops as single type "/>
+    /// This could ahve been made somewhat simpler if this was LoopCollection &lt; T &gt; but that would eliminate the ability to treat all loops as single type "/>
     /// </summary>
     public abstract class LoopCollectionBase
     {
         //the doc this collection belongs to
         public X12Doc OwningX12Doc { get; set; }
 
-        public LoopCollectionBase ParentLoopCollectionBase { get; set; }
+        public LoopCollectionBase ParentLoopCollection { get; set; }
 
-        public bool SetUpChildDefinitions { get; set; }
+        protected bool SetUpChildDefinitions { get; set; }
 
         //the instantiated loops (loopEntity objects) of this collection (IE Loop2100A objects)
         public readonly List<LoopEntity> LoopEntities; 
 
         public string LoopName { get; set; }
+
         public string LoopNameDescription { get; set; }
+
         public int RepitionLimit { get; set; }
 
         public List<BaseStdSegment> SegmentDefinitions { get; set; }
-
         
         public LoopCollectionBase(string loopName, string loopNameDescription, X12Doc owningDoc, LoopCollectionBase parent)
         {
@@ -130,13 +131,9 @@ namespace Model.EDI.X12.v2.Base
             LoopName = loopName;
             LoopNameDescription = loopNameDescription;
 
-            ParentLoopCollectionBase = parent;
+            ParentLoopCollection = parent;
 
         }
-         
-        public abstract bool Validate();
-
-        public abstract void SetUpDefinition();
 
         public List<BaseStdSegment> IsQualified(BaseFieldValues baseFieldValues, QulificationLevel recursiveCheck)
         {
@@ -150,16 +147,16 @@ namespace Model.EDI.X12.v2.Base
                         retVal.Add(segmentDefinition);
                 }
 
-                if (recursiveCheck != QulificationLevel.TopMost)
+                if (recursiveCheck != QulificationLevel.TopMost) //was originally written this way because there was a .Recursive option that was removed.  Leaving like this because more could be added and this would break, seems less likely to break this way
                 {
                     if(recursiveCheck==QulificationLevel.FirstChild) recursiveCheck=QulificationLevel.TopMost;
 
-                    //we would have to search lower than our current level
+                    //would have to search lower than our current level
                     //can only do this if we are currently working in a loop
                     //if we are, check its child loopCollections as well
                     if (LoopEntities != null && LoopEntities.Any())
                     {
-                        foreach (var childLoopCollection in LoopEntities.Last().ChildLoopCollections)
+                        foreach (LoopCollectionBase childLoopCollection in LoopEntities.Last().ChildLoopCollections)
                         {
                             retVal.AddRange(childLoopCollection.IsQualified(baseFieldValues,recursiveCheck));
                         }
@@ -175,26 +172,40 @@ namespace Model.EDI.X12.v2.Base
             return retVal;
         }
 
+        public void Add(LoopEntity loop)
+        {
+            if (SetUpChildDefinitions)
+                loop.SetUpDefinition();
 
+            LoopEntities.Add(loop);
+        }
 
-        public abstract void Add(LoopEntity loop);
+        public virtual bool Validate()
+        {
+            return LoopEntities.All(c => c.Validate());
+        }
 
+        //Can't define here because it will rely on the type being passed in T and will just plop a brand new instance in for us
         public abstract void Add();
+
+        public abstract void SetUpDefinition();
     }
 
     /// <summary>
-    /// Since LoopCollectionBase had to be completely generic, this class allows for typing it dynamically
-    /// While still retaining the ability to group all loops as a single generic type of LoopCollectionBase
+    /// Since LoopCollection had to be completely generic, this class allows for typing it dynamically
+    /// While still retaining the ability to group all loops as a single generic type of LoopCollection
     /// Intent is that Individual Loops would inherit from this to create a Loop####XXCollection class
     /// IE Loop2000ACollectionBase
     /// The LoopEntities would then be of type Loop2000A, but it will up to the implementing class to cast this back 
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class LoopCollectionBase<T> : LoopCollectionBase, IList<T> where T : LoopEntity
+    public abstract class LoopCollection<T> : LoopCollectionBase, IList<T> where T : LoopEntity
     {
         public IEnumerator<T> GetEnumerator()
         {
-            throw new InvalidCastException();
+            throw new NotImplementedException();
+
+            //return LoopEntities.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -250,24 +261,16 @@ namespace Model.EDI.X12.v2.Base
             set { LoopEntities[index] = value; }
         } 
 
-        public LoopCollectionBase(string loopName, string loopNameDescription, X12Doc owningDoc, LoopCollectionBase parent, LoopCollectionBase prev) : base(loopName, loopNameDescription, owningDoc, parent)
+        public LoopCollection(string loopName, string loopNameDescription, X12Doc owningDoc, LoopCollectionBase parent, LoopCollectionBase prev) : base(loopName, loopNameDescription, owningDoc, parent)
         {
-        }
-
-        public override void Add(LoopEntity loop)
-        {
-            if(SetUpChildDefinitions)
-                loop.SetUpDefinition(SegmentDefinitions);
-
-            LoopEntities.Add(loop);
-        }
+        } 
 
         public override void Add()
         {
             var l = (T) Activator.CreateInstance(typeof(T), OwningX12Doc, LoopEntities.LastOrDefault(), this);
 
             if (SetUpChildDefinitions)
-                l.SetUpDefinition(SegmentDefinitions);
+                l.SetUpDefinition();
 
             LoopEntities.Add(l);
         } 
@@ -275,39 +278,34 @@ namespace Model.EDI.X12.v2.Base
     }
 
     /// <summary>
-    /// The single Loop object that a LoopCollectionBase/LoopCollectionBase is comprised of
+    /// The single Loop object that a LoopCollection/LoopCollection is comprised of
     /// There is very little additional data stored here, and is meant only for the Definition/Parsing overload to come later
     /// </summary>
     public abstract class LoopEntity
     {
-        public string LoopName { get; set; }
+        public string LoopName { get; set; } 
 
-        public int Index { get; set; }
+        protected X12Doc OwningDoc { get; set; } 
 
-        public X12Doc OwningDoc { get; set; }
+        public LoopCollectionBase ParentLoopCollection { get; set; }
 
-        //todo: still useful?
-        public LoopEntity PreviousLoop { get; set; }
-
-        //todo: still useful?
-        public LoopEntity NextLoop { get; set; }
-
-        public LoopCollectionBase ParentLoopCollectionBase { get; set; }
-
-        public List<LoopCollectionBase> ChildLoopCollections { get; set; }
-
-        public List<BaseStdSegment> SegmentDefinitions => ParentLoopCollectionBase.SegmentDefinitions;
+        public List<LoopCollectionBase> ChildLoopCollections { get; set; } 
 
         public List<BaseStdSegment> IsQualified(BaseFieldValues baseFieldValues, QulificationLevel recursiveCheck)
         {
-            return ParentLoopCollectionBase.IsQualified(baseFieldValues, recursiveCheck);
+            return ParentLoopCollection.IsQualified(baseFieldValues, recursiveCheck);
         }
 
         public List<SegmentCollection> SegmentCollections { get; set; }
 
         public virtual bool Validate()
         {
-            throw new NotImplementedException();
+            //todo finish this validation code
+            bool retVal = ChildLoopCollections.All(c => c.Validate());  
+
+            retVal = retVal && SegmentCollections.All(c => c.Segments.All(d => d.Validate()));
+
+            return retVal;
         }
 
         private LoopEntity()
@@ -316,27 +314,22 @@ namespace Model.EDI.X12.v2.Base
             SegmentCollections = new List<SegmentCollection>();
         }
 
-        public LoopEntity(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : this()
+        protected LoopEntity(X12Doc owningDoc, LoopCollectionBase parent) : this()
         {
-            OwningDoc = owningDoc;
-            PreviousLoop = prev;
-            ParentLoopCollectionBase = parent;
-
-            Index = ParentLoopCollectionBase.LoopEntities.Count;
+            OwningDoc = owningDoc; 
+            ParentLoopCollection = parent; 
         } 
 
-        public virtual void SetUpDefinition(List<BaseStdSegment> segDef)
+        internal virtual void SetUpDefinition()
         { 
-            foreach (var childLoop in ChildLoopCollections)
+            foreach (LoopCollectionBase childLoop in ChildLoopCollections)
             {
                 childLoop.SetUpDefinition();
             }
 
             foreach (SegmentCollection segmentCollection in SegmentCollections)
             {
-                segmentCollection.SegmentDefinition =
-                    ParentLoopCollectionBase.SegmentDefinitions.Where(
-                        c => c.SegmentDefinitionName == segmentCollection.SegmentDefinitionName).First();
+                segmentCollection.SegmentDefinition =ParentLoopCollection.SegmentDefinitions.First(c => c.SegmentDefinitionName == segmentCollection.SegmentDefinitionName);
             }
         } 
 
@@ -364,10 +357,7 @@ namespace Model.EDI.X12.v2.Base
     /// </summary>
     public abstract class SegmentCollection
     {
-        public List<BaseStdSegment> Segments { get; set; }
-
-        //todo: do we still need this?
-        public Type BaseType { get; set; }
+        public List<BaseStdSegment> Segments { get; set; } 
 
         public BaseStdSegment SegmentDefinition { get; set; } 
 
@@ -382,9 +372,8 @@ namespace Model.EDI.X12.v2.Base
             Segments = new List<BaseStdSegment>();
         }
 
-        public SegmentCollection(Type baseType, LoopEntity owningLoopEntity, string segDefName):this()
-        {
-            BaseType = baseType;
+        public SegmentCollection(LoopEntity owningLoopEntity, string segDefName):this()
+        { 
             OwningLoopEntity = owningLoopEntity;
             SegmentDefinitionName = segDefName;
         }
@@ -408,7 +397,7 @@ namespace Model.EDI.X12.v2.Base
         /// <summary>
         /// only for seg def usage
         /// </summary>
-        public LoopCollectionBase OwningLoopCollectionBase { get; set; }
+        public LoopCollectionBase OwningLoopCollection { get; set; }
 
         /// <summary>
         /// only for seg def usage
@@ -524,8 +513,8 @@ namespace Model.EDI.X12.v2.Base
 
         public override string ToString()
         {
-            if (OwningLoopCollectionBase != null && OwningLoopCollectionBase.OwningX12Doc != null && OwningLoopCollectionBase.OwningX12Doc.DocDelimiters.Element > 0)
-                return string.Join(OwningLoopCollectionBase.OwningX12Doc.DocDelimiters.Element.ToString(), FieldValues);
+            if (OwningLoopCollection != null && OwningLoopCollection.OwningX12Doc != null && OwningLoopCollection.OwningX12Doc.DocDelimiters.Element > 0)
+                return string.Join(OwningLoopCollection.OwningX12Doc.DocDelimiters.Element.ToString(), FieldValues);
 
             return string.Join("*", FieldValues);
         } 

@@ -40,10 +40,10 @@
 
 //            //X12_277_5010 doc = new X12_277_5010(true);
 
-//            //Loop2000ACollectionBase tempLoopCollection = doc.InformationSourceLevelLoop;
+//            //Loop2000ACollection tempLoopCollection = doc.InformationSourceLevelLoop;
 
-//            //LoopCollectionBase tempCastedLoopCollection = tempLoopCollection;
-//            //LoopCollectionBase<Loop2000A> temp = tempLoopCollection;
+//            //LoopCollection tempCastedLoopCollection = tempLoopCollection;
+//            //LoopCollection<Loop2000A> temp = tempLoopCollection;
 
 //            //Loop2000A tempLoop = doc.InformationSourceLevelLoop[0];
 //            //LoopEntity tempCastedLoopEntity = tempLoop;

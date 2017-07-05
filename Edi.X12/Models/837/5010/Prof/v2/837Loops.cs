@@ -3,11 +3,11 @@
 
 //namespace Model.EDI.X12._837._5010.Prof.v2
 //{
-//    public class Loop1000ACollection : LoopCollectionBase<Loop1000A>
+//    public class Loop1000ACollection : LoopCollection<Loop1000A>
 //    {
 //        public Loop1000ACollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop1000A : LoopEntity
 //    {
@@ -15,22 +15,22 @@
 //        public Nm1Collection Name = new Nm1Collection();
 //        public PerCollection EDIContact = new PerCollection();
 //    }
-//    public class Loop1000BCollection : LoopCollectionBase<Loop1000B>
+//    public class Loop1000BCollection : LoopCollection<Loop1000B>
 //    {
 //        public Loop1000BCollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop1000B : LoopEntity
 //    {
 //        public Loop1000B() { }
 //        public Nm1Collection Name = new Nm1Collection();
 //    }
-//    public class Loop2000ACollectionBase : LoopCollectionBase<Loop2000A>
+//    public class Loop2000ACollection : LoopCollection<Loop2000A>
 //    {
-//        public Loop2000ACollectionBase() { }
+//        public Loop2000ACollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2000A : LoopEntity
 //    {
@@ -39,11 +39,11 @@
 //        public PrvCollection SpecialtyInfo = new PrvCollection();
 //        public CurCollection Currency = new CurCollection();
 //    }
-//    public class Loop2010AACollection : LoopCollectionBase<Loop2010AA>
+//    public class Loop2010AACollection : LoopCollection<Loop2010AA>
 //    {
 //        public Loop2010AACollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2010AA : LoopEntity
 //    {
@@ -55,11 +55,11 @@
 //        public RefCollection UPINLicense = new RefCollection();
 //        public PerCollection ContactInfo = new PerCollection();
 //    }
-//    public class Loop2010ABCollection : LoopCollectionBase<Loop2010AB>
+//    public class Loop2010ABCollection : LoopCollection<Loop2010AB>
 //    {
 //        public Loop2010ABCollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2010AB : LoopEntity
 //    {
@@ -68,11 +68,11 @@
 //        public N3Collection Address = new N3Collection();
 //        public N4Collection Location = new N4Collection();
 //    }
-//    public class Loop2010ACCollection : LoopCollectionBase<Loop2010AC>
+//    public class Loop2010ACCollection : LoopCollection<Loop2010AC>
 //    {
 //        public Loop2010ACCollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2010AC : LoopEntity
 //    {
@@ -83,11 +83,11 @@
 //        public RefCollection SecondaryId = new RefCollection();
 //        public RefCollection TaxID = new RefCollection();
 //    }
-//    public class Loop2000BCollectionBase : LoopCollectionBase<Loop2000B>
+//    public class Loop2000BCollection : LoopCollection<Loop2000B>
 //    {
-//        public Loop2000BCollectionBase() { }
+//        public Loop2000BCollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2000B : LoopEntity
 //    {
@@ -96,11 +96,11 @@
 //        public SbrCollection SubscriberInfo = new SbrCollection();
 //        public PatCollection PationInfo = new PatCollection();
 //    }
-//    public class Loop2010BACollection : LoopCollectionBase<Loop2010BA>
+//    public class Loop2010BACollection : LoopCollection<Loop2010BA>
 //    {
 //        public Loop2010BACollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2010BA : LoopEntity
 //    {
@@ -113,11 +113,11 @@
 //        public RefCollection PropertyCausualtyClaimNumber = new RefCollection();
 //        public PerCollection PropertyCausualtySubscriberContact = new PerCollection();
 //    }
-//    public class Loop2010BBCollection : LoopCollectionBase<Loop2010BB>
+//    public class Loop2010BBCollection : LoopCollection<Loop2010BB>
 //    {
 //        public Loop2010BBCollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2010BB : LoopEntity
 //    {
@@ -128,11 +128,11 @@
 //        public RefCollection SecondaryId = new RefCollection();
 //        public RefCollection BillingProviderSecondaryId = new RefCollection();
 //    }
-//    public class Loop2000CCollectionBase : LoopCollectionBase<Loop2000C>
+//    public class Loop2000CCollection : LoopCollection<Loop2000C>
 //    {
-//        public Loop2000CCollectionBase() { }
+//        public Loop2000CCollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2000C : LoopEntity
 //    {
@@ -140,11 +140,11 @@
 //        public HlCollection Level = new HlCollection();
 //        public PatCollection Info = new PatCollection();
 //    }
-//    public class Loop2010CACollection : LoopCollectionBase<Loop2010CA>
+//    public class Loop2010CACollection : LoopCollection<Loop2010CA>
 //    {
 //        public Loop2010CACollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2010CA : LoopEntity
 //    {
@@ -157,11 +157,11 @@
 //        public RefCollection PropertyCausualtyPatientId = new RefCollection();
 //        public PerCollection PropertyCausualtySubscriberContact = new PerCollection();
 //    }
-//    public class Loop2300Collection : LoopCollectionBase<Loop2300>
+//    public class Loop2300Collection : LoopCollection<Loop2300>
 //    {
 //        public Loop2300Collection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2300 : LoopEntity
 //    {
@@ -213,11 +213,11 @@
 //        public HiCollection ConditionInfomation = new HiCollection();
 //        public HcpCollection ClaimPricingInfo = new HcpCollection();
 //    }
-//    public class Loop2310ACollection : LoopCollectionBase<Loop2310A>
+//    public class Loop2310ACollection : LoopCollection<Loop2310A>
 //    {
 //        public Loop2310ACollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2310A : LoopEntity
 //    {
@@ -225,11 +225,11 @@
 //        public Nm1Collection Name = new Nm1Collection();
 //        public RefCollection SecondaryId = new RefCollection();
 //    }
-//    public class Loop2310BCollection : LoopCollectionBase<Loop2310B>
+//    public class Loop2310BCollection : LoopCollection<Loop2310B>
 //    {
 //        public Loop2310BCollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2310B : LoopEntity
 //    {
@@ -238,11 +238,11 @@
 //        public PrvCollection SpecialtyInfo = new PrvCollection();
 //        public RefCollection SecondaryId = new RefCollection();
 //    }
-//    public class Loop2310CCollection : LoopCollectionBase<Loop2310C>
+//    public class Loop2310CCollection : LoopCollection<Loop2310C>
 //    {
 //        public Loop2310CCollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2310C : LoopEntity
 //    {
@@ -253,11 +253,11 @@
 //        public RefCollection SecondaryId = new RefCollection();
 //        public PerCollection ContactInfo = new PerCollection();
 //    }
-//    public class Loop2310DCollection : LoopCollectionBase<Loop2310D>
+//    public class Loop2310DCollection : LoopCollection<Loop2310D>
 //    {
 //        public Loop2310DCollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2310D : LoopEntity
 //    {
@@ -265,11 +265,11 @@
 //        public Nm1Collection Name = new Nm1Collection();
 //        public RefCollection SecondaryId = new RefCollection();
 //    }
-//    public class Loop2310ECollection : LoopCollectionBase<Loop2310E>
+//    public class Loop2310ECollection : LoopCollection<Loop2310E>
 //    {
 //        public Loop2310ECollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2310E : LoopEntity
 //    {
@@ -278,11 +278,11 @@
 //        public N3Collection Address = new N3Collection();
 //        public N3Collection Locaiton = new N3Collection();
 //    }
-//    public class Loop2310FCollection : LoopCollectionBase<Loop2310F>
+//    public class Loop2310FCollection : LoopCollection<Loop2310F>
 //    {
 //        public Loop2310FCollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2310F : LoopEntity
 //    {
@@ -291,11 +291,11 @@
 //        public N3Collection Address = new N3Collection();
 //        public N3Collection Locaiton = new N3Collection();
 //    }
-//    public class Loop2320Collection : LoopCollectionBase<Loop2320>
+//    public class Loop2320Collection : LoopCollection<Loop2320>
 //    {
 //        public Loop2320Collection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2320 : LoopEntity
 //    {
@@ -308,11 +308,11 @@
 //        public OiCollection OtherCoverageInfo = new OiCollection();
 //        public MoaCollection OutpatientAdjudicaiton = new MoaCollection();
 //    }
-//    public class Loop2330ACollection : LoopCollectionBase<Loop2330A>
+//    public class Loop2330ACollection : LoopCollection<Loop2330A>
 //    {
 //        public Loop2330ACollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2330A : LoopEntity
 //    {
@@ -322,11 +322,11 @@
 //        public N4Collection Location = new N4Collection();
 //        public RefCollection SecondaryId = new RefCollection();
 //    }
-//    public class Loop2330BCollection : LoopCollectionBase<Loop2330B>
+//    public class Loop2330BCollection : LoopCollection<Loop2330B>
 //    {
 //        public Loop2330BCollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2330B : LoopEntity
 //    {
@@ -341,11 +341,11 @@
 //        public RefCollection AdjustmentIndicator = new RefCollection();
 //        public RefCollection ControlNumber = new RefCollection();
 //    }
-//    public class Loop2330CCollection : LoopCollectionBase<Loop2330C>
+//    public class Loop2330CCollection : LoopCollection<Loop2330C>
 //    {
 //        public Loop2330CCollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2330C : LoopEntity
 //    {
@@ -353,11 +353,11 @@
 //        public Nm1Collection Name = new Nm1Collection();
 //        public RefCollection SecondaryId = new RefCollection();
 //    }
-//    public class Loop2330DCollection : LoopCollectionBase<Loop2330D>
+//    public class Loop2330DCollection : LoopCollection<Loop2330D>
 //    {
 //        public Loop2330DCollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2330D : LoopEntity
 //    {
@@ -365,11 +365,11 @@
 //        public Nm1Collection Name = new Nm1Collection();
 //        public RefCollection SecondaryId = new RefCollection();
 //    }
-//    public class Loop2330ECollection : LoopCollectionBase<Loop2330E>
+//    public class Loop2330ECollection : LoopCollection<Loop2330E>
 //    {
 //        public Loop2330ECollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2330E : LoopEntity
 //    {
@@ -377,11 +377,11 @@
 //        public Nm1Collection Name = new Nm1Collection();
 //        public RefCollection SecondaryId = new RefCollection();
 //    }
-//    public class Loop2330FCollection : LoopCollectionBase<Loop2330F>
+//    public class Loop2330FCollection : LoopCollection<Loop2330F>
 //    {
 //        public Loop2330FCollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2330F : LoopEntity
 //    {
@@ -389,11 +389,11 @@
 //        public Nm1Collection Name = new Nm1Collection();
 //        public RefCollection SecondaryId = new RefCollection();
 //    }
-//    public class Loop2330GCollection : LoopCollectionBase<Loop2330G>
+//    public class Loop2330GCollection : LoopCollection<Loop2330G>
 //    {
 //        public Loop2330GCollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2330G : LoopEntity
 //    {
@@ -401,11 +401,11 @@
 //        public Nm1Collection Name = new Nm1Collection();
 //        public RefCollection SecondaryId = new RefCollection();
 //    }
-//    public class Loop2400Collection : LoopCollectionBase<Loop2400>
+//    public class Loop2400Collection : LoopCollection<Loop2400>
 //    {
 //        public Loop2400Collection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2400 : LoopEntity
 //    {
@@ -451,11 +451,11 @@
 //        public Ps1Collection PurchasedServiceInfo = new Ps1Collection();
 //        public HcpCollection LinePricing = new HcpCollection();
 //    }
-//    public class Loop2410Collection : LoopCollectionBase<Loop2410>
+//    public class Loop2410Collection : LoopCollection<Loop2410>
 //    {
 //        public Loop2410Collection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2410 : LoopEntity
 //    {
@@ -464,11 +464,11 @@
 //        public CtpCollection Quantity = new CtpCollection();
 //        public RefCollection Perscription = new RefCollection();
 //    }
-//    public class Loop2420ACollection : LoopCollectionBase<Loop2420A>
+//    public class Loop2420ACollection : LoopCollection<Loop2420A>
 //    {
 //        public Loop2420ACollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2420A : LoopEntity
 //    {
@@ -477,11 +477,11 @@
 //        public PrvCollection Specialty = new PrvCollection();
 //        public RefCollection SecondaryId = new RefCollection();
 //    }
-//    public class Loop2420BCollection : LoopCollectionBase<Loop2420B>
+//    public class Loop2420BCollection : LoopCollection<Loop2420B>
 //    {
 //        public Loop2420BCollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2420B : LoopEntity
 //    {
@@ -489,11 +489,11 @@
 //        public Nm1Collection Name = new Nm1Collection();
 //        public RefCollection SecondaryInfo = new RefCollection();
 //    }
-//    public class Loop2420CCollection : LoopCollectionBase<Loop2420C>
+//    public class Loop2420CCollection : LoopCollection<Loop2420C>
 //    {
 //        public Loop2420CCollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2420C : LoopEntity
 //    {
@@ -503,11 +503,11 @@
 //        public N4Collection Location = new N4Collection();
 //        public RefCollection SecondaryId = new RefCollection();
 //    }
-//    public class Loop2420DCollection : LoopCollectionBase<Loop2420D>
+//    public class Loop2420DCollection : LoopCollection<Loop2420D>
 //    {
 //        public Loop2420DCollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2420D : LoopEntity
 //    {
@@ -515,11 +515,11 @@
 //        public Nm1Collection Name = new Nm1Collection();
 //        public RefCollection SecondaryId = new RefCollection();
 //    }
-//    public class Loop2420ECollection : LoopCollectionBase<Loop2420E>
+//    public class Loop2420ECollection : LoopCollection<Loop2420E>
 //    {
 //        public Loop2420ECollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2420E : LoopEntity
 //    {
@@ -530,11 +530,11 @@
 //        public RefCollection SecondaryId = new RefCollection();
 //        public PerCollection Contact = new PerCollection();
 //    }
-//    public class Loop2420FCollection : LoopCollectionBase<Loop2420F>
+//    public class Loop2420FCollection : LoopCollection<Loop2420F>
 //    {
 //        public Loop2420FCollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2420F : LoopEntity
 //    {
@@ -542,11 +542,11 @@
 //        public Nm1Collection Name = new Nm1Collection();
 //        public RefCollection SecondaryId = new RefCollection();
 //    }
-//    public class Loop2420GCollection : LoopCollectionBase<Loop2420G>
+//    public class Loop2420GCollection : LoopCollection<Loop2420G>
 //    {
 //        public Loop2420GCollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2420G : LoopEntity
 //    {
@@ -555,11 +555,11 @@
 //        public N3Collection Address = new N3Collection();
 //        public N4Collection Location = new N4Collection();
 //    }
-//    public class Loop2420HCollection : LoopCollectionBase<Loop2420H>
+//    public class Loop2420HCollection : LoopCollection<Loop2420H>
 //    {
 //        public Loop2420HCollection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2420H : LoopEntity
 //    {
@@ -568,11 +568,11 @@
 //        public N3Collection Address = new N3Collection();
 //        public N4Collection Location = new N4Collection();
 //    }
-//    public class Loop2430Collection : LoopCollectionBase<Loop2430>
+//    public class Loop2430Collection : LoopCollection<Loop2430>
 //    {
 //        public Loop2430Collection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2430 : LoopEntity
 //    {
@@ -582,11 +582,11 @@
 //        public DtpCollection CheckRemittanceDate = new DtpCollection();
 //        public AmtCollection RemainingPatientLiability = new AmtCollection();
 //    }
-//    public class Loop2440Collection : LoopCollectionBase<Loop2440>
+//    public class Loop2440Collection : LoopCollection<Loop2440>
 //    {
 //        public Loop2440Collection() { }
 //        public override bool Validate() { throw new System.NotImplementedException(); }
-//        public override void SetUpDefinition(LoopCollectionBase parentLoopCollection) { throw new System.NotImplementedException(); }
+//        public override void SetUpDefinition(LoopCollection parentLoopCollection) { throw new System.NotImplementedException(); }
 //    }
 //    public class Loop2440 : LoopEntity
 //    {

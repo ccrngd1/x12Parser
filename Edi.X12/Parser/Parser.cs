@@ -80,8 +80,8 @@ namespace Business.EDI.X12.v2
                 {
                     if (qualifiedSegments[0].IsLoopStarter)
                     {
-                        retVal.CurrentLoop.ParentLoopCollectionBase.Add();
-                        retVal.CurrentLoop = retVal.CurrentLoop.ParentLoopCollectionBase.LoopEntities.Last(); 
+                        retVal.CurrentLoop.ParentLoopCollection.Add();
+                        retVal.CurrentLoop = retVal.CurrentLoop.ParentLoopCollection.LoopEntities.Last(); 
                     }
 
                     retVal.CurrentLoop.Add(qualifiedSegments[0].CreateBaseStdSegment(lineContent));
@@ -96,22 +96,22 @@ namespace Business.EDI.X12.v2
                     {
                         if (qualifiedSegments[0].IsLoopStarter)
                         {
-                            qualifiedSegments[0].OwningLoopCollectionBase.Add();
+                            qualifiedSegments[0].OwningLoopCollection.Add();
                         }
 
-                        retVal.CurrentLoop = qualifiedSegments[0].OwningLoopCollectionBase.LoopEntities.Last(); 
+                        retVal.CurrentLoop = qualifiedSegments[0].OwningLoopCollection.LoopEntities.Last(); 
                         retVal.CurrentLoop.Add(qualifiedSegments[0].CreateBaseStdSegment(lineContent));
                         currentLoopProcessed = true;
                     }
 
                     else if (!qualifiedSegments.Any()) //there were none
                     {
-                        var currentLoopCollection = retVal.CurrentLoop.ParentLoopCollectionBase;
+                        var currentLoopCollection = retVal.CurrentLoop.ParentLoopCollection;
 
                         //if the currentLoop and its subloops can't handle this, lets walk up the stack
-                        while (currentLoopCollection.ParentLoopCollectionBase != null)
+                        while (currentLoopCollection.ParentLoopCollection != null)
                         {
-                            currentLoopCollection = currentLoopCollection.ParentLoopCollectionBase;
+                            currentLoopCollection = currentLoopCollection.ParentLoopCollection;
 
                             //the segment should never belong to the parent, because we ahve already dipped down to the next level...it CAN belong to a sibling, so check first child level
                             //for isntance, if we are in Loop2100B and get a segment for Loop2200B - both are children of Loop2000B, so we have to walk up 2100B->2000B then chekc all children (2100B and 2200B)
@@ -120,7 +120,7 @@ namespace Business.EDI.X12.v2
                             if (qualifiedSegments.Count == 1)
                             {
                                 if (qualifiedSegments[0].IsLoopStarter) //should always be a starter
-                                    qualifiedSegments[0].OwningLoopCollectionBase.Add();
+                                    qualifiedSegments[0].OwningLoopCollection.Add();
                                 else
                                 {
                                     //todo: is this an error?
@@ -133,7 +133,7 @@ namespace Business.EDI.X12.v2
                             }
                             else
                             {
-                                //this isn't unexpected...as we walk up the LoopCollectionBase hierarchy, we may not find a match
+                                //this isn't unexpected...as we walk up the LoopCollection hierarchy, we may not find a match
                                 //for instance, if we are in Loop2220D, we will walk up to Loop2200D, then to Loop2000D, before trying Loop2000E which could be our match
                                 Console.Write("DEUBG - walking up the hierarchy did not find anything");
                             }
@@ -154,20 +154,20 @@ namespace Business.EDI.X12.v2
                 var qualifiedSegments = new List<BaseStdSegment>();
                 foreach (LoopCollectionBase loopCollection in tempBuildingDoc.TopLevelLoops)
                 {
-                    qualifiedSegments.AddRange(loopCollection.IsQualified(lineContent, QulificationLevel.Recursive));
+                    qualifiedSegments.AddRange(loopCollection.IsQualified(lineContent, QulificationLevel.FirstChild));
                 }
 
                 if (qualifiedSegments.Count == 1)
                 {
                     if (qualifiedSegments[0].IsLoopStarter) //should always be
-                        qualifiedSegments[0].OwningLoopCollectionBase.Add();
+                        qualifiedSegments[0].OwningLoopCollection.Add();
                     else
                     {
                         //todo how to handle this
                         Console.WriteLine("another weird ");
                     }
 
-                    retVal.CurrentLoop = qualifiedSegments[0].OwningLoopCollectionBase.LoopEntities.Last(); 
+                    retVal.CurrentLoop = qualifiedSegments[0].OwningLoopCollection.LoopEntities.Last(); 
                     retVal.CurrentLoop.Add(qualifiedSegments[0].CreateBaseStdSegment(lineContent));
                     currentLoopProcessed = true;
                 }

@@ -6,7 +6,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
 {
 
 
-    public partial class Loop2000ACollectionBase
+    public partial class Loop2000ACollection
     {
         public override void SetUpDefinition()
         {
@@ -14,7 +14,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             RepitionLimit = 999;
             SegmentDefinitions.Add(new HL()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 IsLoopStarter = true,
                 SegmentDefinitionName = "InformationSourceLevel",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(3, "20") },
@@ -24,7 +24,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
         }
     }
-    public partial class Loop2100ACollectionBase
+    public partial class Loop2100ACollection
     {
         public override void SetUpDefinition()
         {
@@ -32,7 +32,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             RepitionLimit = 1;
             SegmentDefinitions.Add(new NM1()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 IsLoopStarter = true,
                 SegmentDefinitionName = "PayerName",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "PR") },
@@ -43,7 +43,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
             SegmentDefinitions.Add(new PER()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 SegmentDefinitionName = "PayerContactInformation",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "IC") },
                 SyntaxRules = new List<string>() { "P0304", "P0506", "P0708" },
@@ -53,7 +53,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
         }
     }
-    public partial class Loop2000BCollectionBase
+    public partial class Loop2000BCollection
     {
         public override void SetUpDefinition()
         {
@@ -61,7 +61,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             RepitionLimit = 999;
             SegmentDefinitions.Add(new HL()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 IsLoopStarter = true,
                 SegmentDefinitionName = "InformationReceiverLevel",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(3, "21") },
@@ -70,7 +70,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
         }
     }
-    public partial class Loop2100BCollectionBase
+    public partial class Loop2100BCollection
     {
         public override void SetUpDefinition()
         {
@@ -78,7 +78,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             RepitionLimit = 1;
             SegmentDefinitions.Add(new NM1()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 IsLoopStarter = true,
                 SegmentDefinitionName = "InformationReceiverName",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "41") },
@@ -89,7 +89,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
         }
     }
-    public partial class Loop2200BCollectionBase
+    public partial class Loop2200BCollection
     {
         public override void SetUpDefinition()
         {
@@ -97,7 +97,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             RepitionLimit = 1;
             SegmentDefinitions.Add(new TRN()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 IsLoopStarter = true,
                 SegmentDefinitionName = "InformationReceiverTraceIdentifier",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "2") },
@@ -107,7 +107,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
             SegmentDefinitions.Add(new STC()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 SegmentDefinitionName = "InformationReceiverStatusInformation",
                 RequiredFileds = new List<int>() { 1 },
                 UnUsedFields = new List<int>() { 3,4,5,6,7,8,9,12 },
@@ -115,7 +115,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
         }
     }
-    public partial class Loop2000CCollectionBase
+    public partial class Loop2000CCollection
     {
         public override void SetUpDefinition()
         {
@@ -123,7 +123,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             RepitionLimit = 999;
             SegmentDefinitions.Add(new HL()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 IsLoopStarter = true,
                 SegmentDefinitionName = "ServiceProviderLevel",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(3, "19") },
@@ -132,7 +132,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
         }
     }
-    public partial class Loop2100CCollectionBase
+    public partial class Loop2100CCollection
     {
         public override void SetUpDefinition()
         {
@@ -140,7 +140,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             RepitionLimit = 2;
             SegmentDefinitions.Add(new NM1()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 IsLoopStarter = true,
                 SegmentDefinitionName = "ProviderName",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "1P") },
@@ -151,7 +151,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
         }
     }
-    public partial class Loop2200CCollectionBase
+    public partial class Loop2200CCollection
     {
         public override void SetUpDefinition()
         {
@@ -159,7 +159,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             RepitionLimit = 1;
             SegmentDefinitions.Add(new TRN()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 IsLoopStarter = true,
                 SegmentDefinitionName = "ProviderOfServiceTraceIdentifier",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "1") },
@@ -169,7 +169,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
             SegmentDefinitions.Add(new STC()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 SegmentDefinitionName = "ProviderStatusInformation",
                 RequiredFileds = new List<int>() { 1 },
                 UnUsedFields = new List<int>() { 3, 4, 5, 6, 7, 8, 9, 12 },
@@ -177,7 +177,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
         }
     }
-    public partial class Loop2000DCollectionBase
+    public partial class Loop2000DCollection
     {
         public override void SetUpDefinition()
         {
@@ -185,7 +185,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             RepitionLimit = 999;
             SegmentDefinitions.Add(new HL()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 IsLoopStarter = true,
                 SegmentDefinitionName = "SubscriberLevel",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(3, "22") },
@@ -194,7 +194,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
         }
     }
-    public partial class Loop2100DCollectionBase
+    public partial class Loop2100DCollection
     {
         public override void SetUpDefinition()
         {
@@ -202,7 +202,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             RepitionLimit = 1;
             SegmentDefinitions.Add(new NM1()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 IsLoopStarter = true,
                 SegmentDefinitionName = "SubscriberName",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "IL") },
@@ -213,7 +213,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
         }
     }
-    public partial class Loop2200DCollectionBase
+    public partial class Loop2200DCollection
     {
         public override void SetUpDefinition()
         {
@@ -221,7 +221,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             RepitionLimit = 999;
             SegmentDefinitions.Add(new TRN()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 IsLoopStarter = true,
                 SegmentDefinitionName = "ClaimStatusTrackingNumber",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "2") },
@@ -231,7 +231,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
             SegmentDefinitions.Add(new STC()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 SegmentDefinitionName = "ClaimLevelStatusInformation",
                 RequiredFileds = new List<int>() { 1  },
                 UnUsedFields = new List<int>() { 3,4,12},
@@ -239,7 +239,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
             SegmentDefinitions.Add(new REF()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 SegmentDefinitionName = "PayerClaimControlNumber",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "1K") },
                 SyntaxRules = new List<string>() { "R0203" },
@@ -249,7 +249,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
             SegmentDefinitions.Add(new REF()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 SegmentDefinitionName = "InstitutionalBillTypeIdentification",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "BLT") },
                 SyntaxRules = new List<string>() { "R0203" },
@@ -259,7 +259,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
             SegmentDefinitions.Add(new REF()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 SegmentDefinitionName = "PatientControlNumber",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "EJ") },
                 SyntaxRules = new List<string>() { "R0203" },
@@ -269,7 +269,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
             SegmentDefinitions.Add(new REF()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 SegmentDefinitionName = "PharmacyPrescriptionNumber",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "XZ") },
                 SyntaxRules = new List<string>() { "R0203" },
@@ -279,7 +279,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
             SegmentDefinitions.Add(new REF()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 SegmentDefinitionName = "VoucherIdentifier",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "VV") },
                 SyntaxRules = new List<string>() { "R0203" },
@@ -289,7 +289,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
             SegmentDefinitions.Add(new REF()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 SegmentDefinitionName = "ClaimIdentificationNumberForClearinghousesAnd",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "D9") },
                 SyntaxRules = new List<string>() { "R0203" },
@@ -299,7 +299,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
             SegmentDefinitions.Add(new DTP()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 SegmentDefinitionName = "ClaimServiceDate",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "472") },
                 RequiredFileds = new List<int>() { 1, 2, 3 },
@@ -307,7 +307,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
         }
     }
-    public partial class Loop2220DCollectionBase
+    public partial class Loop2220DCollection
     {
         public override void SetUpDefinition()
         {
@@ -315,7 +315,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             RepitionLimit = 999;
             SegmentDefinitions.Add(new SVC()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 IsLoopStarter = true,
                 SegmentDefinitionName = "ServiceLineInformation",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "AD", "ER", "HC", "HP", "IV", "N4", "NU", "WK") },
@@ -325,7 +325,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
             SegmentDefinitions.Add(new STC()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 SegmentDefinitionName = "ServiceLineStatusInformation",
                 RequiredFileds = new List<int>() { 1  },
                 UnUsedFields = new List<int>() {3,4,5,6,7,8,9,12},
@@ -333,7 +333,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
             SegmentDefinitions.Add(new REF()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 SegmentDefinitionName = "ServiceLineItemIdentification",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "FJ") },
                 SyntaxRules = new List<string>() { "R0203" },
@@ -343,7 +343,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
             SegmentDefinitions.Add(new DTP()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 SegmentDefinitionName = "ServiceLineDate",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "472") },
                 RequiredFileds = new List<int>() { 1, 2, 3 },
@@ -351,7 +351,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
         }
     }
-    public partial class Loop2000ECollectionBase
+    public partial class Loop2000ECollection
     {
         public override void SetUpDefinition()
         {
@@ -359,7 +359,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             RepitionLimit = 999;
             SegmentDefinitions.Add(new HL()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 IsLoopStarter = true,
                 SegmentDefinitionName = "DependentLevel",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(3, "23") },
@@ -369,7 +369,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
         }
     }
-    public partial class Loop2100ECollectionBase
+    public partial class Loop2100ECollection
     {
         public override void SetUpDefinition()
         {
@@ -377,7 +377,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             RepitionLimit = 1;
             SegmentDefinitions.Add(new NM1()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 IsLoopStarter = true,
                 SegmentDefinitionName = "DependentName",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "QC") },
@@ -388,7 +388,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
         }
     }
-    public partial class Loop2200ECollectionBase
+    public partial class Loop2200ECollection
     {
         public override void SetUpDefinition()
         {
@@ -396,7 +396,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             RepitionLimit = 999;
             SegmentDefinitions.Add(new TRN()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 IsLoopStarter = true,
                 SegmentDefinitionName = "ClaimStatusTrackingNumber",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "2") },
@@ -406,7 +406,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
             SegmentDefinitions.Add(new STC()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 SegmentDefinitionName = "ClaimLevelStatusInformation",
                 RequiredFileds = new List<int>() { 1  },
                 UnUsedFields = new List<int>() { 3,4,12 },
@@ -414,7 +414,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
             SegmentDefinitions.Add(new REF()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 SegmentDefinitionName = "PayerClaimControlNumber",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "1K") },
                 SyntaxRules = new List<string>() { "R0203" },
@@ -424,7 +424,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
             SegmentDefinitions.Add(new REF()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 SegmentDefinitionName = "InstitutionalBillTypeIdentification",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "BLT") },
                 SyntaxRules = new List<string>() { "R0203" },
@@ -434,7 +434,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
             SegmentDefinitions.Add(new REF()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 SegmentDefinitionName = "PatientControlNumber",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "EJ") },
                 SyntaxRules = new List<string>() { "R0203" },
@@ -444,7 +444,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
             SegmentDefinitions.Add(new REF()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 SegmentDefinitionName = "PharmacyPrescriptionNumber",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "XZ") },
                 SyntaxRules = new List<string>() { "R0203" },
@@ -454,7 +454,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
             SegmentDefinitions.Add(new REF()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 SegmentDefinitionName = "VoucherIdentifier",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "VV") },
                 SyntaxRules = new List<string>() { "R0203" },
@@ -464,7 +464,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
             SegmentDefinitions.Add(new REF()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 SegmentDefinitionName = "ClaimIdentificationNumberForClearinghousesAnd",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "D9") },
                 SyntaxRules = new List<string>() { "R0203" },
@@ -474,7 +474,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
             SegmentDefinitions.Add(new DTP()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 SegmentDefinitionName = "ClaimServiceDate",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "472") },
                 RequiredFileds = new List<int>() { 1, 2, 3 },
@@ -482,7 +482,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
         }
     }
-    public partial class Loop2220ECollectionBase
+    public partial class Loop2220ECollection
     {
         public override void SetUpDefinition()
         {
@@ -490,7 +490,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             RepitionLimit = 999;
             SegmentDefinitions.Add(new SVC()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 IsLoopStarter = true,
                 SegmentDefinitionName = "ServiceLineInformation",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "AD", "ER", "HC", "HP", "IV", "N4", "NU", "WK") },
@@ -500,7 +500,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
             SegmentDefinitions.Add(new STC()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 SegmentDefinitionName = "ServiceLineStatusInformation",
                 RequiredFileds = new List<int>() { 1 },
                 UnUsedFields = new List<int>() { 3,4,5,6,7,8,9,12},
@@ -508,7 +508,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
             SegmentDefinitions.Add(new REF()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 SegmentDefinitionName = "ServiceLineItemIdentification",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "FJ") },
                 SyntaxRules = new List<string>() { "R0203" },
@@ -518,7 +518,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
             SegmentDefinitions.Add(new DTP()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 SegmentDefinitionName = "ServiceLineDate",
                 SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "472") },
                 RequiredFileds = new List<int>() { 1, 2, 3 },
@@ -526,7 +526,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
             });
             SegmentDefinitions.Add(new SE()
             {
-                OwningLoopCollectionBase = this,
+                OwningLoopCollection = this,
                 SegmentDefinitionName = "TransactionSetTrailer",
                 RequiredFileds = new List<int>() { 1, 2 },
                 Usage = SegmentUsageType.Required

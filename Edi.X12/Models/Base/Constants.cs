@@ -35,7 +35,6 @@ namespace Model.EDI.X12
     public enum QulificationLevel
     {
         TopMost =0,
-        FirstChild=1,
-        Recursive
+        FirstChild=1
     }
 }
