@@ -1,6 +1,6 @@
 ﻿using Business.EDI.X12.v2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Model.EDI.X12.Format277.v5010.v2; 
+using Model.EDI.X12.Format277.v5010.v2;
 
 namespace UnitTestProject1
 {

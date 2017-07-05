@@ -1,0 +1,577 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text; 
+
+namespace Model.EDI.X12.v2.Base
+{
+    /// <summary>
+    /// This is the class that will hold the characters that delimit particular sections of a x12 line
+    /// </summary>
+    public class Delimiters
+    {
+        internal bool isISASet { get; set; }
+
+        public char Segment { get; set; }
+        public char Element { get; set; }
+        public char Component { get; set; }
+        public char Repetition { get; set; } 
+    }
+
+    /// <summary>
+    /// All versions of an X12 document will inheirt this base
+    /// It sets up the header segments that are globally required
+    /// It also houses the Delimiters that will be referenced during parsing of line segments and building
+    /// </summary>
+    public abstract class X12Doc
+    {
+        private Delimiters _docDelims;
+        public Delimiters DocDelimiters {
+            get
+            {
+                if (_docDelims!=null && !_docDelims.isISASet && InterchagneControlHeader!=null)
+                {
+                    if (!string.IsNullOrWhiteSpace(InterchagneControlHeader.ElementSeperator))
+                    {
+                        _docDelims.Element = InterchagneControlHeader.ElementSeperator[0];
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(InterchagneControlHeader.ComponentElementSeparator))
+                    {
+                        _docDelims.Component = InterchagneControlHeader.ComponentElementSeparator[0];
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(InterchagneControlHeader.RepetitionSeparator))
+                    {
+                        _docDelims.Repetition = InterchagneControlHeader.RepetitionSeparator[0];
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(InterchagneControlHeader.LineSeperator))
+                    {
+                        _docDelims.Segment = InterchagneControlHeader.LineSeperator[0];
+                    }
+                }
+
+                return _docDelims;
+            }
+            set { _docDelims = value; } }
+
+        public readonly List<LoopCollectionBase> TopLevelLoops = new List<LoopCollectionBase>();
+        
+        public ISA InterchagneControlHeader { get; set; }
+        public GS FunctionGroupHeader { get; set; }
+        
+        public ST TransactionSetHeader { get; set; }
+        public BHT BeginHierarchicalTransaction { get; set; }
+        public SE TransactionSetTrailer { get; set; }
+
+        public GE FunctionalGroupTrailer { get; set; }
+        public IEA InterchangeControlTrailer { get; set; }
+
+        public X12Doc(bool includeDefinition)
+        {
+            DocDelimiters = new Delimiters()
+            {
+                Element = '*',
+                Component = ':',
+                Repetition = '^',
+                Segment = '~'
+            };
+
+            InterchagneControlHeader=new ISA();
+            FunctionGroupHeader = new GS();
+            TransactionSetHeader=new ST();
+            BeginHierarchicalTransaction= new BHT();
+            TransactionSetTrailer=new SE();
+            FunctionalGroupTrailer=new GE();
+            InterchangeControlTrailer = new IEA();
+        }
+
+        public X12Doc() : this(false) { }
+
+        public abstract void SetUpDefinitions();
+    }
+
+    /// <summary>
+    /// This class wraps the collection of loops, of the same type
+    /// Intent is that Individual Loops would inherit from this to create a Loop####XXCollection class
+    /// IE Loop2000ACollectionBase
+    /// The LoopEntities would then be of type Loop2000A, but it will up to the implementing class to cast this back
+    /// This could ahve been made somewhat simpler if this was LoopCollectionBase &lt; T &gt; but that would eliminate the ability to treat all loops as single type "/>
+    /// </summary>
+    public abstract class LoopCollectionBase
+    {
+        //the doc this collection belongs to
+        public X12Doc OwningX12Doc { get; set; }
+
+        public LoopCollectionBase ParentLoopCollectionBase { get; set; }
+
+        public bool SetUpChildDefinitions { get; set; }
+
+        //the instantiated loops (loopEntity objects) of this collection (IE Loop2100A objects)
+        public readonly List<LoopEntity> LoopEntities; 
+
+        public string LoopName { get; set; }
+        public string LoopNameDescription { get; set; }
+        public int RepitionLimit { get; set; }
+
+        public List<BaseStdSegment> SegmentDefinitions { get; set; }
+
+        
+        public LoopCollectionBase(string loopName, string loopNameDescription, X12Doc owningDoc, LoopCollectionBase parent)
+        {
+            SegmentDefinitions = new List<BaseStdSegment>();
+
+            LoopEntities = new List<LoopEntity>();
+
+            OwningX12Doc = owningDoc;
+
+            LoopName = loopName;
+            LoopNameDescription = loopNameDescription;
+
+            ParentLoopCollectionBase = parent;
+
+        }
+         
+        public abstract bool Validate();
+
+        public abstract void SetUpDefinition();
+
+        public List<BaseStdSegment> IsQualified(BaseFieldValues baseFieldValues, QulificationLevel recursiveCheck)
+        {
+            var retVal = new List<BaseStdSegment>();
+
+            try
+            {
+                foreach (BaseStdSegment segmentDefinition in SegmentDefinitions)
+                {
+                    if(segmentDefinition.IsQualified(baseFieldValues))
+                        retVal.Add(segmentDefinition);
+                }
+
+                if (recursiveCheck != QulificationLevel.TopMost)
+                {
+                    if(recursiveCheck==QulificationLevel.FirstChild) recursiveCheck=QulificationLevel.TopMost;
+
+                    //we would have to search lower than our current level
+                    //can only do this if we are currently working in a loop
+                    //if we are, check its child loopCollections as well
+                    if (LoopEntities != null && LoopEntities.Any())
+                    {
+                        foreach (var childLoopCollection in LoopEntities.Last().ChildLoopCollections)
+                        {
+                            retVal.AddRange(childLoopCollection.IsQualified(baseFieldValues,recursiveCheck));
+                        }
+                        
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //todo srsly, how are we handling these here errors
+            }
+
+            return retVal;
+        }
+
+
+
+        public abstract void Add(LoopEntity loop);
+
+        public abstract void Add();
+    }
+
+    /// <summary>
+    /// Since LoopCollectionBase had to be completely generic, this class allows for typing it dynamically
+    /// While still retaining the ability to group all loops as a single generic type of LoopCollectionBase
+    /// Intent is that Individual Loops would inherit from this to create a Loop####XXCollection class
+    /// IE Loop2000ACollectionBase
+    /// The LoopEntities would then be of type Loop2000A, but it will up to the implementing class to cast this back 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public abstract class LoopCollectionBase<T> : LoopCollectionBase, IList<T> where T : LoopEntity
+    {
+        public IEnumerator<T> GetEnumerator()
+        {
+            throw new InvalidCastException();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return LoopEntities.GetEnumerator();
+        }
+
+        public void Add(T item)
+        { 
+            LoopEntities.Add(item);
+        }
+
+        public void Clear()
+        {
+            LoopEntities.Clear();
+        }
+
+        public bool Contains(T item)
+        {
+            return LoopEntities.Any(c => c.LoopName == item.LoopName);
+        }
+
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            LoopEntities.CopyTo(array, arrayIndex);
+        }
+
+        public bool Remove(T item)
+        {
+            return LoopEntities.Remove(item);
+        }
+
+        public int Count { get; }
+        public bool IsReadOnly { get; }
+        public int IndexOf(T item)
+        {
+            return LoopEntities.IndexOf(item);
+        }
+
+        public void Insert(int index, T item)
+        { 
+            LoopEntities.Insert(index, item);
+        }
+
+        public void RemoveAt(int index)
+        {
+            LoopEntities.RemoveAt(index);
+        }
+
+        public T this[int index]
+        {
+            get { return base.LoopEntities[index] as T; }
+            set { LoopEntities[index] = value; }
+        } 
+
+        public LoopCollectionBase(string loopName, string loopNameDescription, X12Doc owningDoc, LoopCollectionBase parent, LoopCollectionBase prev) : base(loopName, loopNameDescription, owningDoc, parent)
+        {
+        }
+
+        public override void Add(LoopEntity loop)
+        {
+            if(SetUpChildDefinitions)
+                loop.SetUpDefinition(SegmentDefinitions);
+
+            LoopEntities.Add(loop);
+        }
+
+        public override void Add()
+        {
+            var l = (T) Activator.CreateInstance(typeof(T), OwningX12Doc, LoopEntities.LastOrDefault(), this);
+
+            if (SetUpChildDefinitions)
+                l.SetUpDefinition(SegmentDefinitions);
+
+            LoopEntities.Add(l);
+        } 
+
+    }
+
+    /// <summary>
+    /// The single Loop object that a LoopCollectionBase/LoopCollectionBase is comprised of
+    /// There is very little additional data stored here, and is meant only for the Definition/Parsing overload to come later
+    /// </summary>
+    public abstract class LoopEntity
+    {
+        public string LoopName { get; set; }
+
+        public int Index { get; set; }
+
+        public X12Doc OwningDoc { get; set; }
+
+        //todo: still useful?
+        public LoopEntity PreviousLoop { get; set; }
+
+        //todo: still useful?
+        public LoopEntity NextLoop { get; set; }
+
+        public LoopCollectionBase ParentLoopCollectionBase { get; set; }
+
+        public List<LoopCollectionBase> ChildLoopCollections { get; set; }
+
+        public List<BaseStdSegment> SegmentDefinitions => ParentLoopCollectionBase.SegmentDefinitions;
+
+        public List<BaseStdSegment> IsQualified(BaseFieldValues baseFieldValues, QulificationLevel recursiveCheck)
+        {
+            return ParentLoopCollectionBase.IsQualified(baseFieldValues, recursiveCheck);
+        }
+
+        public List<SegmentCollection> SegmentCollections { get; set; }
+
+        public virtual bool Validate()
+        {
+            throw new NotImplementedException();
+        }
+
+        private LoopEntity()
+        {
+            ChildLoopCollections = new List<LoopCollectionBase>();
+            SegmentCollections = new List<SegmentCollection>();
+        }
+
+        public LoopEntity(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : this()
+        {
+            OwningDoc = owningDoc;
+            PreviousLoop = prev;
+            ParentLoopCollectionBase = parent;
+
+            Index = ParentLoopCollectionBase.LoopEntities.Count;
+        } 
+
+        public virtual void SetUpDefinition(List<BaseStdSegment> segDef)
+        { 
+            foreach (var childLoop in ChildLoopCollections)
+            {
+                childLoop.SetUpDefinition();
+            }
+
+            foreach (SegmentCollection segmentCollection in SegmentCollections)
+            {
+                segmentCollection.SegmentDefinition =
+                    ParentLoopCollectionBase.SegmentDefinitions.Where(
+                        c => c.SegmentDefinitionName == segmentCollection.SegmentDefinitionName).First();
+            }
+        } 
+
+        public void Add(BaseStdSegment segment)
+        { 
+            List<SegmentCollection> handlers = SegmentCollections
+                .Where(c => c.SegmentDefinition.SegmentDefinitionName == segment.SegmentDefinitionName).ToList();
+
+            if (handlers.Any())
+            {
+                handlers[0].Add(segment);
+            }
+            else
+            {
+                //todo: what to do with these pesky errors
+                Console.WriteLine("should have had somethign to handle this");
+            }
+        }
+    }
+
+    /// <summary>
+    /// A single segment can be repeated, so that single segment needs to be wrapped in a List construct
+    /// This will contain our repeats of a single segment
+    /// Nmae/Type are elevated to allow for creation and addition of the right type directly into the Segments List
+    /// </summary>
+    public abstract class SegmentCollection
+    {
+        public List<BaseStdSegment> Segments { get; set; }
+
+        //todo: do we still need this?
+        public Type BaseType { get; set; }
+
+        public BaseStdSegment SegmentDefinition { get; set; } 
+
+        public LoopEntity OwningLoopEntity { get; set; }
+
+        public string SegmentDefinitionName { get; set; }
+
+        public int RepititionLimit { get; set; }
+
+        private SegmentCollection()
+        {
+            Segments = new List<BaseStdSegment>();
+        }
+
+        public SegmentCollection(Type baseType, LoopEntity owningLoopEntity, string segDefName):this()
+        {
+            BaseType = baseType;
+            OwningLoopEntity = owningLoopEntity;
+            SegmentDefinitionName = segDefName;
+        }
+
+        public void Add(BaseStdSegment segment)
+        {
+            Segments.Add(segment);
+        } 
+    }
+
+    /// <summary>
+    /// this is the segment at its lowest, typed level
+    /// it is fed by the baseFieldValues that represent the actual line of text from an X12 document
+    /// when instantiating and populating a segment programatically, this baseFieldValue will not be essential
+    /// but may be overriden to store data back into the array to allow for building
+    /// </summary>
+    public abstract class BaseStdSegment : ISegmentDefinition
+    { 
+        public BaseFieldValues FieldValues{get;set;}
+        
+        /// <summary>
+        /// only for seg def usage
+        /// </summary>
+        public LoopCollectionBase OwningLoopCollectionBase { get; set; }
+
+        /// <summary>
+        /// only for seg def usage
+        /// </summary>
+        public bool IsLoopStarter { get; set; }
+
+        public string SegmentDefinitionName { get; set; }
+
+        public SegmentCollection OwningSegmentCollection { get; set; }
+
+        public List<SegmentQualifiers> SegmentQualifierValues { get; set; }
+        public List<string> SyntaxRules { get; set; }
+        public List<int> RequiredFileds { get; set; }
+        public List<int> UnUsedFields { get; set; }
+        public SegmentUsageType Usage { get; set; }
+
+        //todo can we remvoe?
+        //public string SegmentName
+        //{
+        //    get
+        //    {
+        //        if (!FieldValues.Any()) return null;
+        //        return FieldValues[0];
+        //    }
+        //}
+
+        public BaseStdSegment()
+        {
+            SegmentQualifierValues = new List<SegmentQualifiers>();
+            SyntaxRules = new List<string>();
+            RequiredFileds = new List<int>();
+            UnUsedFields = new List<int>();
+
+            FieldValues = new BaseFieldValues(new List<string>() {this.GetType().Name});
+        } 
+
+        public BaseStdSegment(IEnumerable<string> values):this()
+        {
+            FieldValues = new BaseFieldValues(values);
+        }
+
+        public void Populate(BaseFieldValues baseVals)
+        {
+            FieldValues = baseVals;
+        }
+
+        public virtual bool Validate()
+        {
+            var retVal = true;
+
+            foreach (var qualVal in SegmentQualifierValues)
+            {
+                retVal = retVal && qualVal.IsQaulified(FieldValues);
+            }
+
+            return retVal;
+        }
+
+        public bool IsQualified(BaseFieldValues segmentFields)
+        {
+            try
+            {
+                bool retVal = string.Equals(this.GetType().Name, segmentFields[0],
+                    StringComparison.CurrentCultureIgnoreCase);
+
+                foreach (var qualVal in SegmentQualifierValues)
+                {
+                    retVal = retVal && qualVal.IsQaulified(segmentFields);
+                }
+
+                return retVal;
+            }
+            catch (Exception ex)
+            {
+                //todo what are we doing???
+            }
+
+            return false;
+        }
+
+        public string GetFieldValue(int index)
+        {
+            if (FieldValues.Count > index)
+            {
+                return FieldValues[index];
+            }
+
+            return null;
+        }
+
+        public void SetFieldValue(int index, string value)
+        {
+            if (FieldValues.Count < index+1)
+            {
+                FieldValues.Capacity = index+5;
+
+                while (FieldValues.Count < index+1)
+                {
+                    FieldValues.Add(null);
+                }
+            }
+
+            FieldValues[index] = value;
+        }
+
+        public BaseStdSegment CreateBaseStdSegment(BaseFieldValues bsf)
+        {
+            var obj = (BaseStdSegment)this.MemberwiseClone();
+            obj.Populate(bsf);
+
+            return obj;
+        } 
+
+        public override string ToString()
+        {
+            if (OwningLoopCollectionBase != null && OwningLoopCollectionBase.OwningX12Doc != null && OwningLoopCollectionBase.OwningX12Doc.DocDelimiters.Element > 0)
+                return string.Join(OwningLoopCollectionBase.OwningX12Doc.DocDelimiters.Element.ToString(), FieldValues);
+
+            return string.Join("*", FieldValues);
+        } 
+    }
+
+    /// <summary>
+    /// this is the line of text from an x12 document
+    /// this is the lowest version of the x12 that exists in this framework
+    /// </summary>
+    public class BaseFieldValues : List<string>
+    {
+        public string RawValue { get; private set; } 
+
+        public BaseFieldValues(IEnumerable<string> values)
+        {
+            this.AddRange(values);
+        } 
+
+        public BaseFieldValues(byte[] buffer, int offset, int length, byte elementSep, string compSep)
+        {
+            RawValue = Encoding.Default.GetString(buffer, offset, length);
+
+            var sb = new StringBuilder();
+
+            for (int i = offset; i < offset + length; i++)
+            {
+                if (buffer[i] == elementSep)
+                {
+                    if (sb.Length == 0)
+                        this.Add(null);
+                    else
+                    {
+                        if (char.IsLetterOrDigit(sb[0]))
+                            this.AddRange(sb.ToString().Split(new[] { compSep }, StringSplitOptions.None));
+                        else
+                            this.AddRange(sb.ToString().TrimStart().Split(new[] { compSep }, StringSplitOptions.None));
+                        sb.Length = 0;
+                    }
+                }
+                else
+                    sb.Append((char)buffer[i]);
+            }
+            if (sb.Length > 0)
+                this.Add(sb.ToString());
+            if (this.Count == 0) Console.WriteLine("Bad Segment: " + Encoding.ASCII.GetString(buffer, offset, length));
+
+        }
+    }
+}

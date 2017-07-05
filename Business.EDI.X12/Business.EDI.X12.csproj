@@ -46,11 +46,5 @@
     <Compile Include="SegmentExtensions.cs" />
     <Compile Include="SegmentReader.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\X12.837.5010\Model.EDI.X12.csproj">
-      <Project>{a6f8dfbe-f6c1-4ba8-ac9a-ad586b920d6c}</Project>
-      <Name>Model.EDI.X12</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

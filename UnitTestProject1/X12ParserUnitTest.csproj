@@ -58,17 +58,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Business.EDI.X12\Business.EDI.X12.csproj">
-      <Project>{96706df3-346a-4a78-abe8-d56c888d688c}</Project>
-      <Name>Business.EDI.X12</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CodeGenerator\CodeGenerator.csproj">
       <Project>{9a5ba4d0-ee6c-4211-9dbf-bf958b6d0a9c}</Project>
       <Name>CodeGenerator</Name>
     </ProjectReference>
-    <ProjectReference Include="..\X12.837.5010\Model.EDI.X12.csproj">
-      <Project>{a6f8dfbe-f6c1-4ba8-ac9a-ad586b920d6c}</Project>
-      <Name>Model.EDI.X12</Name>
+    <ProjectReference Include="..\Edi.X12\Edi.X12.csproj">
+      <Project>{e69121cd-371d-497e-9e04-a50781878b64}</Project>
+      <Name>Edi.X12</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
