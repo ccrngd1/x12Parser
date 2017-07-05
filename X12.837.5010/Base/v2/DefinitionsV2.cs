@@ -25,7 +25,7 @@ namespace Model.EDI.X12.v2.Base
             QualifierValues = parameters.ToList();
         }
 
-        public bool IsQaulified(baseFieldValues segmentFields)
+        public bool IsQaulified(BaseFieldValues segmentFields)
         {
             return QualifierValues.Contains(segmentFields[FieldId]);
         }
@@ -37,7 +37,7 @@ namespace Model.EDI.X12.v2.Base
 
         bool IsLoopStarter { get; set; }
 
-        BaseStdSegment CreateBaseStdSegment(baseFieldValues bsf);
+        BaseStdSegment CreateBaseStdSegment(BaseFieldValues bsf);
     }
 
     public interface ISegmentValidator

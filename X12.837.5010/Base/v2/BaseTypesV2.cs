@@ -139,7 +139,7 @@ namespace Model.EDI.X12.v2.Base
 
         public abstract void SetUpDefinition();
 
-        public List<BaseStdSegment> IsQualified(baseFieldValues baseFieldValues, QulificationLevel recursiveCheck)
+        public List<BaseStdSegment> IsQualified(BaseFieldValues baseFieldValues, QulificationLevel recursiveCheck)
         {
             var retVal = new List<BaseStdSegment>();
 
@@ -299,7 +299,7 @@ namespace Model.EDI.X12.v2.Base
 
         public List<BaseStdSegment> SegmentDefinitions => ParentLoopCollection.SegmentDefinitions;
 
-        public List<BaseStdSegment> IsQualified(baseFieldValues baseFieldValues, QulificationLevel recursiveCheck)
+        public List<BaseStdSegment> IsQualified(BaseFieldValues baseFieldValues, QulificationLevel recursiveCheck)
         {
             return ParentLoopCollection.IsQualified(baseFieldValues, recursiveCheck);
         }
@@ -404,7 +404,7 @@ namespace Model.EDI.X12.v2.Base
     /// </summary>
     public abstract class BaseStdSegment : ISegmentDefinition
     { 
-        public baseFieldValues FieldValues{get;set;}
+        public BaseFieldValues FieldValues{get;set;}
         
         /// <summary>
         /// only for seg def usage
@@ -443,15 +443,15 @@ namespace Model.EDI.X12.v2.Base
             RequiredFileds = new List<int>();
             UnUsedFields = new List<int>();
 
-            FieldValues = new baseFieldValues(new List<string>() {this.GetType().Name});
+            FieldValues = new BaseFieldValues(new List<string>() {this.GetType().Name});
         } 
 
-        public BaseStdSegment(List<string> values):this()
+        public BaseStdSegment(IEnumerable<string> values):this()
         {
-            FieldValues = new baseFieldValues(values);
+            FieldValues = new BaseFieldValues(values);
         }
 
-        public void Populate(baseFieldValues baseVals)
+        public void Populate(BaseFieldValues baseVals)
         {
             FieldValues = baseVals;
         }
@@ -468,7 +468,7 @@ namespace Model.EDI.X12.v2.Base
             return retVal;
         }
 
-        public bool IsQualified(baseFieldValues segmentFields)
+        public bool IsQualified(BaseFieldValues segmentFields)
         {
             try
             {
@@ -515,7 +515,7 @@ namespace Model.EDI.X12.v2.Base
             FieldValues[index] = value;
         }
 
-        public BaseStdSegment CreateBaseStdSegment(baseFieldValues bsf)
+        public BaseStdSegment CreateBaseStdSegment(BaseFieldValues bsf)
         {
             var obj = (BaseStdSegment)this.MemberwiseClone();
             obj.Populate(bsf);
@@ -536,20 +536,18 @@ namespace Model.EDI.X12.v2.Base
     /// this is the line of text from an x12 document
     /// this is the lowest version of the x12 that exists in this framework
     /// </summary>
-    public class baseFieldValues : List<string>
+    public class BaseFieldValues : List<string>
     {
         public string RawValue { get; private set; } 
 
-        public baseFieldValues(List<string> values)
+        public BaseFieldValues(IEnumerable<string> values)
         {
             this.AddRange(values);
-        }
+        } 
 
-        //public baseFieldValues() { }
-
-        public baseFieldValues(byte[] buffer, int offset, int length, byte elementSep, string compSep)
+        public BaseFieldValues(byte[] buffer, int offset, int length, byte elementSep, string compSep)
         {
-            RawValue = System.Text.Encoding.Default.GetString(buffer, offset, length);
+            RawValue = Encoding.Default.GetString(buffer, offset, length);
 
             var sb = new StringBuilder();
 

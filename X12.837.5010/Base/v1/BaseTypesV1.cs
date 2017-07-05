@@ -68,7 +68,7 @@ namespace Model.EDI.X12.v1.Base
 
     public class SegmentQualifiers
     {
-        public List<string> QualifierValues = new List<string>();
+        public readonly List<string> QualifierValues;
         public int FieldId;
 
         public SegmentQualifiers(int fieldId, params string[] parameters)
@@ -76,6 +76,8 @@ namespace Model.EDI.X12.v1.Base
             FieldId = fieldId;
             QualifierValues = parameters.ToList();
         }
+
+        private SegmentQualifiers() { }
     }
 
     public class RawSegment
@@ -143,30 +145,7 @@ namespace Model.EDI.X12.v1.Base
             ParentLoop = ParentLoops?.Last();
 
             rawSegment = new RawSegment(value, Delimiter, ParentLoops, DefinedSeg);
-        }
-
-        //public baseStdSegment(string value, Delimiters delims, LoopsList parentLoop)
-        //{ 
-        //    delimiters = delims;
-        //    SetValue(value);
-        //    ParentLoopsList = parentLoop;
-        //    ParentLoop = parentLoop.Last();
-        //} 
-
-        //public void Prep(string value, Delimiters delims, LoopsList parentLoop)
-        //{
-        //    delimiters = delims;
-        //    SetValue(value);
-        //    ParentLoopsList = parentLoop;
-        //    ParentLoop = parentLoop.Last();
-        //}
-
-        //public void SetValue(string value)
-        //{
-        //    ParsedValue = value; 
-        //    FieldValues = ParsedValue.Split(delimiters.Element).ToList();
-        //    Populate();
-        //}
+        } 
 
         public abstract void Populate();
 

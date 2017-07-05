@@ -25,7 +25,7 @@ namespace Business.EDI.X12.v2
         }
 
 
-        public baseFieldValues ReadNextLine(Delimiters delims)
+        public BaseFieldValues ReadNextLine(Delimiters delims)
         {
             var index = tail;
             var exitbyte = (byte)delims.Segment;
@@ -75,13 +75,13 @@ namespace Business.EDI.X12.v2
                 {
                     return null;
                 }
-                return new baseFieldValues(buffer, (int)oldtail, (int)(index - oldtail), (byte)delims.Element, delims.Component.ToString());
+                return new BaseFieldValues(buffer, (int)oldtail, (int)(index - oldtail), (byte)delims.Element, delims.Component.ToString());
             }
             else
             {
                 sb.Write(buffer, 0, (int)(index));
 
-                return new baseFieldValues(sb.ToArray(), (int)oldtail, (int)(sb.Length - oldtail), (byte)delims.Element, delims.Component.ToString());
+                return new BaseFieldValues(sb.ToArray(), (int)oldtail, (int)(sb.Length - oldtail), (byte)delims.Element, delims.Component.ToString());
             }
 
         }

@@ -104,9 +104,8 @@ namespace CodeGenerator
                     i++;
                 }
 
-                sb.AppendFormat("public {0}():base(){{}}\r\n", segName.Key);
-                sb.AppendFormat("public {0}(string[] splitX12Line) : this(splitX12Line.ToList()){{}}\r\n", segName.Key);
-                sb.AppendFormat("public {0}(List<string> splitX12Line) :base(splitX12Line){{}}\r\n", segName.Key);
+                sb.AppendFormat("public {0}():base(){{}}\r\n", segName.Key); 
+                sb.AppendFormat("public {0}(IEnumerable<string> splitX12Line) :base(splitX12Line){{}}\r\n", segName.Key);
                 sb.AppendLine("}");
             }
 

@@ -59,7 +59,7 @@ namespace Business.EDI.X12.v2
         public X12ErrorTypes ErrorType;
         public X12ErrorLevel ErrorLevel;
         public LoopEntity CurrentLoop;
-        public baseFieldValues CurrentSegment;
+        public BaseFieldValues CurrentSegment;
     }
 
     public static class Parser
@@ -67,7 +67,7 @@ namespace Business.EDI.X12.v2
         private const string HeaderSegments = "ISA,GS,ST,BHT";
         private const string TrailerSegments = "IEA,GE,SE";
 
-        private static ParserStateMachine ParseLineSegment(this X12Doc tempBuildingDoc, ParserStateMachine state, baseFieldValues lineContent)
+        private static ParserStateMachine ParseLineSegment(this X12Doc tempBuildingDoc, ParserStateMachine state, BaseFieldValues lineContent)
         {
             var retVal = (ParserStateMachine)state.Clone();
 
@@ -120,7 +120,7 @@ namespace Business.EDI.X12.v2
                             if (qualifiedSegments.Count == 1)
                             {
                                 if (qualifiedSegments[0].IsLoopStarter) //should always be a starter
-                                    currentLoopCollection.Add();
+                                    qualifiedSegments[0].OwningLoopCollection.Add();
                                 else
                                 {
                                     //todo: is this an error?
@@ -193,7 +193,7 @@ namespace Business.EDI.X12.v2
 
             var sStream = new SegmentStream(File.OpenRead(fullFilePath), ref tempBuildingDoc); 
 
-            var lineContent = new baseFieldValues(sStream.ReadNextLine(tempBuildingDoc.DocDelimiters));
+            var lineContent = new BaseFieldValues(sStream.ReadNextLine(tempBuildingDoc.DocDelimiters));
 
             List<string> headerSplit = HeaderSegments.Split(',').ToList();
             List<string> trailerSplit = TrailerSegments.Split(',').ToList();
