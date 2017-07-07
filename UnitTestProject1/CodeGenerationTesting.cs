@@ -1,5 +1,5 @@
 ﻿using System.IO; 
-using CodeGenerator;
+using EDI.X12.CodeGeneration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTestProject1

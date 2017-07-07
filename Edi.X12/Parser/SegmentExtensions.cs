@@ -1,17 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System; 
+using System.IO; 
 using System.Text;
-using System.Threading.Tasks;
-using Business.EDI.X12.v2;
-using Model.EDI.X12.v2;
+using EDI.X12.Segments;
 
-namespace Model.EDI.X12.v2.Base
+namespace EDI.X12.Base
 {
+    /// <summary>
+    /// Extensions for specific segment types
+    /// </summary>
     public static class SegmentExtensions
     {
-        public static void FromStream(this ISA isa, Stream s)
+        /// <summary>
+        /// Extnesion for ISA segment to pre-load the segment with data from the file
+        /// This is the easiest way to load up the ISA versus via the Populate() method the other header/trailer segments go through
+        /// </summary>
+        /// <param name="isa">Instance of the ISA this is extending.  ISA will be altered.</param>
+        /// <param name="s">Stream that holds the X12 to begin parsing and pre-load the ISA with</param>
+        internal static void FromStream(this ISA isa, Stream s)
         {
             if(isa==null) isa = new ISA();
 
@@ -25,13 +30,13 @@ namespace Model.EDI.X12.v2.Base
                 valueBuffer[1] == (byte)'S' &&
                 valueBuffer[2] == (byte)'A')
             {
-                var ElementSeperator = (char)valueBuffer[3];
+                var elementSeperator = (char)valueBuffer[3];
                 isa.LineSeperator =
                     Encoding.ASCII.GetString(valueBuffer, 105,
                         1); //Issue, spec says its character length of 1, but some files have \r\n some files do not have fixed isa correct
 
                 //so many invalid files, really sucks
-                if (char.IsLetterOrDigit(isa.LineSeperator[0]) || valueBuffer[103] != ElementSeperator ||
+                if (char.IsLetterOrDigit(isa.LineSeperator[0]) || valueBuffer[103] != elementSeperator ||
                     valueBuffer[106] != 'G')
                 {
                     s.Position = original + 4;
@@ -40,13 +45,13 @@ namespace Model.EDI.X12.v2.Base
 
                     var field = Encoding.ASCII.GetString(bigBuffer);
 
-                    var indexE = field.IndexOf("GS" + ElementSeperator);
+                    var indexE = field.IndexOf("GS" + elementSeperator, StringComparison.Ordinal);
                     if (indexE == -1)
                     {
                         isa.ComponentElementSeparator = "~";
                         return;
                     }
-                    var indexS = field.LastIndexOf(ElementSeperator, indexE - 1);
+                    var indexS = field.LastIndexOf(elementSeperator, indexE - 1);
                     isa.ComponentElementSeparator = field[indexS + 1].ToString();
                     isa.LineSeperator = field[indexS + 2].ToString();
                     s.Position = original + indexE + 5;

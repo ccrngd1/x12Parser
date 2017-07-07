@@ -1,7 +1,7 @@
-﻿//using Model.EDI.X12.v2.Base;
-//using Model.EDI.X12.v2;
+﻿//using EDI.X12.Base;
+//using EDI.X12.;
 
-//namespace Model.EDI.X12._837._5010.Prof.v2
+//namespace EDI.X12.Format837.v5010.Prof
 //{
 //    public class Loop1000ACollection : LoopCollection<Loop1000A>
 //    {

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Model.EDI.X12.v2.Base;
-using System.IO;
+using EDI.X12.Base;
 
-namespace Model.EDI.X12.v2
+namespace EDI.X12.Segments
 {
 
 

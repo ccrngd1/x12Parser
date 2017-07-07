@@ -1,9 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Model.EDI.X12._837._5010.Inst.v2
+﻿namespace EDI.X12.Format837.v5010.Inst
 {
 }

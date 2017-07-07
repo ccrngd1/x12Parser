@@ -40,18 +40,18 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public Loop1000A() : base(null, 1, "Submitter Name")
         {
             SubmitterName.DefinedSeg = new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "41") },
-                SegmentUsageType.Required, 1, typeof(NM1));
+                SegmentUsageTypeNames.Required, 1, typeof(NM1));
 
             SubmitterContact.DefinedSeg = new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "IC") },
-                SegmentUsageType.Required, 2, typeof(PER));
+                SegmentUsageTypeNames.Required, 2, typeof(PER));
         }
 
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "41") },
-                SegmentUsageType.Required, 1, typeof(NM1)));
+                SegmentUsageTypeNames.Required, 1, typeof(NM1)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "IC") },
-                SegmentUsageType.Required, 2, typeof(PER)));
+                SegmentUsageTypeNames.Required, 2, typeof(PER)));
         }
     }
 
@@ -64,7 +64,7 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "40") },
-                SegmentUsageType.Required, 1, typeof(NM1)));
+                SegmentUsageTypeNames.Required, 1, typeof(NM1)));
         }
     }
 
@@ -89,11 +89,11 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(3, "20") },
-                SegmentUsageType.Required, 1, typeof(HL)));
+                SegmentUsageTypeNames.Required, 1, typeof(HL)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "BI") },
-                SegmentUsageType.Required, 1, typeof(PRV)));
+                SegmentUsageTypeNames.Required, 1, typeof(PRV)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "85") },
-                SegmentUsageType.Situational, 1, typeof(CUR)));
+                SegmentUsageTypeNames.Situational, 1, typeof(CUR)));
         }
     }
 
@@ -106,17 +106,17 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "85") },
-                SegmentUsageType.Required, 1, typeof(NM1)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Required, 1, typeof(N3)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N4)));
+                SegmentUsageTypeNames.Required, 1, typeof(NM1)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Required, 1, typeof(N3)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N4)));
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "EI", "SY") },
-                    SegmentUsageType.Situational, 1, typeof(REF)));
+                    SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "0B", "1G") },
-                    SegmentUsageType.Situational, 2, typeof(REF)));
+                    SegmentUsageTypeNames.Situational, 2, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "IC") },
-                SegmentUsageType.Situational, 2, typeof(PER)));
+                SegmentUsageTypeNames.Situational, 2, typeof(PER)));
         }
     }
 
@@ -129,9 +129,9 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "87") },
-                SegmentUsageType.Required, 1, typeof(NM1)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N3)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N4)));
+                SegmentUsageTypeNames.Required, 1, typeof(NM1)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N3)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N4)));
         }
     }
 
@@ -144,14 +144,14 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "PE") },
-                SegmentUsageType.Required, 1, typeof(NM1)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N3)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N4)));
+                SegmentUsageTypeNames.Required, 1, typeof(NM1)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N3)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N4)));
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "2U,FY,NF") },
-                    SegmentUsageType.Situational, 1, typeof(REF)));
+                    SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "EI") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
         }
     }
 
@@ -176,9 +176,9 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(3, "22") },
-                SegmentUsageType.Required, 1, typeof(HL)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(SBR)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(PAT)));
+                SegmentUsageTypeNames.Required, 1, typeof(HL)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(SBR)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(PAT)));
         }
     }
 
@@ -191,16 +191,16 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "IL") },
-                SegmentUsageType.Required, 1, typeof(NM1)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N3)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N4)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(DMG)));
+                SegmentUsageTypeNames.Required, 1, typeof(NM1)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N3)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N4)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(DMG)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "SY") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "Y4") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "IC") },
-                SegmentUsageType.Situational, 1, typeof(PER)));
+                SegmentUsageTypeNames.Situational, 1, typeof(PER)));
         }
     }
 
@@ -213,15 +213,15 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "PR") },
-                SegmentUsageType.Required, 1, typeof(NM1)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N3)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N4)));
+                SegmentUsageTypeNames.Required, 1, typeof(NM1)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N3)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N4)));
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "2U", "EI", "FY", "NF") },
-                    SegmentUsageType.Situational, 3, typeof(REF)));
+                    SegmentUsageTypeNames.Situational, 3, typeof(REF)));
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "G2", "LU") },
-                    SegmentUsageType.Situational, 2, typeof(REF)));
+                    SegmentUsageTypeNames.Situational, 2, typeof(REF)));
         }
     }
 
@@ -242,8 +242,8 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(3, "23") },
-                SegmentUsageType.Required, 1, typeof(HL)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(PAT)));
+                SegmentUsageTypeNames.Required, 1, typeof(HL)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(PAT)));
         }
     }
 
@@ -256,17 +256,17 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "QC") },
-                SegmentUsageType.Required, 1, typeof(NM1)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N3)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N4)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(DMG)));
+                SegmentUsageTypeNames.Required, 1, typeof(NM1)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N3)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N4)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(DMG)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "Y4") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "1W,SY,") },
-                    SegmentUsageType.Situational, 1, typeof(REF)));
+                    SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "IC") },
-                SegmentUsageType.Situational, 1, typeof(PER)));
+                SegmentUsageTypeNames.Situational, 1, typeof(PER)));
         }
     }
 
@@ -325,89 +325,89 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
 
         public override void DefineSegmentDefinition()
         {
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Required, 1, typeof(CLM)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Required, 1, typeof(CLM)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "431") },
-                SegmentUsageType.Situational, 1, typeof(DTP)));
+                SegmentUsageTypeNames.Situational, 1, typeof(DTP)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "454") },
-                SegmentUsageType.Situational, 1, typeof(DTP)));
+                SegmentUsageTypeNames.Situational, 1, typeof(DTP)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "304") },
-                SegmentUsageType.Situational, 1, typeof(DTP)));
+                SegmentUsageTypeNames.Situational, 1, typeof(DTP)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "453") },
-                SegmentUsageType.Situational, 1, typeof(DTP)));
+                SegmentUsageTypeNames.Situational, 1, typeof(DTP)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "439") },
-                SegmentUsageType.Situational, 1, typeof(DTP)));
+                SegmentUsageTypeNames.Situational, 1, typeof(DTP)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "484") },
-                SegmentUsageType.Situational, 1, typeof(DTP)));
+                SegmentUsageTypeNames.Situational, 1, typeof(DTP)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "455") },
-                SegmentUsageType.Situational, 1, typeof(DTP)));
+                SegmentUsageTypeNames.Situational, 1, typeof(DTP)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "471") },
-                SegmentUsageType.Situational, 1, typeof(DTP)));
+                SegmentUsageTypeNames.Situational, 1, typeof(DTP)));
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "314", "360", "361") },
-                    SegmentUsageType.Situational, 1, typeof(DTP)));
+                    SegmentUsageTypeNames.Situational, 1, typeof(DTP)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "297") },
-                SegmentUsageType.Situational, 1, typeof(DTP)));
+                SegmentUsageTypeNames.Situational, 1, typeof(DTP)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "296") },
-                SegmentUsageType.Situational, 1, typeof(DTP)));
+                SegmentUsageTypeNames.Situational, 1, typeof(DTP)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "435") },
-                SegmentUsageType.Situational, 1, typeof(DTP)));
+                SegmentUsageTypeNames.Situational, 1, typeof(DTP)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "096") },
-                SegmentUsageType.Situational, 1, typeof(DTP)));
+                SegmentUsageTypeNames.Situational, 1, typeof(DTP)));
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "090", "091") },
-                    SegmentUsageType.Situational, 1, typeof(DTP)));
+                    SegmentUsageTypeNames.Situational, 1, typeof(DTP)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "444") },
-                SegmentUsageType.Situational, 1, typeof(DTP)));
+                SegmentUsageTypeNames.Situational, 1, typeof(DTP)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "050") },
-                SegmentUsageType.Situational, 1, typeof(DTP)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 10, typeof(PWK)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(CN1)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(AMT)));
+                SegmentUsageTypeNames.Situational, 1, typeof(DTP)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 10, typeof(PWK)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(CN1)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(AMT)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "4N") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "F5") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "EW") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "9F") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "G1") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "F8") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "X4") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "9A") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "9C") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "LX") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "D9") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "EA") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "P4") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "1J") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 10, typeof(K3)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(NTE)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(CR1)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(CR2)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 10, typeof(K3)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(NTE)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(CR1)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(CR2)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "7") },
-                SegmentUsageType.Situational, 3, typeof(CRC)));
+                SegmentUsageTypeNames.Situational, 3, typeof(CRC)));
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "E1", "E2", "E3") },
-                    SegmentUsageType.Situational, 3, typeof(CRC)));
+                    SegmentUsageTypeNames.Situational, 3, typeof(CRC)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "75") },
-                SegmentUsageType.Situational, 1, typeof(CRC)));
+                SegmentUsageTypeNames.Situational, 1, typeof(CRC)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "ZZ") },
-                SegmentUsageType.Situational, 1, typeof(CRC)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(HI)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(HI)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 2, typeof(HI)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(HCP)));
+                SegmentUsageTypeNames.Situational, 1, typeof(CRC)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(HI)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(HI)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 2, typeof(HI)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(HCP)));
         }
     }
 
@@ -420,11 +420,11 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(
-                new List<SegmentQualifiers> { new SegmentQualifiers(1, "DN", "P3") }, SegmentUsageType.Required, 1,
+                new List<SegmentQualifiers> { new SegmentQualifiers(1, "DN", "P3") }, SegmentUsageTypeNames.Required, 1,
                 typeof(NM1)));
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "0B", "1G,") },
-                    SegmentUsageType.Situational, 3, typeof(REF)));
+                    SegmentUsageTypeNames.Situational, 3, typeof(REF)));
         }
     }
 
@@ -437,12 +437,12 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "82") },
-                SegmentUsageType.Required, 1, typeof(NM1)));
+                SegmentUsageTypeNames.Required, 1, typeof(NM1)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "PE") },
-                SegmentUsageType.Situational, 1, typeof(PRV)));
+                SegmentUsageTypeNames.Situational, 1, typeof(PRV)));
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "0B", "1G", "G2", "LU") },
-                    SegmentUsageType.Situational, 4, typeof(REF)));
+                    SegmentUsageTypeNames.Situational, 4, typeof(REF)));
         }
     }
 
@@ -455,14 +455,14 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "77") },
-                SegmentUsageType.Required, 1, typeof(NM1)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N3)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N4)));
+                SegmentUsageTypeNames.Required, 1, typeof(NM1)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N3)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N4)));
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "0B", "G2", "LU") },
-                    SegmentUsageType.Situational, 3, typeof(REF)));
+                    SegmentUsageTypeNames.Situational, 3, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "IC") },
-                SegmentUsageType.Situational, 1, typeof(PER)));
+                SegmentUsageTypeNames.Situational, 1, typeof(PER)));
         }
     }
 
@@ -475,10 +475,10 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "DQ") },
-                SegmentUsageType.Required, 1, typeof(NM1)));
+                SegmentUsageTypeNames.Required, 1, typeof(NM1)));
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "0B", "1G", "G2", "LU") },
-                    SegmentUsageType.Situational, 4, typeof(REF)));
+                    SegmentUsageTypeNames.Situational, 4, typeof(REF)));
         }
     }
 
@@ -491,9 +491,9 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "PW") },
-                SegmentUsageType.Required, 1, typeof(NM1)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N3)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N3)));
+                SegmentUsageTypeNames.Required, 1, typeof(NM1)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N3)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N3)));
         }
     }
 
@@ -506,9 +506,9 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "45") },
-                SegmentUsageType.Required, 1, typeof(NM1)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N3)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N3)));
+                SegmentUsageTypeNames.Required, 1, typeof(NM1)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N3)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N3)));
         }
     }
 
@@ -543,13 +543,13 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
 
         public override void DefineSegmentDefinition()
         {
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Required, 1, typeof(SBR)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 5, typeof(CAS)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(AMT)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(AMT)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(AMT)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(OI)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(MOA)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Required, 1, typeof(SBR)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 5, typeof(CAS)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(AMT)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(AMT)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(AMT)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(OI)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(MOA)));
         }
     }
 
@@ -562,11 +562,11 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "IL") },
-                SegmentUsageType.Required, 1, typeof(NM1)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N3)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N4)));
+                SegmentUsageTypeNames.Required, 1, typeof(NM1)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N3)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N4)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "SY") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
         }
     }
 
@@ -579,22 +579,22 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "PR") },
-                SegmentUsageType.Required, 1, typeof(NM1)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N3)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N4)));
+                SegmentUsageTypeNames.Required, 1, typeof(NM1)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N3)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N4)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "573") },
-                SegmentUsageType.Situational, 1, typeof(DTP)));
+                SegmentUsageTypeNames.Situational, 1, typeof(DTP)));
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "2U", "EI", "FY", "NF") },
-                    SegmentUsageType.Situational, 2, typeof(REF)));
+                    SegmentUsageTypeNames.Situational, 2, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "G1") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "9F") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "T4") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "F8") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
         }
     }
 
@@ -608,10 +608,10 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         {
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "DN", "P3") },
-                    SegmentUsageType.Required, 1, typeof(NM1)));
+                    SegmentUsageTypeNames.Required, 1, typeof(NM1)));
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "0B", "1G", "G2") },
-                    SegmentUsageType.Situational, 3, typeof(REF)));
+                    SegmentUsageTypeNames.Situational, 3, typeof(REF)));
         }
     }
 
@@ -624,10 +624,10 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "82") },
-                SegmentUsageType.Required, 1, typeof(NM1)));
+                SegmentUsageTypeNames.Required, 1, typeof(NM1)));
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "0B", "1G", "G2", "LU") },
-                    SegmentUsageType.Situational, 3, typeof(REF)));
+                    SegmentUsageTypeNames.Situational, 3, typeof(REF)));
         }
     }
 
@@ -640,10 +640,10 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "77") },
-                SegmentUsageType.Required, 1, typeof(NM1)));
+                SegmentUsageTypeNames.Required, 1, typeof(NM1)));
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "0B", "G2", "LU") },
-                    SegmentUsageType.Situational, 3, typeof(REF)));
+                    SegmentUsageTypeNames.Situational, 3, typeof(REF)));
         }
     }
 
@@ -656,10 +656,10 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "DQ") },
-                SegmentUsageType.Required, 1, typeof(NM1)));
+                SegmentUsageTypeNames.Required, 1, typeof(NM1)));
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "0B", "1G", "G2", "LU") },
-                    SegmentUsageType.Situational, 3, typeof(REF)));
+                    SegmentUsageTypeNames.Situational, 3, typeof(REF)));
         }
     }
 
@@ -672,10 +672,10 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "85") },
-                SegmentUsageType.Required, 1, typeof(NM1)));
+                SegmentUsageTypeNames.Required, 1, typeof(NM1)));
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "G2", "LU") },
-                    SegmentUsageType.Situational, 2, typeof(REF)));
+                    SegmentUsageTypeNames.Situational, 2, typeof(REF)));
         }
     }
 
@@ -722,72 +722,72 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
 
         public override void DefineSegmentDefinition()
         {
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Required, 1, typeof(LX)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(SV1)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(SV5)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 10, typeof(PWK)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Required, 1, typeof(LX)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(SV1)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(SV5)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 10, typeof(PWK)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "CT") },
-                SegmentUsageType.Situational, 1, typeof(PWK)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(CR1)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(CR3)));
+                SegmentUsageTypeNames.Situational, 1, typeof(PWK)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(CR1)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(CR3)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "7") },
-                SegmentUsageType.Situational, 3, typeof(CRC)));
+                SegmentUsageTypeNames.Situational, 3, typeof(CRC)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "70") },
-                SegmentUsageType.Situational, 1, typeof(CRC)));
+                SegmentUsageTypeNames.Situational, 1, typeof(CRC)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "9") },
-                SegmentUsageType.Situational, 1, typeof(CRC)));
+                SegmentUsageTypeNames.Situational, 1, typeof(CRC)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "472") },
-                SegmentUsageType.Situational, 1, typeof(DTP)));
+                SegmentUsageTypeNames.Situational, 1, typeof(DTP)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "471") },
-                SegmentUsageType.Situational, 1, typeof(DTP)));
+                SegmentUsageTypeNames.Situational, 1, typeof(DTP)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "607") },
-                SegmentUsageType.Situational, 1, typeof(DTP)));
+                SegmentUsageTypeNames.Situational, 1, typeof(DTP)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "463") },
-                SegmentUsageType.Situational, 1, typeof(DTP)));
+                SegmentUsageTypeNames.Situational, 1, typeof(DTP)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "461") },
-                SegmentUsageType.Situational, 1, typeof(DTP)));
+                SegmentUsageTypeNames.Situational, 1, typeof(DTP)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "304") },
-                SegmentUsageType.Situational, 1, typeof(DTP)));
+                SegmentUsageTypeNames.Situational, 1, typeof(DTP)));
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "738", "739") },
-                    SegmentUsageType.Situational, 2, typeof(DTP)));
+                    SegmentUsageTypeNames.Situational, 2, typeof(DTP)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "11") },
-                SegmentUsageType.Situational, 1, typeof(DTP)));
+                SegmentUsageTypeNames.Situational, 1, typeof(DTP)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "455") },
-                SegmentUsageType.Situational, 1, typeof(DTP)));
+                SegmentUsageTypeNames.Situational, 1, typeof(DTP)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "454") },
-                SegmentUsageType.Situational, 1, typeof(DTP)));
+                SegmentUsageTypeNames.Situational, 1, typeof(DTP)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "PT") },
-                SegmentUsageType.Situational, 1, typeof(QTY)));
+                SegmentUsageTypeNames.Situational, 1, typeof(QTY)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "FL") },
-                SegmentUsageType.Situational, 1, typeof(QTY)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 5, typeof(MEA)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(CN1)));
+                SegmentUsageTypeNames.Situational, 1, typeof(QTY)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 5, typeof(MEA)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(CN1)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "9B") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "9D") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "G1") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "6R") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "EW") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "X4") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "F4") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "BT") },
-                SegmentUsageType.Situational, 1, typeof(REF)));
+                SegmentUsageTypeNames.Situational, 1, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "9F") },
-                SegmentUsageType.Situational, 5, typeof(REF)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(AMT)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(AMT)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 10, typeof(K3)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(NTE)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(NTE)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(PS1)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(HCP)));
+                SegmentUsageTypeNames.Situational, 5, typeof(REF)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(AMT)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(AMT)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 10, typeof(K3)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(NTE)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(NTE)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(PS1)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(HCP)));
         }
     }
 
@@ -799,11 +799,11 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
 
         public override void DefineSegmentDefinition()
         {
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Required, 1, typeof(LIN)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(CTP)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Required, 1, typeof(LIN)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(CTP)));
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "VY", "XZ") },
-                    SegmentUsageType.Situational, 1, typeof(REF)));
+                    SegmentUsageTypeNames.Situational, 1, typeof(REF)));
         }
     }
 
@@ -816,12 +816,12 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "82") },
-                SegmentUsageType.Required, 1, typeof(NM1)));
+                SegmentUsageTypeNames.Required, 1, typeof(NM1)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "PE") },
-                SegmentUsageType.Situational, 1, typeof(PRV)));
+                SegmentUsageTypeNames.Situational, 1, typeof(PRV)));
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "0B", "1G", "G2", "LU") },
-                    SegmentUsageType.Situational, 20, typeof(REF)));
+                    SegmentUsageTypeNames.Situational, 20, typeof(REF)));
         }
     }
 
@@ -834,10 +834,10 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "QB") },
-                SegmentUsageType.Required, 1, typeof(NM1)));
+                SegmentUsageTypeNames.Required, 1, typeof(NM1)));
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "OB", "1G", "G2") },
-                    SegmentUsageType.Situational, 20, typeof(REF)));
+                    SegmentUsageTypeNames.Situational, 20, typeof(REF)));
         }
     }
 
@@ -850,12 +850,12 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "77") },
-                SegmentUsageType.Required, 1, typeof(NM1)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N3)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N4)));
+                SegmentUsageTypeNames.Required, 1, typeof(NM1)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N3)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N4)));
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "G2", "LU") },
-                    SegmentUsageType.Situational, 3, typeof(REF)));
+                    SegmentUsageTypeNames.Situational, 3, typeof(REF)));
         }
     }
 
@@ -868,10 +868,10 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "DQ") },
-                SegmentUsageType.Required, 1, typeof(NM1)));
+                SegmentUsageTypeNames.Required, 1, typeof(NM1)));
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "OB", "1G", "G2", "LU") },
-                    SegmentUsageType.Situational, 20, typeof(REF)));
+                    SegmentUsageTypeNames.Situational, 20, typeof(REF)));
         }
     }
 
@@ -884,14 +884,14 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "DK") },
-                SegmentUsageType.Required, 1, typeof(NM1)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N3)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N4)));
+                SegmentUsageTypeNames.Required, 1, typeof(NM1)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N3)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N4)));
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "0B", "1G", "G2") },
-                    SegmentUsageType.Situational, 20, typeof(REF)));
+                    SegmentUsageTypeNames.Situational, 20, typeof(REF)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "IC") },
-                SegmentUsageType.Situational, 1, typeof(PER)));
+                SegmentUsageTypeNames.Situational, 1, typeof(PER)));
         }
     }
 
@@ -905,10 +905,10 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         {
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "DN", "P3") },
-                    SegmentUsageType.Required, 1, typeof(NM1)));
+                    SegmentUsageTypeNames.Required, 1, typeof(NM1)));
             SegmentDefinitions.Add(
                 new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "0B", "1G", "G2") },
-                    SegmentUsageType.Situational, 20, typeof(REF)));
+                    SegmentUsageTypeNames.Situational, 20, typeof(REF)));
         }
     }
 
@@ -921,9 +921,9 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "PW") },
-                SegmentUsageType.Required, 1, typeof(NM1)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N3)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N4)));
+                SegmentUsageTypeNames.Required, 1, typeof(NM1)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N3)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N4)));
         }
     }
 
@@ -936,9 +936,9 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
         public override void DefineSegmentDefinition()
         {
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "45") },
-                SegmentUsageType.Required, 1, typeof(NM1)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N3)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(N4)));
+                SegmentUsageTypeNames.Required, 1, typeof(NM1)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N3)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(N4)));
         }
     }
 
@@ -950,11 +950,11 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
 
         public override void DefineSegmentDefinition()
         {
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Required, 1, typeof(SVD)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 5, typeof(CAS)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Required, 1, typeof(SVD)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 5, typeof(CAS)));
             SegmentDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "573") },
-                SegmentUsageType.Situational, 1, typeof(DTP)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 1, typeof(AMT)));
+                SegmentUsageTypeNames.Situational, 1, typeof(DTP)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 1, typeof(AMT)));
         }
     }
 
@@ -966,8 +966,8 @@ namespace Model.EDI.X12.Format837.v5010.Prof.v1
 
         public override void DefineSegmentDefinition()
         {
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Required, 1, typeof(LQ)));
-            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageType.Situational, 99, typeof(FRM)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Required, 1, typeof(LQ)));
+            SegmentDefinitions.Add(new SegmentDefinition(null, SegmentUsageTypeNames.Situational, 99, typeof(FRM)));
         }
     }
 }

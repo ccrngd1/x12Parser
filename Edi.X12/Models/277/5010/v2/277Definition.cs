@@ -1,6 +1,6 @@
-﻿using Model.EDI.X12.v2.Base;
+﻿using EDI.X12.Base;
 
-namespace Model.EDI.X12.Format277.v5010.v2
+namespace EDI.X12.Format277.v5010
 {
     public sealed class X12_277_5010 : X12Doc
     {
@@ -35,7 +35,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
                 SetUpDefinitions();
         }
 
-        public override void SetUpDefinitions()
+        internal override void SetUpDefinitions()
         {
             foreach (LoopCollectionBase loopCollection in TopLevelLoops)
             {

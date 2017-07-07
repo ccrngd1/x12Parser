@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CodeGenerator
+namespace EDI.X12.CodeGeneration
 {
     public class V2_Generation_SegmentCollection
     {

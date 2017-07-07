@@ -1,6 +1,6 @@
-﻿using Model.EDI.X12.v2.Base;
+﻿using EDI.X12.Base;
 
-namespace Model.EDI.X12.v2
+namespace EDI.X12.Segments.Collections
 {
     public class IeaCollection : SegmentCollection { public IeaCollection(LoopEntity owningLoopEntity, string segDefName) : base(owningLoopEntity, segDefName) { } public IEA this[int index] { get { return Segments[index] as IEA; } set { Segments[index] = value; } } }
     public class GsCollection : SegmentCollection { public GsCollection(LoopEntity owningLoopEntity, string segDefName) : base(owningLoopEntity, segDefName) { } public GS this[int index] { get { return Segments[index] as GS; } set { Segments[index] = value; } } }

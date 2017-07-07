@@ -17,13 +17,13 @@ namespace Model.EDI.X12.v1.Base
         public string SegmentName;
 
         public List<SegmentQualifiers> Qualifiers = new List<SegmentQualifiers>();
-        public SegmentUsageType Usage;
+        public SegmentUsageTypeNames Usage;
         public int RepeatCount;
         private List<Func<List<string>, bool>> _addlQualifierLogic = new List<Func<List<string>, bool>>();
         private Type SegmentType;
         private Delimiters Delimiter;
 
-        public SegmentDefinition(List<SegmentQualifiers> quals, SegmentUsageType use, int reps, Type segT)
+        public SegmentDefinition(List<SegmentQualifiers> quals, SegmentUsageTypeNames use, int reps, Type segT)
         {
             if (quals != null)
                 Qualifiers = quals;
@@ -242,31 +242,31 @@ namespace Model.EDI.X12.v1.Base
         public X12DocumentBase()
         {
             EnvelopseDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers>(),
-                                                        SegmentUsageType.Required,
+                                                        SegmentUsageTypeNames.Required,
                                                         1, typeof(ISA)));
 
             EnvelopseDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers>(),
-                                                        SegmentUsageType.Required,
+                                                        SegmentUsageTypeNames.Required,
                                                         1, typeof(GS)));
 
             EnvelopseDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "0019") },
-                                                        SegmentUsageType.Required,
+                                                        SegmentUsageTypeNames.Required,
                                                         1, typeof(BHT)));
 
             EnvelopseDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers> { new SegmentQualifiers(1, "837") },
-                                                        SegmentUsageType.Required,
+                                                        SegmentUsageTypeNames.Required,
                                                         1, typeof(ST)));
 
             EnvelopseDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers>(),
-                                                        SegmentUsageType.Required,
+                                                        SegmentUsageTypeNames.Required,
                                                         1, typeof(GE)));
 
             EnvelopseDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers>(),
-                                                        SegmentUsageType.Required,
+                                                        SegmentUsageTypeNames.Required,
                                                         1, typeof(SE)));
 
             EnvelopseDefinitions.Add(new SegmentDefinition(new List<SegmentQualifiers>(),
-                                                        SegmentUsageType.Required,
+                                                        SegmentUsageTypeNames.Required,
                                                         1, typeof(IEA)));
         }
 

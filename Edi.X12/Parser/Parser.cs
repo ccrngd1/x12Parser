@@ -1,21 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using Model.EDI.X12;
-using Model.EDI.X12.v2.Base;
+using System.Linq; 
+using EDI.X12.Base;
+using EDI.X12.Enums;
+using EDI.X12.SegmentReader;
 
-namespace Business.EDI.X12.v2
+namespace EDI.X12.Parser
 {
-    public class ParserStateMachine : ICloneable
+    /// <summary>
+    /// Responsible for being given a segment line and finding a segment definition to match
+    /// </summary>
+    internal class ParserStateMachine : ICloneable
     {
-        private Stack<LoopEntity> _currentLoopStack = new Stack<LoopEntity>();
+        #region backing fields
+        private readonly Stack<LoopEntity> _currentLoopStack = new Stack<LoopEntity>();
 
-        public List<ParserErrors> Errors { get; private set; }
+        private LoopEntity _currentLoop;
+        #endregion
 
-        private LoopEntity _currentLoop = null;
+        internal List<ParserError> Errors { get; }
 
-        public LoopEntity CurrentLoop
+        internal LoopEntity CurrentLoop
         {
             get { return _currentLoop; }
             set
@@ -26,13 +32,17 @@ namespace Business.EDI.X12.v2
             }
         }
 
-        public IReadOnlyCollection<LoopEntity> CurrentLoopStack => _currentLoopStack.ToList().AsReadOnly();
+        private IEnumerable<LoopEntity> CurrentLoopStack => _currentLoopStack.ToList().AsReadOnly();
 
-        public ParserStateMachine()
+        internal ParserStateMachine()
         { 
-            Errors = new List<ParserErrors>(); 
+            Errors = new List<ParserError>(); 
         }
 
+        /// <summary>
+        /// Member wise close function
+        /// </summary>
+        /// <returns>An deep clone of the object</returns>
         public object Clone()
         {
             var retVal = new ParserStateMachine();
@@ -42,26 +52,20 @@ namespace Business.EDI.X12.v2
                 retVal._currentLoopStack.Push(loopEntity);
             }
 
-            foreach (ParserErrors parserErrors in Errors)
+            foreach (ParserError parserErrors in Errors)
             {
                 retVal.Errors.Add(parserErrors);
             }
 
-            retVal.CurrentLoop = this.CurrentLoop;
+            retVal.CurrentLoop = CurrentLoop;
 
             return retVal;
         }
     }
 
-    public class ParserErrors
-    {
-        public string ErrorMessage;
-        public X12ErrorTypes ErrorType;
-        public X12ErrorLevel ErrorLevel;
-        public LoopEntity CurrentLoop;
-        public BaseFieldValues CurrentSegment;
-    }
-
+    /// <summary>
+    /// Static parser that keeps state data contained in the ParseFile function to avoid any possible threading issues
+    /// </summary>
     public static class Parser
     { 
         private const string HeaderSegments = "ISA,GS,ST,BHT";
@@ -122,9 +126,11 @@ namespace Business.EDI.X12.v2
                                 if (qualifiedSegments[0].IsLoopStarter) //should always be a starter
                                     qualifiedSegments[0].OwningLoopCollection.Add();
                                 else
-                                {
-                                    //todo: is this an error?
+                                { 
                                     Console.WriteLine("new loop but not a starter segment?");
+                                    retVal.Errors.Add(
+                                        new ParserError("Parser found a handler, but this handler is in a new Loop and this handler is not marked as a IsLoopStarter-this could be an issue with the coded definition",
+                                            X12ErrorTypes.UnknownIntendedLoop, X12ErrorLevel.Loop, retVal.CurrentLoop, lineContent));
                                 }
 
                                 retVal.CurrentLoop = currentLoopCollection.LoopEntities.Last(); 
@@ -140,16 +146,17 @@ namespace Business.EDI.X12.v2
                         }
                     }
                     else //there were multiple and needs a tiebreaker 
-                    {
-                        //todo: something
-                        Console.WriteLine("we have too many, what do we do?");
+                    {  
+                        retVal.Errors.Add(
+                            new ParserError("There were multiple handlers found, no way to determine correct state",
+                                X12ErrorTypes.MultipleDefintions, X12ErrorLevel.Loop, retVal.CurrentLoop, lineContent));
                     }
                 }
             }
 
-            //if the current loop we have saved off does not claim it, we should just interogate the whole doc again
+            //if the current loop we have saved off can not handle it, we should just interogate the whole doc again
             //this may not be efficient, we may want to walk back up our stack to make it mo' betta
-            if (!currentLoopProcessed)
+            if (currentLoopProcessed) return retVal;
             {
                 var qualifiedSegments = new List<BaseStdSegment>();
                 foreach (LoopCollectionBase loopCollection in tempBuildingDoc.TopLevelLoops)
@@ -162,26 +169,45 @@ namespace Business.EDI.X12.v2
                     if (qualifiedSegments[0].IsLoopStarter) //should always be
                         qualifiedSegments[0].OwningLoopCollection.Add();
                     else
-                    {
-                        //todo how to handle this
-                        Console.WriteLine("another weird ");
+                    { 
+                        retVal.Errors.Add(
+                            new ParserError("Parser found a handler (at TopLevelLoop), but this handler is in a new Loop and this handler is not marked as a IsLoopStarter-this could be an issue with the coded definition",
+                                X12ErrorTypes.UnknownIntendedLoop, X12ErrorLevel.Loop, retVal.CurrentLoop, lineContent));
                     }
 
                     retVal.CurrentLoop = qualifiedSegments[0].OwningLoopCollection.LoopEntities.Last(); 
-                    retVal.CurrentLoop.Add(qualifiedSegments[0].CreateBaseStdSegment(lineContent));
-                    currentLoopProcessed = true;
+                    retVal.CurrentLoop.Add(qualifiedSegments[0].CreateBaseStdSegment(lineContent)); 
+                }
+                else if(qualifiedSegments.Count==0)
+                { 
+                    retVal.Errors.Add(
+                        new ParserError("We found no handlers for this segment",
+                            X12ErrorTypes.NotDefined, X12ErrorLevel.Loop, retVal.CurrentLoop, lineContent));
+                }
+                else if (qualifiedSegments.Count > 1)
+                {
+                    retVal.Errors.Add(
+                        new ParserError("There were multiple handlers found, no way to determine correct state",
+                            X12ErrorTypes.MultipleDefintions, X12ErrorLevel.Loop, retVal.CurrentLoop, lineContent));
                 }
                 else
                 {
-                    //todo how to handle these
-                    Console.WriteLine("nothing found");
+                    retVal.Errors.Add(
+                        new ParserError("The parse failed to find a good handler and you should never see this message",
+                            X12ErrorTypes.Unknown, X12ErrorLevel.Unknown, retVal.CurrentLoop, lineContent));
                 }
             }
 
             return retVal;
         }
 
-        public static List<X12Doc> ParseFile<T>(string fullFilePath) where T:X12Doc
+        /// <summary>
+        /// Given a file, parse the x12 into the hard coded defintion of a specific format T
+        /// </summary>
+        /// <typeparam name="T">specific format type to parse into</typeparam>
+        /// <param name="fullFilePath">location of the x12 file</param>
+        /// <returns>A list of X12 documents, each of which has a unique group of ISA/GS/ST/BHT, if a file has multiple of any of these, they will be rendered as a seperate X12Document</returns>
+        public static IEnumerable<X12Doc> ParseFile<T>(string fullFilePath) where T:X12Doc
         {
             X12Doc tempBuildingDoc = (T)Activator.CreateInstance(typeof(T), args: new object[] {true}); 
 
@@ -196,10 +222,7 @@ namespace Business.EDI.X12.v2
             var lineContent = new BaseFieldValues(sStream.ReadNextLine(tempBuildingDoc.DocDelimiters));
 
             List<string> headerSplit = HeaderSegments.Split(',').ToList();
-            List<string> trailerSplit = TrailerSegments.Split(',').ToList();
-
-            //6-28 @ 840am moving this into the parser state object
-            //LoopEntity currentLoop = null; //todo : should this be a stack? it would allow me to push/pop when I was moving levels...it might help for debug purposes but most likely not in the actual parsing
+            List<string> trailerSplit = TrailerSegments.Split(',').ToList(); 
 
             while (lineContent != null)
             {
@@ -208,6 +231,11 @@ namespace Business.EDI.X12.v2
                 {
                     if (!newHeaderSection)
                     {
+                        //copy the errors to date into the tempBuildingDoc so we can see if there are any errors
+                        tempBuildingDoc.AddParsingErrors(parserState.Errors);
+                        parserState.Errors.Clear();
+
+                        //if we just had a trailer section, then we need to create a new tempBuildingDoc to start a new X12 document
                         if(newTrailerSection)
                             tempBuildingDoc = (T)Activator.CreateInstance(typeof(T), args: new object[] { true });
 
@@ -225,11 +253,14 @@ namespace Business.EDI.X12.v2
                         tempBuildingDoc.InterchagneControlHeader.Populate(lineContent);
                     else if (tempBuildingDoc.FunctionGroupHeader.IsQualified(lineContent))
                         tempBuildingDoc.FunctionGroupHeader.Populate(lineContent);
-                    else 
-                        Console.WriteLine("nothing for header segment qual"); 
+                    else //should never happen, but defensive
+                    {
+                        parserState.Errors.Add(
+                            new ParserError("Header segment found no IsQualified handlers and failed to parse",
+                                X12ErrorTypes.NotDefined, X12ErrorLevel.Segment, parserState.CurrentLoop, lineContent));
+                    }
                 }
-                //is a trailer segment
-                else if (trailerSplit.Contains(lineContent[0]))
+                else if (trailerSplit.Contains(lineContent[0]))//is a trailer segment
                 {
                     newTrailerSection = true;  
                     newHeaderSection = false;
@@ -238,10 +269,14 @@ namespace Business.EDI.X12.v2
                         tempBuildingDoc.TransactionSetTrailer.Populate(lineContent);
                     else if (tempBuildingDoc.FunctionalGroupTrailer.IsQualified(lineContent))
                         tempBuildingDoc.FunctionalGroupTrailer.Populate(lineContent);
-                    else if(tempBuildingDoc.InterchangeControlTrailer.IsQualified(lineContent))
+                    else if (tempBuildingDoc.InterchangeControlTrailer.IsQualified(lineContent))
                         tempBuildingDoc.InterchangeControlTrailer.Populate(lineContent);
-                    else
-                        Console.WriteLine("oops");
+                    else//should never happen, but defensive
+                    {
+                        parserState.Errors.Add(
+                            new ParserError("Trailer segment found no IsQualified handlers and failed to parse",
+                                X12ErrorTypes.NotDefined, X12ErrorLevel.Segment, parserState.CurrentLoop, lineContent));
+                    }
                 }
                 else //has to be in the doc def
                 { 

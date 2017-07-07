@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.Text; 
 
-namespace CodeGenerator
+namespace EDI.X12.CodeGeneration
 {
     public struct NameType
     {
@@ -221,42 +221,46 @@ public string Required { get; set; }
                     writer.WriteLine("public partial class Loop{0}Collection", csvLines[i].LoopName);
                     writer.WriteLine("{");
 
-                    writer.WriteLine("public override void SetUpDefinition(){ "); 
+                    writer.WriteLine("public override void SetUpDefinition(){ ");
                     writer.WriteLine("SetUpChildDefinitions=true;");
                     writer.WriteLine("RepitionLimit = {0};", csvLines[i].Repeat);
 
                     bool firstPass = true;
-                    for (int j = i+1; j < csvLines.Count; j++)
+                    for (int j = i + 1; j < csvLines.Count; j++)
                     {
-                        if(!string.IsNullOrWhiteSpace(csvLines[j].LoopName)) break;
-                        
-                        writer.WriteLine("SegmentDefinitions.Add(new {0}(){{",  csvLines[j].FieldName?.ToUpper());
+                        if (!string.IsNullOrWhiteSpace(csvLines[j].LoopName)) break;
+
+                        writer.WriteLine("SegmentDefinitions.Add(new {0}(){{", csvLines[j].FieldName?.ToUpper());
                         writer.WriteLine("OwningLoopCollection = this,");
 
-                        if(firstPass) writer.WriteLine("IsLoopStarter=true,");
+                        if (firstPass) writer.WriteLine("IsLoopStarter=true,");
 
                         writer.WriteLine("SegmentDefinitionName = \"{0}\",", csvLines[j].Description);
 
                         #region writer.WriteLine("SegmentQualifierValues
+
                         string seqQualConcat = "";
                         if (!string.IsNullOrWhiteSpace(csvLines[j].Qualifiers))
                         {
                             var segQuals = new StringBuilder();
-                            foreach (var csv in csvLines[j].Qualifiers.Replace('"',' ').Split(','))
+                            foreach (var csv in csvLines[j].Qualifiers.Replace('"', ' ').Split(','))
                             {
-                                segQuals.AppendFormat("\"{0}\",",csv.Trim());
+                                segQuals.AppendFormat("\"{0}\",", csv.Trim());
                             }
                             seqQualConcat = segQuals.ToString();
                         }
 
                         if (!string.IsNullOrWhiteSpace(seqQualConcat))
                         {
-                            writer.WriteLine("SegmentQualifierValues = new List<SegmentQualifiers>(){{ new SegmentQualifiers(1,{0})}},", 
-                                seqQualConcat.Substring(0, seqQualConcat.Length-1));
+                            writer.WriteLine(
+                                "SegmentQualifierValues = new List<SegmentQualifiers>(){{ new SegmentQualifiers(1,{0})}},",
+                                seqQualConcat.Substring(0, seqQualConcat.Length - 1));
                         }
+
                         #endregion
 
                         #region writer.WriteLine("SyntaxRules
+
                         string syntaxi = "";
                         if (!string.IsNullOrWhiteSpace(csvLines[j].SyntaxRules))
                         {
@@ -270,26 +274,68 @@ public string Required { get; set; }
 
                         if (!string.IsNullOrWhiteSpace(syntaxi))
                         {
-                            writer.WriteLine("SyntaxRules = new List<string>(){{ {0} }},", syntaxi.Substring(0, syntaxi.Length-1));
+                            writer.WriteLine("SyntaxRules = new List<string>(){{ {0} }},",
+                                syntaxi.Substring(0, syntaxi.Length - 1));
                         }
+
                         #endregion
 
-                        #region writer.WriteLine("RequiredFileds
-                        string reqFields = csvLines[j].RequiredFields ;
+                        #region FieldUsage
+
+                        string reqFields = csvLines[j].RequiredFields;
+                        string unUsed = csvLines[j].UnusedFields;
+
+
+                        List<string> fieldUsage = new List<string>();
+                        fieldUsage.Add("FieldUsageTypeNames.Mandatory");
 
                         if (!string.IsNullOrWhiteSpace(reqFields))
                         {
-                            writer.WriteLine("RequiredFileds = new List<int>() {{ {0} }},", reqFields.Replace('"', ' '));
-                        }
-                        #endregion
+                            reqFields = reqFields.Replace("\"", "");
+                            foreach (var fieldNum in reqFields.Split(new[] {","}, StringSplitOptions.RemoveEmptyEntries))
+                            {
+                                int fieldIndexCheck = -1;
 
-                        #region writer.WriteLine("UnUsedFields
-                        string unUsed = csvLines[j].UnusedFields;
+                                if (int.TryParse(fieldNum.Trim(), out fieldIndexCheck))
+                                {
+                                    while (fieldUsage.Count <= fieldIndexCheck)
+                                    {
+                                        fieldUsage.Add("FieldUsageTypeNames.Optional");
+                                    }
+
+                                    fieldUsage[fieldIndexCheck] = "FieldUsageTypeNames.Mandatory";
+                                }
+                            }
+                        }
 
                         if (!string.IsNullOrWhiteSpace(unUsed))
                         {
-                            writer.WriteLine("UnUsedFields = new List<int>() {{ {0} }},", unUsed.Replace('"', ' '));
+                            unUsed = unUsed.Replace("\"", "");
+                            foreach (var fieldNum in unUsed.Split(new[] {","}, StringSplitOptions.RemoveEmptyEntries))
+                            {
+                                int fieldIndexCheck = -1;
+
+                                if (int.TryParse(fieldNum.Trim(), out fieldIndexCheck))
+                                {
+                                    while (fieldUsage.Count <= fieldIndexCheck)
+                                    {
+                                        fieldUsage.Add("FieldUsageTypeNames.Optional");
+                                    }
+
+                                    fieldUsage[fieldIndexCheck] = "FieldUsageTypeNames.UnUsed";
+                                }
+                            }
                         }
+
+                        writer.WriteLine("FieldUsage = new List<FieldUsageTypeNames>(){");
+
+                        foreach (string s in fieldUsage)
+                        {
+                            writer.WriteLine(s + ",");
+                        }
+
+                        writer.WriteLine("},");
+
                         #endregion
 
                         #region
@@ -304,7 +350,8 @@ public string Required { get; set; }
                             }
                         }
 
-                        writer.WriteLine("Usage = SegmentUsageType.{0}", usageT);
+                        writer.WriteLine("SegmentUsage = SegmentUsageTypeNames.{0}", usageT);
+
                         #endregion
 
                         writer.WriteLine("});");
@@ -312,7 +359,7 @@ public string Required { get; set; }
                         firstPass = false;
                     }
 
-                    writer.WriteLine("}");//setupDef function
+                    writer.WriteLine("}"); //setupDef function
 
                     writer.WriteLine("}"); //} LoopCollection
                 }

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Model.EDI.X12.v2;
-using Model.EDI.X12.v2.Base;
+using EDI.X12.Base;
+using EDI.X12.Segments.Collections;
 
-namespace Model.EDI.X12.Format277.v5010.v2
+namespace EDI.X12.Format277.v5010
 {
 
 
@@ -16,7 +16,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
 
         public Loop2100ACollection PayerNameLoop { get; set; }
 
-        public Loop2000A(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(owningDoc, parent)
+        public Loop2000A(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(parent)
         {
             InformationSourceLevel = new HlCollection(this, nameof(InformationSourceLevel));
             SegmentCollections.Add(InformationSourceLevel);
@@ -31,7 +31,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
         public Nm1Collection PayerName { get; set; }
         public PerCollection PayerContactInformation { get; set; }
 
-        public Loop2100A(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(owningDoc, parent)
+        public Loop2100A(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(parent)
         {
             PayerName = new Nm1Collection(this, nameof(PayerName));
             SegmentCollections.Add(PayerName);
@@ -48,7 +48,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
         public Loop2100BCollection InformationRecieverNameLoop { get; set; }
         public Loop2200BCollection InformationReceiverTraceIdentifierLoop { get; set; }
 
-        public Loop2000B(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(owningDoc, parent)
+        public Loop2000B(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(parent)
         {
             InformationReceiverLevel = new HlCollection(this, nameof(InformationReceiverLevel));
             SegmentCollections.Add(InformationReceiverLevel);
@@ -64,7 +64,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
     {
         public Nm1Collection InformationReceiverName { get; set; }
 
-        public Loop2100B(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(owningDoc, parent)
+        public Loop2100B(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(parent)
         {
             InformationReceiverName = new Nm1Collection(this, nameof(InformationReceiverName));
             SegmentCollections.Add(InformationReceiverName);
@@ -77,7 +77,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
         public TrnCollection InformationReceiverTraceIdentifier { get; set; }
         public StcCollection InformationReceiverStatusInformation { get; set; } 
 
-        public Loop2200B(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(owningDoc, parent)
+        public Loop2200B(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(parent)
         {
             InformationReceiverTraceIdentifier = new TrnCollection(this, nameof(InformationReceiverTraceIdentifier));
             SegmentCollections.Add(InformationReceiverTraceIdentifier);
@@ -94,7 +94,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
         public Loop2100CCollection ProviderNameLoop { get; set; }
         public Loop2200CCollection ProviderOfServiceTraceIdentifierLoop { get; set; }
 
-        public Loop2000C(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(owningDoc, parent)
+        public Loop2000C(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(parent)
         {
             ServiceProviderLevel = new HlCollection(this, nameof(ServiceProviderLevel));
             SegmentCollections.Add(ServiceProviderLevel);
@@ -110,7 +110,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
     {
         public Nm1Collection ProviderName { get; set; }
 
-        public Loop2100C(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(owningDoc, parent)
+        public Loop2100C(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(parent)
         {
             ProviderName = new Nm1Collection(this, nameof(ProviderName));
             SegmentCollections.Add(ProviderName);
@@ -123,7 +123,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
         public TrnCollection ProviderOfServiceTraceIdentifier { get; set; }
         public StcCollection ProviderStatusInformation { get; set; }  
 
-        public Loop2200C(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(owningDoc, parent)
+        public Loop2200C(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(parent)
         {
             ProviderOfServiceTraceIdentifier = new TrnCollection(this, nameof(ProviderOfServiceTraceIdentifier));
             SegmentCollections.Add(ProviderOfServiceTraceIdentifier);
@@ -138,7 +138,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
         public Loop2100DCollection SubscriberNameLoop { get; set; }
         public Loop2200DCollection ClaimStatusTrackingNumberLoop { get; set; }
 
-        public Loop2000D(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(owningDoc, parent)
+        public Loop2000D(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(parent)
         {
             SubscriberLevel = new HlCollection(this, nameof(SubscriberLevel));
             SegmentCollections.Add(SubscriberLevel);
@@ -154,7 +154,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
     {
         public Nm1Collection SubscriberName { get; set; }
 
-        public Loop2100D(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(owningDoc, parent)
+        public Loop2100D(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(parent)
         {
             SubscriberName = new Nm1Collection(this, nameof(SubscriberName));
             SegmentCollections.Add(SubscriberName);
@@ -176,7 +176,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
         public Loop2220DCollection ServiceLineInformationLoop { get; set; }
 
 
-        public Loop2200D(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(owningDoc, parent)
+        public Loop2200D(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(parent)
         {
             ClaimStatusTrackingNumber = new TrnCollection(this, nameof(ClaimStatusTrackingNumber));
             SegmentCollections.Add(ClaimStatusTrackingNumber);
@@ -211,7 +211,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
         public RefCollection ServiceLineItemIdentification { get; set; }
         public DtpCollection ServiceLineDate { get; set; }
 
-        public Loop2220D(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(owningDoc, parent)
+        public Loop2220D(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(parent)
         {
             ServiceLineInformation = new SvcCollection(this, nameof(ServiceLineInformation));
             SegmentCollections.Add(ServiceLineInformation);
@@ -232,7 +232,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
         public Loop2100ECollection DependentNameLoop { get; set; }
         public Loop2200ECollection ClaimStatusTrackingNumberLoop { get; set; }
 
-        public Loop2000E(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(owningDoc, parent)
+        public Loop2000E(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(parent)
         {
             DependentLevel = new HlCollection(this, nameof(DependentLevel));
             SegmentCollections.Add(DependentLevel);
@@ -250,7 +250,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
     {
         public Nm1Collection DependentName { get; set; }
 
-        public Loop2100E(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(owningDoc, parent)
+        public Loop2100E(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(parent)
         {
             DependentName = new Nm1Collection(this, nameof(DependentName));
             SegmentCollections.Add(DependentName);
@@ -272,7 +272,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
 
         public Loop2220ECollection ServiceLineInformationLoop { get; set; }
 
-        public Loop2200E(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(owningDoc, parent)
+        public Loop2200E(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(parent)
         {
             ClaimStatusTrackingNumber = new TrnCollection(this, nameof(ClaimStatusTrackingNumber));
             SegmentCollections.Add(ClaimStatusTrackingNumber);
@@ -308,7 +308,7 @@ namespace Model.EDI.X12.Format277.v5010.v2
         public DtpCollection ServiceLineDate { get; set; }
         public SeCollection TransactionSetTrailer { get; set; }
 
-        public Loop2220E(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(owningDoc, parent)
+        public Loop2220E(X12Doc owningDoc, LoopEntity prev, LoopCollectionBase parent) : base(parent)
         {
             ServiceLineInformation = new SvcCollection(this, nameof(ServiceLineInformation));
             SegmentCollections.Add(ServiceLineInformation);

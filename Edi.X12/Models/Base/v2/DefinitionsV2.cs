@@ -1,47 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq; 
+﻿using System.Collections.Generic;
+using System.Linq;
+using EDI.X12.Enums;
 
-namespace Model.EDI.X12.v2.Base
-{
-    public struct SegmentErrorDetails
+namespace EDI.X12.Base
+{ 
+    /// <summary>
+    /// Segment level qualifier rules
+    /// </summary>
+    internal class SegmentQualifiers
     {
-        public string SegmentValue; 
+        internal readonly List<string> QualifierValues;
+        internal readonly int FieldId;
 
-        public SegmentErrorDetails(string segValue )
-        {
-            SegmentValue = segValue; 
-        }
-    } 
-
-    public class SegmentQualifiers
-    {
-        public List<string> QualifierValues;
-        public int FieldId;
-
-        public SegmentQualifiers(int fieldId, params string[] parameters)
+        internal SegmentQualifiers(int fieldId, params string[] parameters)
         {
             FieldId = fieldId;
             QualifierValues = parameters.ToList();
         }
 
-        public bool IsQaulified(BaseFieldValues segmentFields)
+        internal bool IsQaulified(BaseFieldValues segmentFields)
         {
             return QualifierValues.Contains(segmentFields[FieldId]);
         }
     }
 
-    public interface ISegmentDefinition
+    /// <summary>
+    /// Contract that defines what is needed for segment definition for parsing
+    /// </summary>
+    public abstract class SegmentDefinition
     {
+        LoopCollectionBase OwningLoopCollection { get; set; }
+
         List<SegmentQualifiers> SegmentQualifierValues { get; set; }
 
         bool IsLoopStarter { get; set; }
 
-        BaseStdSegment CreateBaseStdSegment(BaseFieldValues bsf);
-    }
+        string SegmentDefinitionName { get; set; }
 
-    public interface ISegmentValidator
-    {
-        List<Func<List<string>, bool>> AddlQualifierLogic { get; set; }
-    }
+        List<string> SyntaxRules { get; set; }
+
+        SegmentUsageTypeNames SegmentUsage { get; set; }
+
+        List<FieldUsageTypeNames> FieldUsage { get; set; }
+
+
+        internal abstract BaseStdSegment CreateBaseStdSegment(BaseFieldValues bsf);
+        internal abstract void Populate(BaseFieldValues baseVals);
+        internal abstract bool IsQualified(BaseFieldValues segmentFields);
+
+        public abstract override string ToString();
+        public abstract bool Validate();
+    }  
 }
