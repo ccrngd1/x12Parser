@@ -168,7 +168,15 @@ namespace EDI.X12.Base
                 Component = ':',
                 Repetition = '^',
                 Segment = '~'
-            }; 
+            };
+
+            InterchagneControlHeader = new ISA();
+            FunctionGroupHeader = new GS();
+            TransactionSetHeader = new ST();
+            BeginHierarchicalTransaction = new BHT();
+            TransactionSetTrailer = new SE();
+            FunctionalGroupTrailer = new GE();
+            InterchangeControlTrailer = new IEA();
         }
 
         internal X12Doc() : this(false) { }

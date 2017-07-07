@@ -17,7 +17,7 @@ namespace EDI.X12.Format277.v5010
                 OwningLoopCollection = this,
                 IsLoopStarter = true,
                 SegmentDefinitionName = "InformationSourceLevel",
-                SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "20") },
+                SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(3, "20") },
                 FieldUsage = new List<FieldUsageTypeNames>(){
                     FieldUsageTypeNames.Mandatory,
                     FieldUsageTypeNames.Mandatory,
@@ -92,7 +92,7 @@ namespace EDI.X12.Format277.v5010
                 OwningLoopCollection = this,
                 IsLoopStarter = true,
                 SegmentDefinitionName = "InformationReceiverLevel",
-                SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "21") },
+                SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(3, "21") },
                 FieldUsage = new List<FieldUsageTypeNames>(){
                     FieldUsageTypeNames.Mandatory,
                     FieldUsageTypeNames.Mandatory,
@@ -191,7 +191,7 @@ namespace EDI.X12.Format277.v5010
                 OwningLoopCollection = this,
                 IsLoopStarter = true,
                 SegmentDefinitionName = "ServiceProviderLevel",
-                SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "19") },
+                SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(3, "19") },
                 FieldUsage = new List<FieldUsageTypeNames>(){
                     FieldUsageTypeNames.Mandatory,
                     FieldUsageTypeNames.Mandatory,
@@ -259,8 +259,7 @@ namespace EDI.X12.Format277.v5010
             SegmentDefinitions.Add(new STC()
             {
                 OwningLoopCollection = this,
-                SegmentDefinitionName = "ProviderStatusInformation",
-                SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "1P") },
+                SegmentDefinitionName = "ProviderStatusInformation", 
                 FieldUsage = new List<FieldUsageTypeNames>(){
                     FieldUsageTypeNames.Mandatory,
                     FieldUsageTypeNames.Mandatory,
@@ -302,7 +301,7 @@ namespace EDI.X12.Format277.v5010
                 OwningLoopCollection = this,
                 IsLoopStarter = true,
                 SegmentDefinitionName = "SubscriberLevel",
-                SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "22") },
+                SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(3, "22") },
                 FieldUsage = new List<FieldUsageTypeNames>(){
                     FieldUsageTypeNames.Mandatory,
                     FieldUsageTypeNames.Mandatory,
@@ -587,7 +586,7 @@ namespace EDI.X12.Format277.v5010
                 OwningLoopCollection = this,
                 IsLoopStarter = true,
                 SegmentDefinitionName = "DependentLevel",
-                SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(1, "23") },
+                SegmentQualifierValues = new List<SegmentQualifiers>() { new SegmentQualifiers(3, "23") },
                 FieldUsage = new List<FieldUsageTypeNames>(){
                     FieldUsageTypeNames.Mandatory,
                     FieldUsageTypeNames.Mandatory,
