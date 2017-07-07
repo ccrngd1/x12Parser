@@ -124,16 +124,21 @@ namespace EDI.X12.Parser
                             if (qualifiedSegments.Count == 1)
                             {
                                 if (qualifiedSegments[0].IsLoopStarter) //should always be a starter
+                                {
                                     qualifiedSegments[0].OwningLoopCollection.Add();
+                                    retVal.CurrentLoop = qualifiedSegments[0].OwningLoopCollection.LoopEntities.Last();
+                                }
                                 else
-                                { 
+                                {
                                     Console.WriteLine("new loop but not a starter segment?");
                                     retVal.Errors.Add(
-                                        new ParserError("Parser found a handler, but this handler is in a new Loop and this handler is not marked as a IsLoopStarter-this could be an issue with the coded definition",
-                                            X12ErrorTypes.UnknownIntendedLoop, X12ErrorLevel.Loop, retVal.CurrentLoop, lineContent));
+                                        new ParserError(
+                                            "Parser found a handler, but this handler is in a new Loop and this handler is not marked as a IsLoopStarter-this could be an issue with the coded definition",
+                                            X12ErrorTypes.UnknownIntendedLoop, X12ErrorLevel.Loop, retVal.CurrentLoop,
+                                            lineContent));
                                 }
 
-                                retVal.CurrentLoop = currentLoopCollection.LoopEntities.Last(); 
+                                //retVal.CurrentLoop = currentLoopCollection.LoopEntities.Last(); 
                                 retVal.CurrentLoop.Add(qualifiedSegments[0].CreateBaseStdSegment(lineContent));
                                 currentLoopProcessed = true;
                             }
