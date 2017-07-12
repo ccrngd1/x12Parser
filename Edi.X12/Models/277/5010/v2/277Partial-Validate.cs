@@ -3,7 +3,9 @@
     //Example of Validation override
     public partial class Loop2000ACollection
     {
-        public override bool Validate() { return base.Validate() && true; }//ToDo: add real validation
+        //todo: add any logic specific to this loop validation here
+        //do not define Validate methods that do not need to override for specific checks
+        public override bool Validate() { return base.Validate() && true; } 
     } 
 
 }

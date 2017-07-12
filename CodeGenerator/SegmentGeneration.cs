@@ -2,65 +2,18 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text; 
 
 namespace EDI.X12.CodeGeneration
 {
     public class V2_Generation_SegmentCollection
     {
-        public string GenerateSegmentCollections_OLD(string SegmentsFile)
-        {
-            List<string> segmentNameList = new List<string>();
-
-            using (var reader = File.OpenText(SegmentsFile))
-            {
-                var readLine = reader.ReadLine();
-
-                while (readLine != null)
-                {
-                    if (readLine.ToLower().Contains("public class"))
-                    {
-                        segmentNameList.Add(readLine.Trim().Split(' ').ToList()[2]);
-                    }
-
-                    readLine = reader.ReadLine();
-                }
-            }
-
-            var sb = new StringBuilder();
-
-
-            string classHeaderPrefix = @"public class ";
-            string classHeaderSuffix = @"Collection : baseSegmentCollection {";
-
-            string ctorPrefix = @"public ";
-            string ctorSuffix = @"Collection() : base(typeof(";
-            string ctorEnding = @")){ }";
-
-            string indexPrefix = @"public ";
-            string indexGetPrefix = @" this[int index]{get { return Segments[index] as ";
-            string indexSetPrefix = @" ;} set{Segments[index]=value;}}}";
-
-            foreach (string segName in segmentNameList)
-            {
-                sb.Append(classHeaderPrefix).Append(segName);
-                sb.Append(classHeaderSuffix).Append(ctorPrefix).Append(segName);
-                sb.Append(ctorSuffix).Append(segName);
-                sb.Append(ctorEnding).Append(indexPrefix).Append(segName);
-                sb.Append(indexGetPrefix).Append(segName).Append(indexSetPrefix);
-                sb.AppendLine(" ");
-            }
-
-            return sb.ToString();
-        }
-
-        public string GenerateSegmentCollections_v2(string SegmentsFile)
+        public string GenerateSegmentCollections_v2(string segmentsFile)
         {
             var segmentNameList = new SortedDictionary < string, List< string >> ();
 
             var className = "";
-            using (StreamReader reader = File.OpenText(SegmentsFile))
+            using (StreamReader reader = File.OpenText(segmentsFile))
             {
                 var readLine = reader.ReadLine();
 
@@ -90,14 +43,14 @@ namespace EDI.X12.CodeGeneration
 
             var sb = new StringBuilder();
             
-            foreach (var segName in segmentNameList)
+            foreach (KeyValuePair<string, List<string>> segName in segmentNameList)
             {  
                 sb.AppendFormat("public partial class {0} : BaseStdSegment{{\r\n",segName.Key);
 
                 int i = 1;
-                foreach (var prop in segName.Value)
+                foreach (string prop in segName.Value)
                 {
-                    var fixedProp = prop[0].ToString().ToUpper() + prop.Substring(1, prop.Length-1);
+                    string fixedProp = prop[0].ToString().ToUpper() + prop.Substring(1, prop.Length-1);
                     sb.AppendFormat(
                         "public string {0} {{get {{return GetFieldValue({1});}} set {{SetFieldValue({1}, value);}} }}\r\n", fixedProp, i);
 

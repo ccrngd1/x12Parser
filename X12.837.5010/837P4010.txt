@@ -1,0 +1,254 @@
+Name	Loop Parent / Segment Type	Segment Description	Repeats	Qualifiers	Segment Required	Required Fields	Unused Fields	Syntax Rules
+1000A		SUBMITTER NAME	1					
+	NM1	Submitter Name	1		Y			
+	PER	Submitter EDI Contact Information	2		Y			
+1000B		RECEIVER NAME	1					
+	Table	Receiver Name	1		Y			
+2000A		BILLING/PAY-TO PROVIDER HIERARCHICAL LEVEL	>1					
+	HL	Billing/Pay-to Provider Hierarchical Level	1		Y			
+	PRV	Billing/Pay-to Provider Specialty Information	1		N			
+	CUR	Foreign Currency Information	1		N			
+2010AA	2000A	BILLING PROVIDER NAME	1					
+	NM1	Billing Provider Name	1		Y			
+	N3	Billing Provider Address	1		Y			
+	N4	Billing Provider City/State/ZIP Code	1		Y			
+	REF	Billing Provider Secondary Identification	8		N			
+	REF	Credit/Debit Card Billing Information	8		N			
+	PER	Billing Provider Contact Information	2		N			
+2010AB	2000A	PAY-TO PROVIDER NAME	1					
+	NM1	Pay-to Provider Name	1		N			
+	N3	Pay-to Provider Address	1		Y			
+	N4	Pay-to Provider City/State/ZIP Code	1		Y			
+	REF	Pay-to-Provider Secondary Identification	5		N			
+2000B	2000A	SUBSCRIBER HIERARCHICAL LEVEL	>1					
+	HL	Subscriber Hierarchical Level	1		Y			
+	SBR	Subscriber Information	1		Y			
+	PAT	Patient Information	1		N			
+2010BA	2000B	SUBSCRIBER NAME	1					
+	NM1	Subscriber Name	1		Y			
+	N3	Subscriber Address	1		N			
+	N4	Subscriber City/State/ZIP Code	1		N			
+	DMG	Subscriber Demographic Information	1		N			
+	REF	Subscriber Secondary Identification	4		N			
+	REF	Property and Casualty Claim Number	1		N			
+2010BB	2000B	PAYER NAME	1					
+	NM1	Payer Name	1		Y			
+	N3	Payer Address	1		N			
+	N4	Payer City/State/ZIP Code	1		N			
+	REF	Payer Secondary Identification	3		N			
+2010BC	2010BB	RESPONSIBLE PARTY NAME	1					
+	NM1	Responsible Party Name	1		N			
+	N3	Responsible Party Address	1		Y			
+	N4	Responsible Party City/State/ZIP Code	1		Y			
+2010BD	2000B	CREDIT/DEBIT CARD HOLDER NAME	1					
+	NM1	Credit/Debit Card Holder Name	1		N			
+	REF	Credit/Debit Card Information	2		N			
+2000C	2010BD	PATIENT HIERARCHICAL LEVEL	>1					
+	HL	Patient Hierarchical Level	1		N			
+	PAT	Patient Information	1		Y			
+2010CA	2010BD	PATIENT NAME	1					
+	NM1	Patient Name	1		Y			
+	N3	Patient Address	1		Y			
+	N4	Patient City/State/ZIP Code	1		Y			
+	DMG	Patient Demographic Information	1		Y			
+	REF	Patient Secondary Identification	5		N			
+	REF	Property and Casualty Claim Number	1		N			
+2300	2010BD	CLAIM INFORMATION	100					
+	CLM	Claim Information	1		Y			
+	DTP	Date - Initial Treatment	1		N			
+	DTP	Date - Date Last Seen	1		N			
+	DTP	Date - Onset of Current Illness/Symptom	1		N			
+	DTP	Date - Acute Manifestation	5		N			
+	DTP	Date - Similar Illness/Symptom Onset	0		N			
+	DTP	Date - Accident	0		N			
+	DTP	Date - Last Menstrual Period	1		N			
+	DTP	Date - Last X-ray	1		N			
+	DTP	Date - Hearing and Vision Prescription Date	1		N			
+	DTP	Date - Disability Begin	5		N			
+	DTP	Date - Disability End	5		N			
+	DTP	Date - Last Worked	1		N			
+	DTP	Date - Authorized Return to Work	1		N			
+	DTP	Date - Admission	1		N			
+	DTP	Date - Discharge	1		N			
+	DTP	Date - Assumed and Relinquished Care Dates	2		N			
+	PWK	Claim Supplemental Information	0		N			
+	CN1	Contract Information	1		N			
+	AMT	Credit/Debit Card Maximum Amount	1		N			
+	AMT	Patient Amount Paid	1		N			
+	AMT	Total Purchased Service Amount	1		N			
+	REF	Service Authorization Exception Code	1		N			
+	REF	Mandatory Medicare (Section 4081) Crossover Indicator	1		N			
+	REF	Mammography Certification Number	1		N			
+	REF	Prior Authorization or Referral Number	2		N			
+	REF	Original Reference Number (ICN/DCN)	1		N			
+	REF	Clinical Laboratory Improvement Amendment (CLIA)	0		N			
+	REF	Repriced Claim Number	1		N			
+	REF	Adjusted Repriced Claim Number	1		N			
+	REF	Investigational Device Exemption Number	1		N			
+	REF	Claim Identification Number for Clearing Houses and	0		N			
+	REF	Ambulatory Patient Group (APG)	4		N			
+	REF	Medical Record Number	1		N			
+	REF	Demonstration Project Identifier	1		N			
+	K3	File Information	0		N			
+	NTE	Claim Note	1		N			
+	CR1	Ambulance Transport Information	1		N			
+	CR2	Spinal Manipulation Service Information	1		N			
+	CRC	Ambulance Certification	3		N			
+	CRC	Patient Condition Information: Vision	3		N			
+	CRC	Homebound Indicator	1		N			
+	CRC	EPSDT Referral	1		N			
+	HI	Health Care Diagnosis Code	1		N			
+	HCP	Claim Pricing/Repricing Information	1		N			
+2305	2010BD	HOME HEALTH CARE PLAN INFORMATION	6					
+	CR7	Home Health Care Plan Information	1		N			
+	HSD	Health Care Services Delivery	3		N			
+2310A	2305	REFERRING PROVIDER NAME	2					
+	NM1	Referring Provider Name	1		N			
+	PRV	Referring Provider Specialty Information	1		N			
+	REF	Referring Provider Secondary Identification	5		N			
+2310B	2305	RENDERING PROVIDER NAME	1					
+	NM1	Rendering Provider Name	1		N			
+	PRV	Rendering Provider Specialty Information	1		N			
+	REF	Rendering Provider Secondary Identification	5		N			
+2310C	2010BD	PURCHASED SERVICE PROVIDER NAME	1					
+	NM1	Purchased Service Provider Name	1		N			
+	REF	Purchased Service Provider Secondary Identification	5		N			
+2310D	2310C	SERVICE FACILITY LOCATION	1					
+	NM1	Service Facility Location	1		N			
+	N3	Service Facility Location Address	1		Y			
+	N4	Service Facility Location City/State/ZIP	1		Y			
+	REF	Service Facility Location Secondary Identification	5		N			
+2310E	2310C	SUPERVISING PROVIDER NAME	1					
+	NM1	Supervising Provider Name	1		N			
+	REF	Supervising Provider Secondary Identification	5		N			
+2320	2310C	OTHER SUBSCRIBER INFORMATION	10					
+	SBR	Other Subscriber Information	1		N			
+	CAS	Claim Level Adjustments	5		N			
+	AMT	Coordination of Benefits (COB) Payer Paid Amount	1		N			
+	AMT	Coordination of Benefits (COB) Approved Amount	1		N			
+	AMT	Coordination of Benefits (COB) Allowed Amount	1		N			
+	AMT	Coordination of Benefits (COB) Patient Responsibility	0		N			
+	AMT	Coordination of Benefits (COB) Covered Amount	1		N			
+	AMT	Coordination of Benefits (COB) Discount Amount	1		N			
+	AMT	Coordination of Benefits (COB) Per Day Limit Amount	1		N			
+	AMT	Coordination of Benefits (COB) Patient Paid Amount	1		N			
+	AMT	Coordination of Benefits (COB) Tax Amount	1		N			
+	AMT	Coordination of Benefits (COB) Total Claim Before Taxes	0		N			
+	DMG	Subscriber Demographic Information	1		N			
+	OI	Other Insurance Coverage Information	1		Y			
+	MOA	Medicare Outpatient Adjudication Information	1		N			
+2330A	2320	OTHER SUBSCRIBER NAME	1					
+	NM1	Other Subscriber Name	1		Y			
+	N3	Other Subscriber Address	1		N			
+	N4	Other Subscriber City/State/ZIP Code	1		N			
+	REF	Other Subscriber Secondary Identification	3		N			
+2330B	2330A	OTHER PAYER NAME	1					
+	NM1	Other Payer Name	1		Y			
+	345PER	Other Payer Contact Information	2		N			
+	DTP	Claim Adjudication Date	1		N			
+	REF	Other Payer Secondary Identifier	2		N			
+	REF	Other Payer Prior Authorization or Referral Number	2		N			
+	REF	Other Payer Claim Adjustment Indicator	2		N			
+2330C	2310C	OTHER PAYER PATIENT INFORMATION	1					
+	NM1	Other Payer Patient Information	1		N			
+	REF	Other Payer Patient Identification	3		N			
+2330D	2310C	OTHER PAYER REFERRING PROVIDER	2					
+	NM1	Other Payer Referring Provider	1		N			
+	REF	Other Payer Referring Provider Identification	3		Y			
+2330E	2310C	OTHER PAYER RENDERING PROVIDER	1					
+	NM1	Other Payer Rendering Provider	1		N			
+	REF	Other Payer Rendering Provider Secondary Identification	3		Y			
+2330F	2310C	OTHER PAYER PURCHASED SERVICE PROVIDER	1					
+	NM1	Other Payer Purchased Service Provider	1		N			
+	REF	Other Payer Purchased Service Provider Identification	3		Y			
+2330G	2310C	OTHER PAYER SERVICE FACILITY LOCATION	1					
+	NM1	Other Payer Service Facility Location	1		N			
+	REF	Other Payer Service Facility Location Identification	3		Y			
+2330H	2310C	OTHER PAYER SUPERVISING PROVIDER	1					
+	NM1	Other Payer Supervising Provider	1		N			
+	REF	Other Payer Supervising Provider Identification	3		Y			
+2400	2330H	SERVICE LINE	50					
+	LX	Service Line	1		Y			
+	SV1	Professional Service	1		Y			
+	SV5	Durable Medical Equipment Service	1		N			
+	PWK	DMERC CMN Indicator	1		N			
+	CR1	Ambulance Transport Information	1		N			
+	CR2	Spinal Manipulation Service Information	5		N			
+	CR3	Durable Medical Equipment Certification	1		N			
+	CR5	Home Oxygen Therapy Information	1		N			
+	CRC	Ambulance Certification	3		N			
+	CRC	Hospice Employee Indicator	1		N			
+	CRC	DMERC Condition Indicator	2		N			
+	DTP	Date - Service Date	1		Y			
+	DTP	Date - Certification Revision Date	1		N			
+	DTP	Date - Begin Therapy Date	1		N			
+	DTP	Date - Last Certification Date	1		N			
+	DTP	Date - Date Last Seen	1		N			
+	DTP	Date - Test	2		N			
+	DTP	Date - Oxygen Saturation/Arterial Blood Gas Test	3		N			
+	DTP	Date - Shipped	1		N			
+	DTP	Date - Onset of Current Symptom/Illness	1		N			
+	DTP	Date - Last X-ray	1		N			
+	DTP	Date - Acute Manifestation	1		N			
+	DTP	Date - Initial Treatment	1		N			
+	DTP	Date - Similar Illness/Symptom Onset	1		N			
+	MEA	Test Result	0		N			
+	CN1	Contract Information	1		N			
+	REF	Repriced Line Item Reference Number	1		N			
+	REF	Adjusted Repriced Line Item Reference Number	1		N			
+	REF	Prior Authorization or Referral Number	2		N			
+	REF	Line Item Control Number	1		N			
+	REF	Mammography Certification Number	1		N			
+	REF	Clinical Laboratory Improvement Amendment (CLIA)	0		N			
+	REF	Referring Clinical Laboratory Improvement Amendment	0		N			
+	REF	Immunization Batch Number	1		N			
+	REF	Ambulatory Patient Group (APG)	4		N			
+	REF	Oxygen Flow Rate	1		N			
+	REF	Universal Product Number (UPN)	1		N			
+	AMT	Sales Tax Amount	1		N			
+	AMT	Approved Amount	1		N			
+	AMT	Postage Claimed Amount	1		N			
+	K3	File Information	0		N			
+	NTE	Line Note	1		N			
+	PS1	Purchased Service Information	1		N			
+	HSD	Health Care Services Delivery	1		N			
+	HCP	Line Pricing/Repricing Information	1		N			
+2410	2330H	DRUG IDENTIFICATION	25					
+	LIN	Drug Identification	1		N			
+	CTP	Drug Pricing	1		N			
+	REF	Prescription Number	1		N			
+2420A	2330H	RENDERING PROVIDER NAME	1					
+	NM1	Rendering Provider Name	1		N			
+	PRV	Rendering Provider Specialty Information	1		N			
+	REF	Rendering Provider Secondary Identification	5		N			
+2420B	2310C	PURCHASED SERVICE PROVIDER NAME	1					
+	NM1	Purchased Service Provider Name	1		N			
+	REF	Purchased Service Provider Secondary Identification	5		N			
+2420C	2420B	SERVICE FACILITY LOCATION	1					
+	NM1	Service Facility Location	1		N			
+	N3	Service Facility Location Address	1		Y			
+	N4	Service Facility Location City/State/ZIP	1		Y			
+	REF	Service Facility Location Secondary Identification	5		N			
+2420D	2420B	SUPERVISING PROVIDER NAME	1					
+	NM1	Supervising Provider Name	1		N			
+	REF	Supervising Provider Secondary Identification	5		N			
+2420E	2420D	ORDERING PROVIDER NAME	1					
+	NM1	Ordering Provider Name	1		N			
+	N3	Ordering Provider Address	1		N			
+	N4	Ordering Provider City/State/ZIP Code	1		N			
+	REF	Ordering Provider Secondary Identification	5		N			
+	PER	Ordering Provider Contact Information	1		N			
+2420F	2420D	REFERRING PROVIDER NAME	2					
+	NM1	Referring Provider Name	1		N			
+	PRV	Referring Provider Specialty Information	1		N			
+	REF	Referring Provider Secondary Identification	5		N			
+2420G	2310C	OTHER PAYER PRIOR AUTHORIZATION OR REFERRAL NUMBER	4					
+	NM1	Other Payer Prior Authorization or Referral Number	1		N			
+	REF	Other Payer Prior Authorization or Referral Number	2		Y			
+2430	2420G	LINE ADJUDICATION INFORMATION	25					
+	SVD	Line Adjudication Information	1		N			
+	CAS	Line Adjustment	0		N			
+	DTP	Line Adjudication Date	1		Y			
+2440	2430	FORM IDENTIFICATION CODE	5					
+	LQ	Form Identification Code	1		N			
+	FRM	Supporting Documentation	0		Y			

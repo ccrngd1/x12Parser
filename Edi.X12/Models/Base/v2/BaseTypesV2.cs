@@ -74,7 +74,7 @@ namespace EDI.X12.Base
     /// It sets up the header segments that are globally required
     /// It also houses the Delimiters that will be referenced during parsing of line segments and building
     /// </summary>
-    public abstract class X12Doc
+    public abstract class X12Doc : IComparable
     {
         private Delimiters _docDelims;
 
@@ -185,6 +185,11 @@ namespace EDI.X12.Base
         /// How to trigger the definition setup on derived types
         /// </summary>
         internal abstract void SetUpDefinitions();
+
+        public int CompareTo(object obj)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     /// <summary>

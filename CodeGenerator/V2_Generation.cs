@@ -177,9 +177,9 @@ public string Required { get; set; }
                     writer.WriteLine("public partial class Loop{0}Collection:LoopCollection<Loop{0}>", csvLines[i].LoopName);
                     writer.WriteLine("{");
 
-                    writer.WriteLine("\tpublic Loop{0}Collection(string loopName, string loopNameDescription, X12Doc owningDoc, LoopCollection parent, LoopCollection prev)",
+                    writer.WriteLine("\tpublic Loop{0}Collection(string loopName, string loopNameDescription, X12Doc owningDoc, LoopCollectionBase parent)",
                         csvLines[i].LoopName);
-                    writer.WriteLine("\t\t:base(loopName, loopNameDescription, owningDoc, parent, prev) { }");
+                    writer.WriteLine("\t\t:base(loopName, loopNameDescription, owningDoc, parent) { }");
 
                     writer.WriteLine("}"); //} LoopCollection
                 }
@@ -221,7 +221,7 @@ public string Required { get; set; }
                     writer.WriteLine("public partial class Loop{0}Collection", csvLines[i].LoopName);
                     writer.WriteLine("{");
 
-                    writer.WriteLine("public override void SetUpDefinition(){ ");
+                    writer.WriteLine("internal override void SetUpDefinition(){ ");
                     writer.WriteLine("SetUpChildDefinitions=true;");
                     writer.WriteLine("RepitionLimit = {0};", csvLines[i].Repeat);
 
@@ -384,7 +384,7 @@ public string Required { get; set; }
                         if (i != 0)
                         {
                             //if we have something in these lists, we need to make a ctor before closing the tag out
-                            writer.WriteLine("public Loop{0}(X12Doc owningDoc, LoopEntity prev, LoopCollection parent):base(owningDoc, prev, parent){{",
+                            writer.WriteLine("public Loop{0}(LoopCollectionBase parent):base(parent){{",
                                 currentLoopName);
 
                             foreach (NameType nameType in segments)
@@ -397,7 +397,7 @@ public string Required { get; set; }
 
                             foreach (NameType nameType in subLoops)
                             {
-                                writer.WriteLine("{0}Loop = new Loop{1}Collection(\"Loop{1}\", nameof({0}Loop), OwningDoc, parent, parent);", 
+                                writer.WriteLine("{0}Loop = new Loop{1}Collection(\"Loop{1}\", nameof({0}Loop), parent.OwningX12Doc, parent);", 
                                     nameType.Named, nameType.Typed);
                                 writer.WriteLine("ChildLoopCollections.Add({0}Loop);", nameType.Named);
                             }
